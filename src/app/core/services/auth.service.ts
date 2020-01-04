@@ -4,7 +4,7 @@ import * as firebase from 'firebase';
 import {DefaultRoutes} from '../../enums/default.routes';
 import {Router} from '@angular/router';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
-import {User} from 'firebase';
+import {User} from '../../interfaces/user';
 
 @Injectable({
   providedIn: 'root'
