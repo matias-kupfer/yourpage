@@ -74,7 +74,7 @@ export class AuthService {
 
   public get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null) ? true : false;
+    return user !== null;
   }
 
   public onLogout() {
