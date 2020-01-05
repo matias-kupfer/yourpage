@@ -52,9 +52,10 @@ export class AuthService {
   private createUserDataFromFirebase(firebaseUser: firebase.User): User {
     return this.userData = {
       userId: firebaseUser.uid,
-      name: firebaseUser.displayName,
+      displayName: firebaseUser.displayName,
       email: firebaseUser.email,
       imageUrl: firebaseUser.photoURL,
+      setUp: false,
     } as any; // should be as User but it show error
   }
 
@@ -74,11 +75,13 @@ export class AuthService {
 
   public get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
+    console.log(user !== null)
     return user !== null;
   }
 
   public onLogout() {
     return this.afAuth.auth.signOut().then(() => {
+      localStorage.clear();
       this.router.navigate([DefaultRoutes.OnLogout]);
     });
   }

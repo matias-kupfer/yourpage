@@ -1,6 +1,7 @@
 export interface User {
   userId: string;
-  name: string;
+  displayName: string;
   email: string;
   imageUrl: string;
+  setUp: boolean;
 }
