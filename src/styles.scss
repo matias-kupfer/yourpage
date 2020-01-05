@@ -2,3 +2,17 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-toolbar {
+  font-weight: lighter !important;
+  padding: 0 12px;
+}
+mat-form-field {
+  margin-bottom: -0.8em;
+  font-size: 1.5em;
+}
+
+
+.center {
+  text-align: center;
+}

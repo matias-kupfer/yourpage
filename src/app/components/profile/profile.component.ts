@@ -16,5 +16,4 @@ export class ProfileComponent implements OnInit {
   public onLogout() {
     this.authService.onLogout();
   }
-
 }

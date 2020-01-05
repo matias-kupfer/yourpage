@@ -1,1 +1,8 @@
-<p>navbar works!</p>
+<mat-toolbar *ngIf="authService.isLoggedIn" color="primary">
+  <button mat-button [routerLink]="['/', m.key]" *ngFor="let m of menus;"
+          routerLinkActive="active">{{m.name}}</button>
+  <span class="spacer"></span>
+  <button (click)="onLogout()" mat-icon-button>
+    <mat-icon>power_settings_new</mat-icon>
+  </button>
+</mat-toolbar>

@@ -1,0 +1,26 @@
+@import "../../../style/variables";
+
+mat-toolbar {
+  height: 55px;
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+  position: relative; // makes shadow box work
+
+  button {
+    color: $white;
+    opacity: 0.7;
+    transition: 0.4s;
+
+    &:hover {
+      color: $white;
+      opacity: 0.9;
+    }
+  }
+
+}
+
+.active {
+  opacity: 1 !important;
+}
+.spacer {
+  flex: 1 1 auto;
+}

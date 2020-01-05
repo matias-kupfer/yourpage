@@ -14,7 +14,6 @@ export class AuthenticationGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-
     if (this.authService.isLoggedIn) {
       if (state.url === '/login') {
         this.router.navigate([DefaultRoutes.OnLogin]);
