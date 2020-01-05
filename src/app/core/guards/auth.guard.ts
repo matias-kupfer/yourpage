@@ -14,10 +14,22 @@ export class AuthenticationGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
+
     if (this.authService.isLoggedIn) {
+      if (state.url === '/login') {
+        this.router.navigate([DefaultRoutes.OnLogin]);
+        return false;
+      }
+      if (!this.authService.userData.setUp && state.url !== '/profile') {
+        this.router.navigate([DefaultRoutes.OnNotSetUp]);
+        return false;
+      }
       return true;
     }
-    this.router.navigate([DefaultRoutes.OnUnauthorized], {queryParams: {returnUrl: state.url}});
-    return;
+    // not logged in
+    if (state.url !== '/login') {
+      this.router.navigate([DefaultRoutes.OnNotLoggedIn]);
+    }
+    return true;
   }
 }

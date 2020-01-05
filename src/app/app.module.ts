@@ -35,7 +35,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     BrowserAnimationsModule,
   ],
   providers: [
-    AuthenticationGuard
+    AuthenticationGuard,
   ],
   bootstrap: [AppComponent]
 })

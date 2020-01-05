@@ -1,1 +1,7 @@
-<p>profile works!</p>
+<p>welcome {{authService.userData.displayName}}</p>
+<img [src]="authService.userData.imageUrl" style="width: 200px; height: auto;"><br>
+{{ authService.userData.email}}
+<br>
+<h3 *ngIf="!authService.userData.setUp">Please, finish your profile configuration</h3>
+<br>
+<button mat-flat-button (click)="onLogout()">Logout</button>
