@@ -23,17 +23,28 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-
+import {MatDividerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDialogModule} from '@angular/material/dialog';
+import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 
 @NgModule({
+  entryComponents: [
+    EditProfileComponent
+  ],
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
     NotFoundComponent,
     ProfileComponent,
-    NavbarComponent
+    NavbarComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -47,10 +58,20 @@ import {MatCardModule} from '@angular/material/card';
     MatIconModule,
     MatToolbarModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatDividerModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     AuthenticationGuard,
+    MatDatepickerModule,
   ],
   bootstrap: [AppComponent]
 })

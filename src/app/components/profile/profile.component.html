@@ -1,7 +1,19 @@
-<p>welcome {{authService.userData.displayName}}</p>
-<img [src]="authService.userData.imageUrl" style="width: 200px; height: auto;"><br>
-{{ authService.userData.email}}
+<div class="outter">
+  <div class="header">
+    <div>
+      <img [src]="userData.imageUrl">
+      <h1 *ngIf="!userData.name; else setup">{{authService.userData.displayName}}</h1>
+      <ng-template #setup><h1>{{userData.name}} {{userData.lastName}}</h1></ng-template>
+    </div>
+  </div>
+
 <br>
-<h3 *ngIf="!authService.userData.setUp">Please, finish your profile configuration</h3>
-<br>
-<button mat-flat-button (click)="onLogout()">Logout</button>
+
+  <div class="suggestion" *ngIf="!userData.setUp">
+    <img src="../../../assets/images/suggestion.png">
+    <h2>You need to set up your profile.</h2>
+    <button mat-raised-button (click)="editProfile()" color="accent">Start</button>
+  </div>
+  <br>
+</div>
+

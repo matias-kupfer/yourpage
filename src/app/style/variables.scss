@@ -1,10 +1,11 @@
 @import '~@angular/material/theming';
 @include mat-core();
 // angular prebuilt
-$primary: mat-palette($mat-indigo);
+$primary: mat-palette($mat-deep-purple);
 $accent:  mat-palette($mat-pink);
 $warn:    mat-palette($mat-red);
 
 // own
-$darkGray: #424242;
+$darkGray: #262626;
+$lightGray: #e6e6e6;
 $white: white;

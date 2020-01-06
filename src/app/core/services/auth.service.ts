@@ -56,7 +56,14 @@ export class AuthService {
       email: firebaseUser.email,
       imageUrl: firebaseUser.photoURL,
       setUp: false,
-    } as any; // should be as User but it show error
+      name: null,
+      lastName: null,
+      gender: null,
+      userName: null,
+      country: null,
+      birthday: null,
+      bio: null
+    } as User;
   }
 
   private saveUserData(user: User) {
