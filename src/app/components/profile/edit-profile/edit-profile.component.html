@@ -38,13 +38,14 @@
           {{lastName.value | slice:0:4}}... has <strong>invalid characters.</strong>
         </mat-error>
       </mat-form-field>
+      <br>
 
       <mat-form-field>
         <mat-label>Gender</mat-label>
         <mat-select formControlName="gender">
           <mat-option value="male">Male</mat-option>
           <mat-option value="female">Female</mat-option>
-          <mat-option value="null">Leave blank</mat-option>
+          <mat-option value="undefined">Leave blank</mat-option>
         </mat-select>
         <mat-error *ngIf="gender.errors && gender.errors.required">
           Gender is <strong>required.</strong>
@@ -61,6 +62,10 @@
           Birthday is <strong>required.</strong>
         </mat-error>
       </mat-form-field>
+      <br>
+      <mat-hint align="end" *ngIf="this.isSetUp">
+        You can't change this information.
+      </mat-hint>
 
 
       <div>
@@ -68,6 +73,7 @@
       </div>
     </form>
   </mat-step>
+
 
 
   <mat-step [stepControl]="accountForm">
@@ -110,16 +116,19 @@
           Country is <strong>required.</strong>
         </mat-error>
       </mat-form-field>
+      <br>
 
       <mat-form-field class="width">
         <label>
           <textarea matInput placeholder="Write something about yourself..." formControlName="bio"></textarea>
         </label>
         <mat-hint align="end">
-          <span [ngStyle]="{'color': bio.value.length > '200' ? 'red' : bio.value.length > 180 ? 'orange' : 'green' }" *ngIf="bio.value; else zero">
+          <span [ngStyle]="{'color': bio.value.length > '200' ? 'red' : bio.value.length > 180 ? 'orange' : 'green' }"
+                *ngIf="bio.value; else zero">
             {{bio.value.length}}
           </span>
-          <ng-template #zero>0</ng-template>/ 200
+          <ng-template #zero>0</ng-template>
+          / 200
         </mat-hint>
         <mat-error *ngIf="bio.errors && bio.errors.required">
           biography is <strong>required.</strong>

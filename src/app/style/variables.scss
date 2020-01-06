@@ -6,6 +6,7 @@ $accent:  mat-palette($mat-pink);
 $warn:    mat-palette($mat-red);
 
 // own
-$darkGray: #262626;
-$lightGray: #e6e6e6;
+$gradient: linear-gradient(90deg, rgba(47,134,116,1) 68%, rgba(29,121,102,1) 100%);
+$darkGray: #202124;
+$lightGray: #5f6368;
 $white: white;

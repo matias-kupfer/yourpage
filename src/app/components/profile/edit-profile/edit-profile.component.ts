@@ -12,7 +12,8 @@ import {countryList} from '../../../enums/countries.enum';
 })
 export class EditProfileComponent implements OnInit {
   countryList: any[] = countryList;
-  startDate = new Date(1990);
+  isSetUp: boolean;
+
   personalForm: FormGroup;
   accountForm: FormGroup;
 
@@ -24,36 +25,43 @@ export class EditProfileComponent implements OnInit {
 
   ngOnInit() {
     this.personalForm = this.formBuilder.group({
-      name: [this.data.userData.name, [
+      name: [this.data.userData.personalInfo.name, [
         Validators.minLength(2),
         Validators.maxLength(15),
         Validators.required,
         Validators.pattern('[A-zÀ-ÿ ]*'),
       ]],
-      lastName: [this.data.userData.lastName, [
+      lastName: [this.data.userData.personalInfo.lastName, [
         Validators.minLength(2),
         Validators.maxLength(15),
         Validators.required,
         Validators.pattern('[A-zÀ-ÿ ]*'),
       ]],
-      gender: [this.data.userData.gender, Validators.required],
-      birthday: [this.data.userData.birthday, Validators.required],
+      gender: [this.data.userData.personalInfo.gender, Validators.required],
+      birthday: [this.data.userData.personalInfo.birthday, Validators.required],
     });
 
     this.accountForm = this.formBuilder.group({
-      userName: [this.data.userData.userName,
+      userName: [this.data.userData.accountInfo.userName,
         [Validators.required,
           Validators.minLength(4),
           Validators.maxLength(20),
           Validators.pattern('^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+$')],
         CustomValidator.userName(this.afs),
       ],
-      country: [this.data.userData.country, Validators.required],
-      bio: [this.data.userData.bio, [
+      country: [this.data.userData.accountInfo.country, Validators.required],
+      bio: [this.data.userData.accountInfo.bio, [
         Validators.required,
         Validators.maxLength(200)
       ]],
     });
+    this.isSetUp = this.data.userData.personalInfo.setUp;
+    if (this.isSetUp) {
+      this.name.disable();
+      this.lastName.disable();
+      this.gender.disable();
+      this.birthday.disable();
+    }
   }
 
   get name() {
@@ -86,15 +94,18 @@ export class EditProfileComponent implements OnInit {
 
 
   public saveChanges() {
-    this.data.userData.name = this.name.value;
-    this.data.userData.lastName = this.lastName.value;
-    this.data.userData.gender = this.gender.value;
-    this.data.userData.birthday = this.birthday.value;
-    this.data.userData.userName = this.userName.value;
-    this.data.userData.country = this.country.value;
-    this.data.userData.bio = this.bio.value;
+    this.data.userData.personalInfo.name = this.name.value;
+    this.data.userData.personalInfo.lastName = this.lastName.value;
+    this.data.userData.personalInfo.gender = this.gender.value;
+    this.data.userData.personalInfo.birthday = this.birthday.value;
+    this.data.userData.accountInfo.userName = this.userName.value;
+    this.data.userData.accountInfo.country = this.country.value;
+    this.data.userData.accountInfo.bio = this.bio.value;
 
-    this.data.userData.setUp = true;
+    if (!this.isSetUp) {
+      this.data.userData.accountInfo.registrationDate = new Date();
+      this.data.userData.personalInfo.setUp = true;
+    }
     this.dialogRef.close(this.data.userData);
   }
 
@@ -107,11 +118,10 @@ export class EditProfileComponent implements OnInit {
 export class CustomValidator {
   static userName(afs: AngularFirestore) {
     return (control: AbstractControl) => {
-      console.log('Inside customValidator!');
       const username = control.value.toLowerCase();
       return afs.collection('users', ref => ref.where('userName', '==', username))
         .valueChanges().pipe(
-          debounceTime(300), // make sure user stopped writing
+          debounceTime(10), // make sure user stopped writing
           take(1),
           map(arr => arr.length ? {usernameAvailable: false} : null),
         );

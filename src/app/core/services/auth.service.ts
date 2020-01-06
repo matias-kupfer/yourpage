@@ -43,7 +43,7 @@ export class AuthService {
   public persistUserData(user: User) {
     // save in FireBase
     // @ts-ignore
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.userId}`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.personalInfo.userId}`);
     return userRef.set(user, {
       merge: true
     });
@@ -51,22 +51,33 @@ export class AuthService {
 
   private createUserDataFromFirebase(firebaseUser: firebase.User): User {
     return this.userData = {
-      userId: firebaseUser.uid,
-      displayName: firebaseUser.displayName,
-      email: firebaseUser.email,
-      imageUrl: firebaseUser.photoURL,
-      setUp: false,
-      name: null,
-      lastName: null,
-      gender: null,
-      userName: null,
-      country: null,
-      birthday: null,
-      bio: null
+      personalInfo: {
+        userId: firebaseUser.uid,
+        displayName: firebaseUser.displayName,
+        email: firebaseUser.email,
+        setUp: false,
+        name: null,
+        lastName: null,
+        gender: null,
+        birthday: null,
+      },
+      accountInfo: {
+        userName: null,
+        registrationDate: null,
+        imageUrl: firebaseUser.photoURL,
+        country: null,
+        bio: null,
+
+      },
+      statisticsInfo: {
+        followers: 0,
+        following: 0,
+        posts: 0,
+      }
     } as User;
   }
 
-  private saveUserData(user: User) {
+  public saveUserData(user: User) {
     // save in Property of AuthService
     this.userData = user;
 

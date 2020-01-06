@@ -7,27 +7,31 @@ div.outter {
   div.header {
     margin: auto;
     text-align: center;
-    background-color: mat-color($primary);
+    color: white;
+    background: $gradient;
 
     div {
-      padding: 3% 5%;
-      color: $lightGray;
+      padding: 3% 5% 1%;
     }
 
     img {
-      width: 120px;
+      width: 100px;
       height: auto;
       border-radius: 50%;
+      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5)
     }
 
     h1 {
-      margin: 10px;
+      margin: 20px;
+      font-size: 1.8em;
+      font-weight: normal;
     }
   }
 
   div.suggestion {
     text-align: center;
-    margin: 10% auto 0;
+    margin: 50px auto;
+    padding: 0;
 
     img {
       width: 100px;

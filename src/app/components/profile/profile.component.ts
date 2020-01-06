@@ -3,6 +3,7 @@ import {AuthService} from '../../core/services/auth.service';
 import {MatDialog} from '@angular/material';
 import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {User} from '../../interfaces/user';
+import {FirestoreService} from '../../core/services/firestore.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,6 +15,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private firestoreService: FirestoreService,
     public dialog: MatDialog) {
   }
 
@@ -22,7 +24,7 @@ export class ProfileComponent implements OnInit {
 
   public editProfile() {
     const dialogRef = this.dialog.open(EditProfileComponent, {
-      width: '60%',
+      width: 'auto',
       data: {userData: this.userData}
     });
 
@@ -36,6 +38,7 @@ export class ProfileComponent implements OnInit {
 
   public updateUserInfo(newValues: User) {
     this.userData = newValues;
-    console.log(this.userData)
+    console.log('data result from dialog: ', this.userData);
+    this.firestoreService.updateUserData(newValues);
 }
 }

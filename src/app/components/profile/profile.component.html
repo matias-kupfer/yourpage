@@ -1,19 +1,19 @@
 <div class="outter">
   <div class="header">
     <div>
-      <img [src]="userData.imageUrl">
-      <h1 *ngIf="!userData.name; else setup">{{authService.userData.displayName}}</h1>
-      <ng-template #setup><h1>{{userData.name}} {{userData.lastName}}</h1></ng-template>
+      <img [src]="userData.accountInfo.imageUrl">
+      <h1 *ngIf="!userData.personalInfo.name; else setup">
+        Welcome, {{authService.userData.personalInfo.displayName}}</h1>
+      <ng-template #setup><h1>{{userData.personalInfo.name}} {{userData.personalInfo.lastName}}</h1></ng-template>
     </div>
   </div>
 
-<br>
+  <br>
 
-  <div class="suggestion" *ngIf="!userData.setUp">
+  <div class="suggestion"> <!--*ngIf="!userData.personalInfo.setUp"-->
     <img src="../../../assets/images/suggestion.png">
     <h2>You need to set up your profile.</h2>
     <button mat-raised-button (click)="editProfile()" color="accent">Start</button>
   </div>
-  <br>
 </div>
 
