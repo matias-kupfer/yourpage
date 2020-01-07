@@ -1,10 +1,10 @@
-<div class="outter">
+<div class="outter" *ngIf="userData !== null">
   <div class="header">
     <div>
       <img [src]="userData.accountInfo.imageUrl">
-      <h1 *ngIf="!userData.personalInfo.name; else setup">
+      <h1 *ngIf="!isSetUp; else setup">
         Welcome, {{authService.userData.personalInfo.displayName}}</h1>
-      <ng-template #setup><h1>{{userData.personalInfo.name}} {{userData.personalInfo.lastName}}</h1></ng-template>
+      <ng-template #setup><h1>Welcome, {{userData.personalInfo.name}} {{userData.personalInfo.lastName}}</h1></ng-template>
     </div>
   </div>
 

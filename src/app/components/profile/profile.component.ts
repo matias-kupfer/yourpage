@@ -4,6 +4,9 @@ import {MatDialog} from '@angular/material';
 import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {User} from '../../interfaces/user';
 import {FirestoreService} from '../../core/services/firestore.service';
+import {Observable, Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {UpdateUserDataService} from '../../core/services/update-user-data.service';
 
 @Component({
   selector: 'app-profile',
@@ -11,7 +14,12 @@ import {FirestoreService} from '../../core/services/firestore.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  userData: User = JSON.parse(localStorage.getItem('user')) || {} as User;
+  userId: User = JSON.parse(localStorage.getItem('user')) || {} as User;
+  userData$: Observable<any> = this.firestoreService.getUserById(this.userId.personalInfo.userId);
+  userData: User = null;
+  isSetUp: boolean;
+
+  private destroy$ = new Subject<boolean>();
 
   constructor(
     private authService: AuthService,
@@ -20,6 +28,17 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getUser();
+  }
+
+  public getUser() {
+    this.userData$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((updatedUser: User) => {
+      this.userData = updatedUser;
+      this.isSetUp = updatedUser.personalInfo.setUp;
+      this.authService.saveUserData(updatedUser);
+    });
   }
 
   public editProfile() {
@@ -33,6 +52,7 @@ export class ProfileComponent implements OnInit {
         return;
       }
       this.updateUserInfo(result);
+      this.getUser();
     });
   }
 
@@ -40,5 +60,8 @@ export class ProfileComponent implements OnInit {
     this.userData = newValues;
     console.log('data result from dialog: ', this.userData);
     this.firestoreService.updateUserData(newValues);
-}
+  }
+
+  // @todo loader while profile loads
+  // @todo if firestore observable doesnt return, user doesnt exist, -> login page
 }
