@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../core/services/auth.service';
 import {MatDialog} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {User} from '../../interfaces/user';
 import {FirestoreService} from '../../core/services/firestore.service';
-import {Observable, Subject} from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +19,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private firestoreService: FirestoreService,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -46,6 +47,15 @@ export class ProfileComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: User) => {
       if (!result) {
+        this.snackBar.open('Canceled', 'Dismiss', {
+          duration: 4000,
+        });
+        return;
+      }
+      if (JSON.stringify(result) === JSON.stringify({})) {
+        this.snackBar.open('No changes', 'Dismiss', {
+          duration: 4000,
+        });
         return;
       }
       this.updateUserInfo(result);
@@ -53,7 +63,17 @@ export class ProfileComponent implements OnInit {
   }
 
   public updateUserInfo(newValues: User) {
-    this.firestoreService.updateUserData(newValues);
+    this.firestoreService.updateUserData(newValues).then(
+      (response) => {
+        this.snackBar.open('Changes saved', 'Dismiss', {
+          duration: 4000,
+        });
+      }, (error) => {
+        console.error(error);
+        this.snackBar.open('Error', 'Dismiss', {
+          duration: 4000,
+        });
+      });
     this.newUserData();
     // @todo use response for snackbar message
   }

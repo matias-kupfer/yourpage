@@ -31,6 +31,7 @@ import { EditProfileComponent } from './components/profile/edit-profile/edit-pro
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSnackBarModule
   ],
   providers: [
     AuthenticationGuard,

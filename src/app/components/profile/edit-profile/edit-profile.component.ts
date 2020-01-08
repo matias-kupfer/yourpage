@@ -4,6 +4,7 @@ import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '
 import {map, take, debounceTime} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {countryList} from '../../../enums/countries.enum';
+import {User} from '../../../interfaces/user';
 
 @Component({
   selector: 'app-edit-profile',
@@ -105,7 +106,13 @@ export class EditProfileComponent implements OnInit {
     if (!this.isSetUp) {
       this.data.userData.personalInfo.setUp = true;
     }
-    this.dialogRef.close(this.data.userData);
+
+    // validate if changes were made
+    if (JSON.stringify(this.data.userData) === JSON.stringify(JSON.parse(localStorage.getItem('user')) as User)) {
+      this.dialogRef.close({});
+    } else {
+      this.dialogRef.close(this.data.userData);
+    }
   }
 
   public onNoClick() {
