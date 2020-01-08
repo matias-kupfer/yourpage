@@ -103,7 +103,6 @@ export class EditProfileComponent implements OnInit {
     this.data.userData.accountInfo.bio = this.bio.value;
 
     if (!this.isSetUp) {
-      this.data.userData.accountInfo.registrationDate = new Date();
       this.data.userData.personalInfo.setUp = true;
     }
     this.dialogRef.close(this.data.userData);

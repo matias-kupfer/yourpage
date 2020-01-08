@@ -12,7 +12,7 @@ import {Observable, Subject} from 'rxjs';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  localStorageUser: User = JSON.parse(localStorage.getItem('user')) || {} as User;
+  localStorageUser: User = JSON.parse(localStorage.getItem('user')) as User;
   userData: User = null;
   isSetUp: boolean;
 
@@ -24,9 +24,18 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     if (this.localStorageUser) {
-      this.userData = this.localStorageUser;
-      this.isSetUp = this.localStorageUser.personalInfo.setUp;
+      this.firestoreService.getUserById(this.localStorageUser.personalInfo.userId)
+        .onSnapshot(doc => {
+          if (doc.data()) {
+            const updatedUser: User = doc.data() as User;
+            this.userData = updatedUser;
+            this.isSetUp = updatedUser.personalInfo.setUp;
+          }
+        });
     }
+  }
+
+  public newUserData() {
   }
 
   public editProfile() {
@@ -45,6 +54,8 @@ export class ProfileComponent implements OnInit {
 
   public updateUserInfo(newValues: User) {
     this.firestoreService.updateUserData(newValues);
+    this.newUserData();
+    // @todo use response for snackbar message
   }
 
   // @todo loader while profile loads

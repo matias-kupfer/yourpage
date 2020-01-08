@@ -60,7 +60,7 @@ export class AuthService {
     return userRef.set(user, {
       merge: true
     });
-  } // @todo move function tu firestore service
+  }
 
   private createUserDataFromFirebase(firebaseUser: firebase.User): User {
     return this.userData = {
@@ -76,7 +76,7 @@ export class AuthService {
       },
       accountInfo: {
         userName: null,
-        registrationDate: null,
+        registrationDate: new Date(),
         imageUrl: firebaseUser.photoURL,
         country: null,
         bio: null,
