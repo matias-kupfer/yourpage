@@ -1,1 +1,14 @@
-<h1>HOME, YOURPAGE</h1>
+<div class="outter" *ngIf="homeData !== null">
+  <div class="header">
+    <div>
+      <img [src]="homeData.accountInfo.imageUrl">
+      <h1>{{homeData.personalInfo.name}} {{homeData.personalInfo.lastName}}</h1>
+    </div>
+  </div>
+
+  <br>
+
+  <h1>HOME COMPONENT</h1>
+  <h1>VISIBLE LOGGED IR OR NOT</h1>
+</div>
+

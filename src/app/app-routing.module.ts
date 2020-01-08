@@ -8,13 +8,8 @@ import {ProfileComponent} from './components/profile/profile.component';
 
 
 const routes: Routes = [
-  {
-    path: '', canActivate: [AuthenticationGuard], children: [
-      {path: '', redirectTo: 'home', pathMatch: 'full'},
-      {path: 'home', component: HomeComponent},
-      {path: 'profile', component: ProfileComponent},
-    ]
-  },
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent, canActivate: [AuthenticationGuard]},
 
   {path: '**', redirectTo: '/not-found', pathMatch: 'full'},

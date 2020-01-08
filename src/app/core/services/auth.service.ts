@@ -30,7 +30,7 @@ export class AuthService {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate([DefaultRoutes.OnLogin]);
+          this.router.navigate([DefaultRoutes.OnDefault]);
         });
 
         if (result.additionalUserInfo.isNewUser) {
@@ -102,7 +102,7 @@ export class AuthService {
     // @todo here you control the error message
     console.error('error', error);
     window.alert(error.error);
-  };
+  }
 
   public get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -116,7 +116,7 @@ export class AuthService {
   public onLogout() {
     return this.afAuth.auth.signOut().then(() => {
       localStorage.clear();
-      this.router.navigate([DefaultRoutes.OnLogout]);
+      this.router.navigate([DefaultRoutes.OnDefault]);
     });
   }
 }

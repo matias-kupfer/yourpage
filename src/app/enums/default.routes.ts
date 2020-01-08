@@ -1,6 +1,5 @@
 export const enum DefaultRoutes {
-  OnLogin = 'home',
-  OnNotLoggedIn = 'login',
-  OnLogout = 'login',
+  OnDefault = 'home',
+  OnLoginButtonClick = 'login',
   OnNotSetUp = 'profile',
 }
