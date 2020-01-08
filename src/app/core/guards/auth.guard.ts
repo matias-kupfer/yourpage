@@ -3,15 +3,13 @@ import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '
 import {Observable} from 'rxjs';
 import {AuthService} from '../services/auth.service';
 import {DefaultRoutes} from '../../enums/default.routes';
-import {UpdateUserDataService} from '../services/update-user-data.service';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
 
   constructor(
     private router: Router,
-    private authService: AuthService,
-    private updateUserDataService: UpdateUserDataService) {
+    private authService: AuthService) {
   }
 
   canActivate(

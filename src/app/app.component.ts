@@ -1,17 +1,37 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {FormBuilder} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AuthService} from './core/services/auth.service';
+import {FirestoreService} from './core/services/firestore.service';
+import {User} from './interfaces/user';
+import {Observable} from 'rxjs';
+import {isEmpty} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'yourpage | By: Matias Kupfer';
+  localStorageUserId: any = JSON.parse(localStorage.getItem('userId')) || {};
 
-  constructor() {
+  constructor(
+    private authService: AuthService,
+    private firestoreService: FirestoreService,
+  ) {
+  }
+
+  ngOnInit(): void {
+    if (this.localStorageUserId.userId) {
+      this.firestoreService.getUserById(this.localStorageUserId.userId)
+        .onSnapshot(doc => {
+          if (doc.data()) {
+            const updatedUser: User = doc.data() as User;
+            this.authService.saveUserData(updatedUser);
+          }
+        });
+    }
   }
 }

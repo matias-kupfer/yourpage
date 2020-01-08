@@ -5,13 +5,14 @@ import {DefaultRoutes} from '../../enums/default.routes';
 import {Router} from '@angular/router';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {User} from '../../interfaces/user';
+import DocumentReference = firebase.firestore.DocumentReference;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  public userData: User = JSON.parse(localStorage.getItem('user')) || {} as User;
+  public db = firebase.firestore();
+  public userData: any = JSON.parse(localStorage.getItem('user'));
 
   constructor(
     public afs: AngularFirestore,
@@ -32,10 +33,22 @@ export class AuthService {
           this.router.navigate([DefaultRoutes.OnLogin]);
         });
 
-        this.persistUserData(
-          this.createUserDataFromFirebase(result.user)
-        );
-        this.saveUserData(this.userData);
+        if (result.additionalUserInfo.isNewUser) {
+          this.persistUserData(
+            this.createUserDataFromFirebase(result.user)
+          );
+          this.saveUserData(this.userData);
+        } else {
+          const id = {personalInfo: {userId: result.user.uid, setUp: true}}; // fix this if possible
+          localStorage.setItem('user', JSON.stringify(id));
+          this.userData = JSON.parse(localStorage.getItem('user'));
+          this.getUserById(result.user.uid).onSnapshot(doc => {
+            if (doc.data()) {
+              const updatedUser: User = doc.data() as User;
+              this.saveUserData(updatedUser);
+            }
+          });
+        }
 
       }).catch(this.showError);
   }
@@ -47,7 +60,7 @@ export class AuthService {
     return userRef.set(user, {
       merge: true
     });
-  }
+  } // @todo move function tu firestore service
 
   private createUserDataFromFirebase(firebaseUser: firebase.User): User {
     return this.userData = {
@@ -94,6 +107,10 @@ export class AuthService {
   public get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return user !== null;
+  }
+
+  public getUserById(userId: string): DocumentReference<any> {
+    return this.db.collection('users').doc(userId);
   }
 
   public onLogout() {

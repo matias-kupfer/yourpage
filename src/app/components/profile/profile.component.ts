@@ -5,8 +5,6 @@ import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {User} from '../../interfaces/user';
 import {FirestoreService} from '../../core/services/firestore.service';
 import {Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {UpdateUserDataService} from '../../core/services/update-user-data.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,12 +12,9 @@ import {UpdateUserDataService} from '../../core/services/update-user-data.servic
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  userId: User = JSON.parse(localStorage.getItem('user')) || {} as User;
-  userData$: Observable<any> = this.firestoreService.getUserById(this.userId.personalInfo.userId);
+  localStorageUser: User = JSON.parse(localStorage.getItem('user')) || {} as User;
   userData: User = null;
   isSetUp: boolean;
-
-  private destroy$ = new Subject<boolean>();
 
   constructor(
     private authService: AuthService,
@@ -28,17 +23,10 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUser();
-  }
-
-  public getUser() {
-    this.userData$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe((updatedUser: User) => {
-      this.userData = updatedUser;
-      this.isSetUp = updatedUser.personalInfo.setUp;
-      this.authService.saveUserData(updatedUser);
-    });
+    if (this.localStorageUser) {
+      this.userData = this.localStorageUser;
+      this.isSetUp = this.localStorageUser.personalInfo.setUp;
+    }
   }
 
   public editProfile() {
@@ -52,13 +40,10 @@ export class ProfileComponent implements OnInit {
         return;
       }
       this.updateUserInfo(result);
-      this.getUser();
     });
   }
 
   public updateUserInfo(newValues: User) {
-    this.userData = newValues;
-    console.log('data result from dialog: ', this.userData);
     this.firestoreService.updateUserData(newValues);
   }
 
