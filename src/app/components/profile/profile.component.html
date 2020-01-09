@@ -2,18 +2,20 @@
   <div class="header">
     <div>
       <img [src]="userData.accountInfo.imageUrl">
-      <h1 *ngIf="!isSetUp; else setup">
-        Welcome, {{authService.userData.personalInfo.displayName}}</h1>
-      <ng-template #setup><h1>Welcome, {{userData.personalInfo.name}} {{userData.personalInfo.lastName}}</h1></ng-template>
+      <h1 *ngIf="isSetUp !== null && !isSetUp; else elseIsSetUp">
+        {{authService.userData.personalInfo.displayName}}</h1>
+      <ng-template #elseIsSetUp><h1>{{userData.personalInfo.name}} {{userData.personalInfo.lastName}}</h1></ng-template>
     </div>
   </div>
 
   <br>
 
-  <div class="suggestion"> <!--*ngIf="!userData.personalInfo.setUp"-->
+  <div class="suggestion" *ngIf="isSetUp == false"> <!--not setup, set up your profile message-->
     <img src="../../../assets/images/suggestion.png">
     <h2>You need to set up your profile.</h2>
     <button mat-raised-button (click)="editProfile()" color="accent">Start</button>
   </div>
-</div>
 
+  <!--setup, just edit profile button-->
+  <button mat-raised-button *ngIf="isSetUp" (click)="editProfile()" color="accent">Edit profile</button>
+</div>

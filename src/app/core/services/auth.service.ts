@@ -116,7 +116,7 @@ export class AuthService {
   public onLogout() {
     return this.afAuth.auth.signOut().then(() => {
       localStorage.clear();
-      this.router.navigate([DefaultRoutes.OnDefault]);
+      this.router.navigate([DefaultRoutes.OnLogOut]);
     });
   }
 }

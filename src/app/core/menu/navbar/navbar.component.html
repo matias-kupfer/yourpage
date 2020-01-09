@@ -1,17 +1,23 @@
 <mat-toolbar>
-  <button mat-button [routerLink]="['/', m.key]" *ngFor="let m of menus;"
-          routerLinkActive="active">{{m.name}}</button>
+  <button mat-button [routerLink]="'home'" routerLinkActive="active">
+    <span>Home</span>
+  </button>
+  <button mat-button *ngIf="this.authService.isLoggedIn && userData" routerLinkActive="active"
+          [routerLink]="onProfileButtonClick + userData.accountInfo.userName">
+    <span>Profile</span>
+  </button>
+
   <span class="spacer"></span>
-  <button *ngIf="authService.isLoggedIn; else showLoginButton" (click)="onLogout()" mat-button>
+  <button *ngIf="this.authService.isLoggedIn; else showLoginButton" (click)="onLogout()" mat-button>
     <mat-icon>power_settings_new</mat-icon>
     Logout
   </button>
   <ng-template #showLoginButton>
     <button mat-button [routerLink]="onLoginButtonClick" routerLinkActive="active">
-        <span>Log in</span>
+      <span>Log in</span>
     </button>
     <button mat-button [routerLink]="onSignUpButtonClick" routerLinkActive="active">
-        <span>Sign up</span>
+      <span>Sign up</span>
     </button>
   </ng-template>
 </mat-toolbar>

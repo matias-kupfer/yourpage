@@ -13,6 +13,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent, canActivate: [AuthenticationGuard]},
   {path: 'signup', component: SignupComponent, canActivate: [AuthenticationGuard]},
+  {path: 'u/:userName', component: ProfileComponent, canActivate: [AuthenticationGuard]},
 
   {path: '**', redirectTo: '/not-found', pathMatch: 'full'},
   {path: 'not-found', component: NotFoundComponent},

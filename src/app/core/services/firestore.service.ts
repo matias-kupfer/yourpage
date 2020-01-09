@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import {Observable} from 'rxjs';
+import {AngularFirestore, DocumentData} from '@angular/fire/firestore';
 import {User} from '../../interfaces/user';
 import {AuthService} from './auth.service';
 import * as firebase from 'firebase';
@@ -20,12 +19,15 @@ export class FirestoreService {
   }
 
   public updateUserData(user: User) {
-    /*this.authService.saveUserData(user);*/
     return this.afs.collection('users').doc(user.personalInfo.userId).update(user);
   }
 
   public getUserById(userId: string): DocumentReference<any> {
-    /*return this.afs.doc(`users/${userId}`).snapshotChanges().pipe(take(1));*/
     return this.db.collection('users').doc(userId);
+  }
+
+  public getUserByUserName(userName: string): DocumentData {
+    return this.db.collection('users')
+      .where('accountInfo.userName', '==', userName).limit(1);
   }
 }

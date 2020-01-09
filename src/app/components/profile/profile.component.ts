@@ -5,6 +5,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {User} from '../../interfaces/user';
 import {FirestoreService} from '../../core/services/firestore.service';
+import {ActivatedRoute} from '@angular/router';
+
 
 @Component({
   selector: 'app-profile',
@@ -14,29 +16,43 @@ import {FirestoreService} from '../../core/services/firestore.service';
 export class ProfileComponent implements OnInit {
   localStorageUser: User = JSON.parse(localStorage.getItem('user')) as User;
   userData: User = null;
-  isSetUp: boolean;
+  isProfileOwner = false;
+  isSetUp: boolean = null;
+  public userName = this.route.snapshot.paramMap.get('userName');
 
   constructor(
     private authService: AuthService,
     private firestoreService: FirestoreService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    if (this.localStorageUser) {
+    // if it's user's profile
+    if (this.localStorageUser && this.localStorageUser.accountInfo.userName === this.userName) {
       this.firestoreService.getUserById(this.localStorageUser.personalInfo.userId)
         .onSnapshot(doc => {
           if (doc.data()) {
             const updatedUser: User = doc.data() as User;
             this.userData = updatedUser;
             this.isSetUp = updatedUser.personalInfo.setUp;
+            this.isProfileOwner = true;
+          }
+        });
+    } else { // visitor. NOT profile owner
+      this.firestoreService.getUserByUserName(this.userName)
+        .onSnapshot((doc) => {
+          if (doc.docs[0].data()) {
+            const updatedUser: User = doc.docs[0].data();
+            this.userData = updatedUser;
           }
         });
     }
   }
 
   public newUserData() {
+    // move here getter
   }
 
   public editProfile() {
@@ -68,13 +84,13 @@ export class ProfileComponent implements OnInit {
         this.snackBar.open('Changes saved', 'Dismiss', {
           duration: 4000,
         });
+        this.newUserData();
       }, (error) => {
         console.error(error);
         this.snackBar.open('Error', 'Dismiss', {
           duration: 4000,
         });
       });
-    this.newUserData();
     // @todo use response for snackbar message
   }
 
