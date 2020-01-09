@@ -10,6 +10,7 @@ import {DefaultRoutes} from '../../../enums/default.routes';
 export class NavbarComponent implements OnInit {
   public menus: { name: string, key: string }[] = [];
   public onLoginButtonClick: string = DefaultRoutes.OnLoginButtonClick;
+  public onSignUpButtonClick: string = DefaultRoutes.OnSignupButtonClick;
 
   constructor(private authService: AuthService) {
   }

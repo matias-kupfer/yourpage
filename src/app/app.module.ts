@@ -13,7 +13,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/loginAndsignup/login/login.component';
 import {AuthenticationGuard} from './core/guards/auth.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -32,6 +32,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatMenuModule} from '@angular/material/menu';
+import { SignupComponent } from './components/loginAndsignup/signup/signup.component';
 
 
 @NgModule({
@@ -45,7 +47,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     NotFoundComponent,
     ProfileComponent,
     NavbarComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +72,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatMenuModule
   ],
   providers: [
     AuthenticationGuard,
