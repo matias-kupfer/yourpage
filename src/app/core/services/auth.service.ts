@@ -3,16 +3,18 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import {DefaultRoutes} from '../../enums/default.routes';
 import {Router} from '@angular/router';
-import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreDocument, DocumentSnapshot} from '@angular/fire/firestore';
 import {User} from '../../interfaces/user';
 import DocumentReference = firebase.firestore.DocumentReference;
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   public db = firebase.firestore();
-  public userData: any = JSON.parse(localStorage.getItem('user'));
+  public userData: User = JSON.parse(localStorage.getItem('user'));
+  public updatedUserData: DocumentReference<any>;
 
   constructor(
     public afs: AngularFirestore,
@@ -22,38 +24,35 @@ export class AuthService {
   ) {
   }
 
-  public signInWithGoogle() {
-    return this.authLogin(new firebase.auth.GoogleAuthProvider());
+  public googleAuth(newUserData?: User) {
+    return this.authLogin(new firebase.auth.GoogleAuthProvider(), newUserData);
   }
 
-  public authLogin(provider) {
+  public authLogin(provider, newUserData?: User) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate([DefaultRoutes.OnDefault]);
+          this.router.navigate([DefaultRoutes.OnLogin]);
         });
 
-        if (result.additionalUserInfo.isNewUser) {
-          this.persistUserData(
-            this.createUserDataFromFirebase(result.user)
-          );
-          this.saveUserData(this.userData);
-        } else {
-          const id = {personalInfo: {userId: result.user.uid, setUp: true}}; // fix this if possible
-          localStorage.setItem('user', JSON.stringify(id));
-          this.userData = JSON.parse(localStorage.getItem('user'));
-          this.getUserById(result.user.uid).onSnapshot(doc => {
-            if (doc.data()) {
-              const updatedUser: User = doc.data() as User;
-              this.saveUserData(updatedUser);
-            }
-          });
+        if (result.additionalUserInfo.isNewUser && newUserData) { // user sign up
+          const finalUser = this.createUserDataFromFirebase(result.user, newUserData);
+          this.saveUserDataToFirebase(finalUser);
+          this.saveUserData(finalUser);
+        } else { // user log in
+          const userId: User = {personalInfo: {userId: result.user.uid}} as User; // look this up in future
+          this.saveUserData(userId);
+          /*this.getUserById(result.user.uid)
+            .subscribe(res => {
+              console.log(res.data());
+              this.saveUserData(res.data() as User)
+            });*/
         }
 
       }).catch(this.showError);
   }
 
-  public persistUserData(user: User) {
+  public saveUserDataToFirebase(user: User) {
     // save in FireBase
     // @ts-ignore
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.personalInfo.userId}`);
@@ -62,32 +61,12 @@ export class AuthService {
     });
   }
 
-  private createUserDataFromFirebase(firebaseUser: firebase.User): User {
-    return this.userData = {
-      personalInfo: {
-        userId: firebaseUser.uid,
-        displayName: firebaseUser.displayName,
-        email: firebaseUser.email,
-        setUp: false,
-        name: null,
-        lastName: null,
-        gender: null,
-        birthday: null,
-      },
-      accountInfo: {
-        userName: null,
-        registrationDate: new Date(),
-        imageUrl: firebaseUser.photoURL,
-        country: null,
-        bio: null,
-
-      },
-      statisticsInfo: {
-        followers: 0,
-        following: 0,
-        posts: 0,
-      }
-    } as User;
+  public createUserDataFromFirebase(firebaseUser: firebase.User, newUserData: User): User {
+    newUserData.personalInfo.userId = firebaseUser.uid;
+    newUserData.personalInfo.email = firebaseUser.email;
+    newUserData.accountInfo.imageUrl = firebaseUser.photoURL;
+    newUserData.accountInfo.registrationDate = new Date();
+    return newUserData;
   }
 
   public saveUserData(user: User) {
@@ -102,14 +81,14 @@ export class AuthService {
     // @todo here you control the error message
     console.error('error', error);
     window.alert(error.error);
-  }
+  };
 
   public get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return user !== null;
   }
 
-  public getUserById(userId: string): DocumentReference<any> {
+  public getUserById(userId: string = this.userData.personalInfo.userId): DocumentReference<any> {
     return this.db.collection('users').doc(userId);
   }
 

@@ -1,9 +1,7 @@
 export interface User {
   personalInfo: {
     userId: string;
-    displayName: string;
     email: string;
-    setUp: boolean;
     name: string;
     lastName: string;
     gender: string;

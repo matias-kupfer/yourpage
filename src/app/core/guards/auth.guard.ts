@@ -27,6 +27,9 @@ export class AuthenticationGuard implements CanActivate {
       }*/
       return true;
     }
+    if (state.url === '/profile') {
+      return false;
+    }
     return true;
   }
 }

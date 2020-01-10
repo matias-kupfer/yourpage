@@ -9,13 +9,13 @@ import {AngularFireAuth} from '@angular/fire/auth';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthService, private afAuth: AngularFireAuth) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
 
   public loginWithGoogle() {
-    this.authService.signInWithGoogle();
+    this.authService.googleAuth();
   }
 
 }

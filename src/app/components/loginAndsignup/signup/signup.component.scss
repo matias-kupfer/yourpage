@@ -1,5 +1,6 @@
 @import "../../../style/variables";
-div {
+@import "../../../style/global";
+div.outter {
   background-color: #303030;
   width: 100%;
   min-height: 100%;

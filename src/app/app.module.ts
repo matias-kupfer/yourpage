@@ -34,6 +34,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatMenuModule} from '@angular/material/menu';
 import { SignupComponent } from './components/loginAndsignup/signup/signup.component';
+import { UserComponent } from './components/user/user.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { SignupComponent } from './components/loginAndsignup/signup/signup.compo
     ProfileComponent,
     NavbarComponent,
     EditProfileComponent,
-    SignupComponent
+    SignupComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

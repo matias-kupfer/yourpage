@@ -15,7 +15,7 @@ import {isEmpty} from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   title = 'yourpage | By: Matias Kupfer';
-  localStorageUser: any = JSON.parse(localStorage.getItem('user'));
+  localStorageUser: User = JSON.parse(localStorage.getItem('user'));
 
   constructor(
     private authService: AuthService,
@@ -24,7 +24,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('init app')
     if (this.localStorageUser) {
+      console.log('init if')
       this.firestoreService.getUserById(this.localStorageUser.personalInfo.userId)
         .onSnapshot(doc => {
           if (doc.data()) {

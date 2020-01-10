@@ -14,41 +14,23 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  localStorageUser: User = JSON.parse(localStorage.getItem('user')) as User;
   userData: User = null;
-  isProfileOwner = false;
-  isSetUp: boolean = null;
-  public userName = this.route.snapshot.paramMap.get('userName');
 
   constructor(
     private authService: AuthService,
     private firestoreService: FirestoreService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private route: ActivatedRoute) {
+    private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
-    // if it's user's profile
-    if (this.localStorageUser && this.localStorageUser.accountInfo.userName === this.userName) {
-      this.firestoreService.getUserById(this.localStorageUser.personalInfo.userId)
-        .onSnapshot(doc => {
-          if (doc.data()) {
-            const updatedUser: User = doc.data() as User;
-            this.userData = updatedUser;
-            this.isSetUp = updatedUser.personalInfo.setUp;
-            this.isProfileOwner = true;
-          }
-        });
-    } else { // visitor. NOT profile owner
-      this.firestoreService.getUserByUserName(this.userName)
-        .onSnapshot((doc) => {
-          if (doc.docs[0].data()) {
-            const updatedUser: User = doc.docs[0].data();
-            this.userData = updatedUser;
-          }
-        });
-    }
+    const userId: User = JSON.parse(localStorage.getItem('user'));
+    this.authService.getUserById(userId.personalInfo.userId).get().then(doc => {
+      if (doc.data()) {
+        this.userData = doc.data();
+        this.authService.saveUserData(doc.data());
+      }
+    });
   }
 
   public newUserData() {
