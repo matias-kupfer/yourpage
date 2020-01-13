@@ -2,7 +2,10 @@
   <button mat-button [routerLink]="'home'" routerLinkActive="active">
     <span>Home</span>
   </button>
-  <button mat-button *ngIf="this.authService.isLoggedIn && userData !== null" routerLinkActive="active"
+  <button mat-button [routerLink]="'users'" routerLinkActive="active">
+    <span>Users</span>
+  </button>
+  <button mat-button *ngIf="this.authService.isLoggedIn" routerLinkActive="active"
           [routerLink]="onProfileButtonClick">
     <span>Profile</span>
   </button>

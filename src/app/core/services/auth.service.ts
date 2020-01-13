@@ -3,10 +3,9 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import {DefaultRoutes} from '../../enums/default.routes';
 import {Router} from '@angular/router';
-import {AngularFirestore, AngularFirestoreDocument, DocumentSnapshot} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreDocument, DocumentData, DocumentSnapshot} from '@angular/fire/firestore';
 import {User} from '../../interfaces/user';
-import DocumentReference = firebase.firestore.DocumentReference;
-import {Observable} from 'rxjs';
+import {SnackbarService} from './snackbar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +13,13 @@ import {Observable} from 'rxjs';
 export class AuthService {
   public db = firebase.firestore();
   public userData: User = JSON.parse(localStorage.getItem('user'));
-  public updatedUserData: DocumentReference<any>;
 
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone,
+    private notificationService: SnackbarService
   ) {
   }
 
@@ -29,6 +28,7 @@ export class AuthService {
   }
 
   public authLogin(provider, newUserData?: User) {
+
     return this.afAuth.auth.signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
@@ -42,6 +42,7 @@ export class AuthService {
         } else { // user log in
           const userId: User = {personalInfo: {userId: result.user.uid}} as User; // look this up in future
           this.saveUserData(userId);
+          this.notificationService.notification$.next({message: 'Logged in', button: null});
           /*this.getUserById(result.user.uid)
             .subscribe(res => {
               console.log(res.data());
@@ -81,14 +82,14 @@ export class AuthService {
     // @todo here you control the error message
     console.error('error', error);
     window.alert(error.error);
-  };
+  }
 
   public get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return user !== null;
   }
 
-  public getUserById(userId: string = this.userData.personalInfo.userId): DocumentReference<any> {
+  public getUserById(userId: string = this.userData.personalInfo.userId): DocumentData {
     return this.db.collection('users').doc(userId);
   }
 

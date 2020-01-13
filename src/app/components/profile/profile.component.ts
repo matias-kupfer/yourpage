@@ -6,6 +6,7 @@ import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {User} from '../../interfaces/user';
 import {FirestoreService} from '../../core/services/firestore.service';
 import {ActivatedRoute} from '@angular/router';
+import {SnackbarService} from '../../core/services/snackbar.service';
 
 
 @Component({
@@ -15,26 +16,47 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
   userData: User = null;
+  public userName = this.route.snapshot.paramMap.get('userName');
 
   constructor(
     private authService: AuthService,
     private firestoreService: FirestoreService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private notificationService: SnackbarService) {
   }
 
   ngOnInit() {
+    if (this.userName) {
+      this.getUserByUsername();
+    } else {
+      this.getUserById();
+    }
+  }
+
+  public getUserById() {
     const userId: User = JSON.parse(localStorage.getItem('user'));
-    this.authService.getUserById(userId.personalInfo.userId).get().then(doc => {
+    this.authService.getUserById(userId.personalInfo.userId).onSnapshot((doc) => {
+      this.userData = doc.data();
+      this.authService.saveUserData(doc.data());
+    });
+    /*this.authService.getUserById(userId.personalInfo.userId).get().then(doc => {
       if (doc.data()) {
         this.userData = doc.data();
         this.authService.saveUserData(doc.data());
       }
-    });
+    });*/
   }
 
-  public newUserData() {
-    // move here getter
+  public getUserByUsername() {
+    this.firestoreService.getUserByUserName(this.userName)
+      .onSnapshot((doc) => {
+        if (doc.docs[0]) {
+          const updatedUser: User = doc.docs[0].data();
+          this.userData = updatedUser;
+        }
+      });
   }
 
   public editProfile() {
@@ -66,14 +88,14 @@ export class ProfileComponent implements OnInit {
         this.snackBar.open('Changes saved', 'Dismiss', {
           duration: 4000,
         });
-        this.newUserData();
+        this.getUserById();
       }, (error) => {
         console.error(error);
         this.snackBar.open('Error', 'Dismiss', {
           duration: 4000,
         });
       });
-    // @todo use response for snackbar message
+    //
   }
 
   // @todo loader while profile loads

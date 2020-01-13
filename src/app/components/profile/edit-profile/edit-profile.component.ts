@@ -25,44 +25,47 @@ export class EditProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.personalForm = this.formBuilder.group({
-      name: [this.data.userData.personalInfo.name, [
+    this.personalForm = new FormGroup({
+      name: new FormControl({value: this.data.userData.personalInfo.name, disabled: true},
+        [
         Validators.minLength(2),
         Validators.maxLength(15),
         Validators.required,
         Validators.pattern('[A-zÀ-ÿ ]*'),
-      ]],
-      lastName: [this.data.userData.personalInfo.lastName, [
+      ]),
+      lastName: new FormControl({value: this.data.userData.personalInfo.lastName, disabled: true},
+        [
         Validators.minLength(2),
         Validators.maxLength(15),
         Validators.required,
         Validators.pattern('[A-zÀ-ÿ ]*'),
-      ]],
-      gender: [this.data.userData.personalInfo.gender, Validators.required],
-      birthday: [this.data.userData.personalInfo.birthday, Validators.required],
+      ]),
+      gender: new FormControl({value: this.data.userData.personalInfo.gender, disabled: true},
+        Validators.required),
+      birthday: new FormControl({value: this.data.userData.personalInfo.birthday, disabled: true}, Validators.required),
     });
 
-    this.accountForm = this.formBuilder.group({
-      userName: [this.data.userData.accountInfo.userName,
+    this.accountForm = new FormGroup({
+      userName: new FormControl({value: this.data.userData.accountInfo.userName, disabled: true},
         [Validators.required,
           Validators.minLength(4),
           Validators.maxLength(20),
           Validators.pattern('^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+$')],
         CustomValidator.userName(this.afs),
-      ],
-      country: [this.data.userData.accountInfo.country, Validators.required],
-      bio: [this.data.userData.accountInfo.bio, [
+      ),
+      country: new FormControl(this.data.userData.accountInfo.country, Validators.required),
+      bio: new FormControl(this.data.userData.accountInfo.bio, [
         Validators.required,
         Validators.maxLength(200)
-      ]],
+      ]),
     });
-    this.isSetUp = this.data.userData.personalInfo.setUp;
+    /*this.isSetUp = this.data.userData.personalInfo.setUp;
     if (this.isSetUp) {
       this.name.disable();
       this.lastName.disable();
       this.gender.disable();
       this.birthday.disable();
-    }
+    }*/
   }
 
   get name() {

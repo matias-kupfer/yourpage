@@ -21,11 +21,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.firestoreService.getUserById('NyATHV5khjZVLiQcdgJ9Yv61Vl22')
+    /*this.firestoreService.getUserById('NyATHV5khjZVLiQcdgJ9Yv61Vl22')
       .onSnapshot(doc => {
         if (doc.data()) {
           this.homeData = doc.data() as User;
         }
-      });
+      });*/
   }
 }

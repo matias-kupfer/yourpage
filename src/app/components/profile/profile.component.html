@@ -11,5 +11,5 @@
 
 
   <!--setup, just edit profile button-->
-  <button mat-raised-button *ngIf="isProfileOwner" (click)="editProfile()" color="accent">Edit profile</button>
+  <button mat-raised-button *ngIf="!userName" (click)="editProfile()" color="accent">Edit profile</button>
 </div>

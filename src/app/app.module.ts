@@ -17,7 +17,7 @@ import { LoginComponent } from './components/loginAndsignup/login/login.componen
 import {AuthenticationGuard} from './core/guards/auth.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { NavbarComponent } from './core/menu/navbar/navbar.component';
+import { NavbarComponent } from './core/utilities/navbar/navbar.component';
 
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -50,7 +50,7 @@ import { UserComponent } from './components/user/user.component';
     NavbarComponent,
     EditProfileComponent,
     SignupComponent,
-    UserComponent
+    UserComponent,
   ],
   imports: [
     BrowserModule,

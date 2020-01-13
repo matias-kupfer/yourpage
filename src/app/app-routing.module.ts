@@ -15,7 +15,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [AuthenticationGuard]},
   {path: 'signup', component: SignupComponent, canActivate: [AuthenticationGuard]},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard]},
-  // {path: 'u/:userName', component: ProfileComponent, canActivate: [AuthenticationGuard]},
+  {path: 'u/:userName', component: ProfileComponent, canActivate: [AuthenticationGuard]},
 
   {path: '**', redirectTo: '/not-found', pathMatch: 'full'},
   {path: 'not-found', component: NotFoundComponent},
