@@ -4,6 +4,8 @@ import {FirestoreService} from './core/services/firestore.service';
 import {User} from './interfaces/user';
 import {SnackbarService} from './core/services/snackbar.service';
 import {MatSnackBar} from '@angular/material';
+import {Router, RouterLink} from '@angular/router';
+import {SnackbarData} from './interfaces/snackbarData';
 
 @Component({
   selector: 'app-root',
@@ -18,12 +20,15 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private firestoreService: FirestoreService,
     private notificationService: SnackbarService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {
-    this.notificationService.notification$.subscribe(snackbar => {
-      this.snackBar.open(snackbar.message, snackbar.button, {
+    this.notificationService.notification$.subscribe((snackbarData: SnackbarData) => {
+      this.snackBar.open(snackbarData.message, 'snackbarData.button', {
         duration: 4000,
-      });
+      })/*.afterDismissed().subscribe(() => {
+        this.router.navigate([snackbarData.action]);
+      });*/
     });
   }
 

@@ -39,15 +39,22 @@ export class AuthService {
           const finalUser = this.createUserDataFromFirebase(result.user, newUserData);
           this.saveUserDataToFirebase(finalUser);
           this.saveUserData(finalUser);
-        } else { // user log in
+          this.notificationService.notification$.next({message: 'Registered', button: null});
+        } else if (!result.additionalUserInfo.isNewUser && !newUserData) { // user log in
           const userId: User = {personalInfo: {userId: result.user.uid}} as User; // look this up in future
           this.saveUserData(userId);
-          this.notificationService.notification$.next({message: 'Logged in', button: null});
+          this.notificationService.notification$.next({message: 'Logged in', button: 'Dismiss'});
           /*this.getUserById(result.user.uid)
             .subscribe(res => {
               console.log(res.data());
               this.saveUserData(res.data() as User)
             });*/
+        } else if (result.additionalUserInfo.isNewUser && !newUserData) { // not working
+          this.notificationService.notification$.next(
+            {message: 'The user is not registered', button: 'Dismiss'});
+        } else if (!result.additionalUserInfo.isNewUser && newUserData) {
+          this.notificationService.notification$.next(
+            {message: 'User alredy registered.', button: 'Login', action: '/login'});
         }
 
       }).catch(this.showError);

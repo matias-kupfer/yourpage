@@ -28,6 +28,7 @@ export class AuthenticationGuard implements CanActivate {
       return true;
     }
     if (state.url === '/profile') {
+      this.router.navigate([DefaultRoutes.OnLoginButtonClick]);
       return false;
     }
     return true;

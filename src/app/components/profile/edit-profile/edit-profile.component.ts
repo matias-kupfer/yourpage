@@ -128,12 +128,14 @@ export class CustomValidator {
   static userName(afs: AngularFirestore) {
     return (control: AbstractControl) => {
       const username = control.value.toLowerCase();
-      return afs.collection('users', ref => ref.where('userName', '==', username))
+      return afs.collection('users', ref => ref.where('accountInfo.userName', '==', username))
         .valueChanges().pipe(
-          debounceTime(10), // make sure user stopped writing
+          debounceTime(100), // make sure user stopped writing
           take(1),
           map(arr => arr.length ? {usernameAvailable: false} : null),
         );
     };
   }
+
+  // @ todo VALIDATOR FIRESTORE PATH NOT GOOD. ACCOUNTINFO/USERNAME
 }
