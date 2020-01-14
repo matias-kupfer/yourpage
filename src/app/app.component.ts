@@ -24,11 +24,13 @@ export class AppComponent implements OnInit {
     private router: Router
   ) {
     this.notificationService.notification$.subscribe((snackbarData: SnackbarData) => {
-      this.snackBar.open(snackbarData.message, 'snackbarData.button', {
+      this.snackBar.open(snackbarData.message, snackbarData.button, {
         duration: 4000,
-      })/*.afterDismissed().subscribe(() => {
-        this.router.navigate([snackbarData.action]);
-      });*/
+      }).afterDismissed().subscribe(() => {
+        if (snackbarData.action) {
+          this.router.navigate([snackbarData.action]);
+        }
+      });
     });
   }
 

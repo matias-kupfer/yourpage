@@ -6,12 +6,14 @@ import {Router} from '@angular/router';
 import {AngularFirestore, AngularFirestoreDocument, DocumentData, DocumentSnapshot} from '@angular/fire/firestore';
 import {User} from '../../interfaces/user';
 import {SnackbarService} from './snackbar.service';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   public db = firebase.firestore();
+  public user$: Subject<User> = new Subject();
   public userData: User = JSON.parse(localStorage.getItem('user'));
 
   constructor(
@@ -21,6 +23,9 @@ export class AuthService {
     public ngZone: NgZone,
     private notificationService: SnackbarService
   ) {
+    if (this.isLoggedIn) {
+      this.userDataSubscription(this.userData.personalInfo.userId);
+    }
   }
 
   public googleAuth(newUserData?: User) {
@@ -28,36 +33,39 @@ export class AuthService {
   }
 
   public authLogin(provider, newUserData?: User) {
-
     return this.afAuth.auth.signInWithPopup(provider)
       .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate([DefaultRoutes.OnLogin]);
-        });
+         this.ngZone.run(() => {
+           this.router.navigate([DefaultRoutes.OnLogin]);
+         });
 
         if (result.additionalUserInfo.isNewUser && newUserData) { // user sign up
           const finalUser = this.createUserDataFromFirebase(result.user, newUserData);
           this.saveUserDataToFirebase(finalUser);
           this.saveUserData(finalUser);
-          this.notificationService.notification$.next({message: 'Registered', button: null});
+          this.notificationService.notification$.next({message: 'Registered'});
         } else if (!result.additionalUserInfo.isNewUser && !newUserData) { // user log in
+          this.notificationService.notification$.next({message: 'Logged in'});
           const userId: User = {personalInfo: {userId: result.user.uid}} as User; // look this up in future
           this.saveUserData(userId);
-          this.notificationService.notification$.next({message: 'Logged in', button: 'Dismiss'});
-          /*this.getUserById(result.user.uid)
-            .subscribe(res => {
-              console.log(res.data());
-              this.saveUserData(res.data() as User)
-            });*/
+          this.userDataSubscription(result.user.uid);
         } else if (result.additionalUserInfo.isNewUser && !newUserData) { // not working
           this.notificationService.notification$.next(
-            {message: 'The user is not registered', button: 'Dismiss'});
+            {message: 'The user is not registered'});
         } else if (!result.additionalUserInfo.isNewUser && newUserData) {
           this.notificationService.notification$.next(
-            {message: 'User alredy registered.', button: 'Login', action: '/login'});
+            {message: 'User alredy registered.'});
         }
 
       }).catch(this.showError);
+  }
+
+  public userDataSubscription(userId: string){
+    this.getUserById(userId)
+      .onSnapshot(res => {
+        this.user$.next(res.data());
+        this.saveUserData(res.data());
+      });
   }
 
   public saveUserDataToFirebase(user: User) {
@@ -88,8 +96,7 @@ export class AuthService {
   private showError = (error) => {
     // @todo here you control the error message
     console.error('error', error);
-    window.alert(error.error);
-  }
+  };
 
   public get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));

@@ -30,6 +30,4 @@ export class FirestoreService {
     return this.db.collection('users')
       .where('accountInfo.userName', '==', userName).limit(1);
   }
-
-
 }

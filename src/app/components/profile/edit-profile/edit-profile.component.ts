@@ -5,6 +5,7 @@ import {map, take, debounceTime} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {countryList} from '../../../enums/countries.enum';
 import {User} from '../../../interfaces/user';
+import {CustomValidator} from '../../loginAndsignup/signup/signup.component';
 
 @Component({
   selector: 'app-edit-profile',
@@ -28,18 +29,18 @@ export class EditProfileComponent implements OnInit {
     this.personalForm = new FormGroup({
       name: new FormControl({value: this.data.userData.personalInfo.name, disabled: true},
         [
-        Validators.minLength(2),
-        Validators.maxLength(15),
-        Validators.required,
-        Validators.pattern('[A-zÀ-ÿ ]*'),
-      ]),
+          Validators.minLength(2),
+          Validators.maxLength(15),
+          Validators.required,
+          Validators.pattern('[A-zÀ-ÿ ]*'),
+        ]),
       lastName: new FormControl({value: this.data.userData.personalInfo.lastName, disabled: true},
         [
-        Validators.minLength(2),
-        Validators.maxLength(15),
-        Validators.required,
-        Validators.pattern('[A-zÀ-ÿ ]*'),
-      ]),
+          Validators.minLength(2),
+          Validators.maxLength(15),
+          Validators.required,
+          Validators.pattern('[A-zÀ-ÿ ]*'),
+        ]),
       gender: new FormControl({value: this.data.userData.personalInfo.gender, disabled: true},
         Validators.required),
       birthday: new FormControl({value: this.data.userData.personalInfo.birthday, disabled: true}, Validators.required),
@@ -121,21 +122,4 @@ export class EditProfileComponent implements OnInit {
   public onNoClick() {
     this.dialogRef.close();
   }
-
-}
-
-export class CustomValidator {
-  static userName(afs: AngularFirestore) {
-    return (control: AbstractControl) => {
-      const username = control.value.toLowerCase();
-      return afs.collection('users', ref => ref.where('accountInfo.userName', '==', username))
-        .valueChanges().pipe(
-          debounceTime(100), // make sure user stopped writing
-          take(1),
-          map(arr => arr.length ? {usernameAvailable: false} : null),
-        );
-    };
-  }
-
-  // @ todo VALIDATOR FIRESTORE PATH NOT GOOD. ACCOUNTINFO/USERNAME
 }
