@@ -6,23 +6,26 @@ import {Router} from '@angular/router';
 import {AngularFirestore, AngularFirestoreDocument, DocumentData, DocumentSnapshot} from '@angular/fire/firestore';
 import {User} from '../../interfaces/user';
 import {SnackbarService} from './snackbar.service';
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
+import {NotifierService} from 'angular-notifier';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   public db = firebase.firestore();
-  public user$: Subject<User> = new Subject();
+  public user$: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   public userData: User = JSON.parse(localStorage.getItem('user'));
+  private notifier: NotifierService;
 
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone,
-    private notificationService: SnackbarService
+    notifier: NotifierService
   ) {
+    this.notifier = notifier;
     if (this.isLoggedIn) {
       this.userDataSubscription(this.userData.personalInfo.userId);
     }
@@ -35,32 +38,34 @@ export class AuthService {
   public authLogin(provider, newUserData?: User) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((result) => {
-         this.ngZone.run(() => {
-           this.router.navigate([DefaultRoutes.OnLogin]);
-         });
+        this.ngZone.run(() => {
+          this.router.navigate([DefaultRoutes.OnLogin]);
+        });
 
         if (result.additionalUserInfo.isNewUser && newUserData) { // user sign up
           const finalUser = this.createUserDataFromFirebase(result.user, newUserData);
+          this.notifier.notify('default', 'Successfully registered as ' + result.user.email);
           this.saveUserDataToFirebase(finalUser);
-          this.saveUserData(finalUser);
-          this.notificationService.notification$.next({message: 'Registered'});
+          const userId: User = {personalInfo: {userId: result.user.uid}} as User; // look this up in future
+          this.saveUserData(userId);
+          this.userDataSubscription(result.user.uid);
         } else if (!result.additionalUserInfo.isNewUser && !newUserData) { // user log in
-          this.notificationService.notification$.next({message: 'Logged in'});
+          this.notifier.notify('default', 'Logged in as ' + result.user.email);
           const userId: User = {personalInfo: {userId: result.user.uid}} as User; // look this up in future
           this.saveUserData(userId);
           this.userDataSubscription(result.user.uid);
         } else if (result.additionalUserInfo.isNewUser && !newUserData) { // not working
-          this.notificationService.notification$.next(
-            {message: 'The user is not registered'});
+          /*this.notificationService.notification$.next(
+            {message: 'The user is not registered'});*/
         } else if (!result.additionalUserInfo.isNewUser && newUserData) {
-          this.notificationService.notification$.next(
-            {message: 'User alredy registered.'});
+          /*this.notificationService.notification$.next(
+            {message: 'User alredy registered.'});*/
         }
 
       }).catch(this.showError);
   }
 
-  public userDataSubscription(userId: string){
+  public userDataSubscription(userId: string) {
     this.getUserById(userId)
       .onSnapshot(res => {
         this.user$.next(res.data());
@@ -86,21 +91,17 @@ export class AuthService {
   }
 
   public saveUserData(user: User) {
-    // save in Property of AuthService
-    this.userData = user;
-
-    // save in local storage so it's still available when we reload, open new tab, come next day...
     localStorage.setItem('user', JSON.stringify(user));
   }
 
   private showError = (error) => {
     // @todo here you control the error message
     console.error('error', error);
-  };
+  }
 
   public get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user !== null;
+    const user: User = JSON.parse(localStorage.getItem('user'));
+    return !!user;
   }
 
   public getUserById(userId: string = this.userData.personalInfo.userId): DocumentData {

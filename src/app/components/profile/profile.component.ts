@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../core/services/auth.service';
-import {MatDialog} from '@angular/material';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {User} from '../../interfaces/user';
 import {FirestoreService} from '../../core/services/firestore.service';
 import {ActivatedRoute} from '@angular/router';
 import {SnackbarService} from '../../core/services/snackbar.service';
-import {Subject} from 'rxjs';
+import {NotifierService} from 'angular-notifier';
+import {Subject, Subscription} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 
 @Component({
@@ -18,25 +18,32 @@ import {Subject} from 'rxjs';
 export class ProfileComponent implements OnInit {
   userData: User = null;
   public userName = this.route.snapshot.paramMap.get('userName');
+  private notifier: NotifierService;
+
 
   constructor(
     private authService: AuthService,
     private firestoreService: FirestoreService,
-    public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    private notificationService: SnackbarService) {
+    private notificationService: SnackbarService,
+    notifier: NotifierService) {
+    this.notifier = notifier;
   }
 
   ngOnInit() {
     if (this.userName) {
       this.getUserByUsername();
     } else {
-      this.authService.user$.subscribe((doc) => {
-        this.userData = doc;
-        console.log(doc);
-      });
+      this.userDataSubscription();
     }
+  }
+
+  userDataSubscription() {
+    this.authService.user$
+      .subscribe((doc) => {
+      this.userData = doc;
+    });
   }
 
   public getUserByUsername() {

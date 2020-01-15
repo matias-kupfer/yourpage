@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     private firestoreService: FirestoreService,
     private notificationService: SnackbarService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
   ) {
     this.notificationService.notification$.subscribe((snackbarData: SnackbarData) => {
       this.snackBar.open(snackbarData.message, snackbarData.button, {
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.localStorageUser) {
+    /*if (this.localStorageUser) {
       this.firestoreService.getUserById(this.localStorageUser.personalInfo.userId)
         .onSnapshot(doc => {
           if (doc.data()) {
@@ -43,6 +43,6 @@ export class AppComponent implements OnInit {
             this.authService.saveUserData(updatedUser);
           }
         });
-    }
+    }*/
   }
 }
