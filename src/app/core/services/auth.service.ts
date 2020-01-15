@@ -5,7 +5,6 @@ import {DefaultRoutes} from '../../enums/default.routes';
 import {Router} from '@angular/router';
 import {AngularFirestore, AngularFirestoreDocument, DocumentData, DocumentSnapshot} from '@angular/fire/firestore';
 import {User} from '../../interfaces/user';
-import {SnackbarService} from './snackbar.service';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {NotifierService} from 'angular-notifier';
 

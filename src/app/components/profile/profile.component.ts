@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../core/services/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {User} from '../../interfaces/user';
@@ -27,7 +27,8 @@ export class ProfileComponent implements OnInit {
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private notificationService: SnackbarService,
-    notifier: NotifierService) {
+    notifier: NotifierService,
+    private ngZone: NgZone) {
     this.notifier = notifier;
   }
 
@@ -42,8 +43,10 @@ export class ProfileComponent implements OnInit {
   userDataSubscription() {
     this.authService.user$
       .subscribe((doc) => {
-      this.userData = doc;
-    });
+        this.ngZone.run(() => {
+          this.userData = doc;
+        });
+      });
   }
 
   public getUserByUsername() {
