@@ -1,4 +1,4 @@
-<div class="outter" *ngIf="userData !== null">
+<div class="outter" *ngIf="userData !== null; else loader">
   <div class="header">
     <div>
       <img [src]="userData.accountInfo.imageUrl">
@@ -9,7 +9,10 @@
   <br>
 
 
-
   <!--setup, just edit profile button-->
   <button mat-raised-button *ngIf="!userName" color="accent">Edit profile</button>
 </div>
+
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

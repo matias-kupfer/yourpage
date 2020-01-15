@@ -96,7 +96,7 @@ export class AuthService {
   private showError = (error) => {
     // @todo here you control the error message
     console.error('error', error);
-  }
+  };
 
   public get isLoggedIn(): boolean {
     const user: User = JSON.parse(localStorage.getItem('user'));
@@ -109,6 +109,7 @@ export class AuthService {
 
   public onLogout() {
     return this.afAuth.auth.signOut().then(() => {
+      this.notifier.notify('default', 'Successfully logged out');
       localStorage.clear();
       this.router.navigate([DefaultRoutes.OnLogOut]);
     });

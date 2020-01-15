@@ -18,6 +18,7 @@ import {AuthenticationGuard} from './core/guards/auth.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { NavbarComponent } from './core/utilities/navbar/navbar.component';
+import {SignupComponent } from './components/loginAndsignup/signup/signup.component';
 
 import {NotifierModule, NotifierOptions} from 'angular-notifier';
 
@@ -35,8 +36,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatMenuModule} from '@angular/material/menu';
-import {SignupComponent } from './components/loginAndsignup/signup/signup.component';
-import { UserComponent } from './components/user/user.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { LoaderComponent } from './components/loader/loader.component';
 
 
 @NgModule({
@@ -52,7 +53,7 @@ import { UserComponent } from './components/user/user.component';
     NavbarComponent,
     EditProfileComponent,
     SignupComponent,
-    UserComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,7 +79,8 @@ import { UserComponent } from './components/user/user.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSnackBarModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     AuthenticationGuard,
