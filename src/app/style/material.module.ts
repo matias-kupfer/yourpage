@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+/*import {NgModule} from '@angular/core';
 
 import {
   MatSidenavModule,
@@ -21,4 +21,4 @@ import {
     MatListModule,
   ]
 })
-export class MaterialModule {}
+export class MaterialModule {}*/

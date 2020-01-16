@@ -1,13 +1,13 @@
 @import "app/style/variables";
 @import "~angular-notifier/styles.css";
-
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 html, body {
   height: 100%;
 }
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 mat-toolbar {

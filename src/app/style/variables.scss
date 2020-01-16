@@ -1,12 +1,9 @@
-@import '~@angular/material/theming';
+@import '../../../node_modules/@angular/material/theming';
 @include mat-core();
-// angular prebuilt
-$primary: mat-palette($mat-deep-purple);
-$accent:  mat-palette($mat-pink);
-$warn:    mat-palette($mat-red);
-
 // own
-$gradient: linear-gradient(90deg, rgba(47,134,116,1) 68%, rgba(29,121,102,1) 100%);
+$gradient: red;
 $darkGray: #202124;
 $lightGray: #5f6368;
 $white: white;
+
+$primary: map-get($mat-gray, 900);
