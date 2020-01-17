@@ -7,6 +7,7 @@ div.outter {
   div.header {
     margin: auto;
     text-align: center;
+    background-color: rebeccapurple;
 
     div {
       padding: 3% 5% 1%;
@@ -16,7 +17,7 @@ div.outter {
       width: 100px;
       height: auto;
       border-radius: 50%;
-      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5)
+      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
     }
 
     h1 {
