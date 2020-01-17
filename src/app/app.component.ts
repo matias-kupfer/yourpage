@@ -4,13 +4,17 @@ import {FirestoreService} from './core/services/firestore.service';
 import {User} from './interfaces/user';
 import {SnackbarService} from './core/services/snackbar.service';
 import {MatSnackBar} from '@angular/material';
-import {Router, RouterLink} from '@angular/router';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import {SnackbarData} from './interfaces/snackbarData';
+import {fadeAnimation} from './interfaces/routeAnimation';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    fadeAnimation
+  ]
 })
 export class AppComponent implements OnInit {
   title = 'yourpage | By: Matias Kupfer';
@@ -44,5 +48,8 @@ export class AppComponent implements OnInit {
           }
         });
     }*/
+  }
+  public getRouterOutletState(outlet) {
+    return outlet.isActivated ? outlet.activatedRoute : '';
   }
 }
