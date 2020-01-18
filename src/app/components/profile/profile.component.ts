@@ -20,7 +20,6 @@ export class ProfileComponent implements OnInit {
   public userName = this.route.snapshot.paramMap.get('userName');
   private notifier: NotifierService;
 
-
   constructor(
     private authService: AuthService,
     private firestoreService: FirestoreService,

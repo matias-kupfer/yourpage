@@ -13,7 +13,7 @@
   <span class="spacer"></span>
   <button *ngIf="this.authService.isLoggedIn; else showLoginButton" (click)="onLogout()" mat-button>
     <mat-icon>power_settings_new</mat-icon>
-    Logout
+    <span>Logout</span>
   </button>
   <ng-template #showLoginButton>
     <button mat-button [routerLink]="onLoginButtonClick" routerLinkActive="active">

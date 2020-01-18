@@ -4,40 +4,107 @@ div.outter {
   color: $darkGray;
 
   div.header {
-    text-align: center;
-    background-color: rebeccapurple;
+    width: 1000px;
+    margin: 2% auto;
+    overflow: hidden;
 
-    div {
-      padding: 3% 5% 1%;
+    div.float-left {
+      padding: 1% 0;
+      float: left;
+      text-align: center;
+      width: 30%;
+
+      img {
+        width: 150px;
+        height: 150px;
+      }
+
+      p {
+        margin: 10px;
+        font-size: 1.5em;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      div.social-div {
+
+        img {
+          width: 35px;
+          height: 35px;
+          margin: 7px;
+          transition: 0.2s;
+
+          &:hover {
+            transform: scale(1.2);
+          }
+        }
+      }
     }
 
-    img {
-      width: 100px;
-      height: auto;
-      border-radius: 50%;
-      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    div.float-right {
+      float: right;
+      width: 70%;
+
+      div.right-content {
+        margin-right: 20px;
+
+        h1 {
+          font-size: 2.5em;
+          font-weight: 800;
+          display: inline-block;
+          vertical-align: middle;
+          margin: 15px 30px 15px 0;
+        }
+
+        p {
+          margin-top: 0;
+          font-size: 1em;
+        }
+
+        div.additional-info {
+          display: block;
+          text-align: center;
+          margin: auto;
+
+          div {
+            margin: 0 15px;
+            display: inline-block;
+          }
+
+          mat-icon {
+            vertical-align: middle;
+            margin-right: 10px;
+          }
+        }
+
+        hr.hr {
+          width: 170px;
+          height: 10px;
+          background-color: $accent;
+          border-radius: 12px;
+          box-shadow: none;
+          margin: 15px auto;
+        }
+
+        div.statistics {
+          display: block;
+          margin: auto;
+          text-align: center;
+
+          span {
+            margin: 0 20px;
+            font-size: 1.5em;
+          }
+        }
+      }
     }
 
-    h1 {
-      margin: 20px;
-      font-size: 1.8em;
-      font-weight: normal;
-    }
   }
 
-  div.suggestion {
-    text-align: center;
-    margin: 50px auto;
-    padding: 0;
-
-    img {
-      width: 100px;
-      height: auto;
-    }
-  }
 
 }
-app-loader{
+
+app-loader {
   position: fixed;
   z-index: 999;
   height: 2em;

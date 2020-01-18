@@ -3,16 +3,12 @@ import {
   transition,
   style,
   query,
-  group,
-  animateChild,
   animate,
-  keyframes,
 } from '@angular/animations';
 
 export const fadeAnimation =
   trigger('fadeAnimation', [
     transition('* <=> *', [
-      // query('@inner', [animateChild()], {optional: true}),
       // Set a default  style for enter and leave
       query(':enter, :leave', [
         style({
@@ -29,5 +25,3 @@ export const fadeAnimation =
       ], {optional: true})
     ]),
   ]);
-// query('@inner', [animateChild()], {optional: true}),
-// {optional: true}

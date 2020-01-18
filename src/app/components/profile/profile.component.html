@@ -1,17 +1,58 @@
 <div class="outter" *ngIf="userData !== null; else loader">
   <div class="header">
-    <div>
+
+    <div class="float-left">
       <img [src]="userData.accountInfo.imageUrl">
-      <h1>{{userData.personalInfo.name}} {{userData.personalInfo.lastName}}</h1>
+      <br>
+      <p>@{{userData.accountInfo.userName}}</p>
+      <div class="social-div">
+        <img src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Facebook_colored_svg_copy-128.png">
+        <img
+          src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Linkedin_unofficial_colored_svg-128.png">
+        <img src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Pinterest_colored_svg-128.png">
+        <img src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Twitter_colored_svg-128.png">
+        <img src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Instagram_colored_svg_1-128.png">
+        <img src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Youtube_colored_svg-128.png">
+      </div>
+    </div>
+    <div class="float-right">
+      <div class="right-content">
+        <h1>{{userData.personalInfo.name + ' ' + userData.personalInfo.lastName|uppercase}}</h1>
+        <button mat-raised-button color="accent">Follow</button>
+        <p>{{userData.accountInfo.bio}}</p>
+        <div class="additional-info">
+          <div>
+            <mat-icon>location_on</mat-icon>
+            <span>{{userData.accountInfo.country}}</span>
+          </div>
+          <div>
+            <mat-icon>cake</mat-icon>
+            <span>{{userData.accountInfo.registrationDate.seconds * 1000| date:'dd/MM/yyyy'}}</span>
+          </div>
+          <div>
+            <mat-icon>person</mat-icon>
+            <span>{{userData.personalInfo.gender}}</span>
+          </div>
+          <div>
+            <mat-icon>accessibility</mat-icon>
+            <span>{{userData.personalInfo.gender}}</span>
+          </div>
+        </div>
+        <hr class="hr">
+        <div class="statistics">
+          <span><b>{{userData.statisticsInfo.followers}}</b> followers</span>
+          <span><b>{{userData.statisticsInfo.following}}</b> following</span>
+          <span><b>{{userData.statisticsInfo.posts}}</b> posts</span>
+        </div>
+      </div>
     </div>
   </div>
 
+
   <br>
-
-
-  <!--setup, just edit profile button-->
-  <button mat-raised-button *ngIf="!userName" color="accent">Edit profile</button>
+  <p>Content</p>
 </div>
+
 
 <ng-template #loader>
   <app-loader></app-loader>
