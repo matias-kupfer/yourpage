@@ -1,8 +1,18 @@
+@import "../../../style/variables";
+
 mat-form-field {
-  margin-right: 30px;
-  margin-bottom: 5px;
+  width: 49%;
+  margin: 5px 0;
 }
 
-.width {
+.text-area {
   width: 100%;
+}
+
+div.social-div mat-form-field:nth-child(even) {
+  float: right;
+}
+
+h3 {
+  margin: 5px 0;
 }

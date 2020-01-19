@@ -96,7 +96,7 @@ export class AuthService {
   private showError = (error) => {
     // @todo here you control the error message
     console.error('error', error);
-  };
+  }
 
   public get isLoggedIn(): boolean {
     const user: User = JSON.parse(localStorage.getItem('user'));

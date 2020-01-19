@@ -13,6 +13,14 @@ export interface User {
     imageUrl: string;
     country: string;
     bio: string;
+    socialLinks: {
+      youtube: string;
+      facebook: string;
+      instagram: string;
+      github: string;
+      linkedin: string;
+      twitter: string;
+    };
   };
   statisticsInfo: {
     followers: number;

@@ -1,156 +1,81 @@
-<mat-vertical-stepper [linear]="true">
-  <mat-step [stepControl]="personalForm">
-    <form [formGroup]="personalForm">
-      <ng-template matStepLabel>Personal information</ng-template>
-      <mat-form-field>
-        <label>
-          <input matInput placeholder="First name" formControlName="name">
-        </label>
-        <mat-error *ngIf="name.errors && name.errors.minlength">
-          Name is too <strong>short.</strong>
-        </mat-error>
-        <mat-error *ngIf="name.errors && name.errors.required">
-          Name is <strong>required.</strong>
-        </mat-error>
-        <mat-error *ngIf="name.errors && name.errors.maxlength">
-          Name is too <strong>long.</strong>
-        </mat-error>
-        <mat-error *ngIf="name.errors && name.errors.pattern && !name.errors.minlength && !name.errors.maxlength">
-          {{name.value | slice:0:4}}... has <strong>invalid characters.</strong>
-        </mat-error>
-      </mat-form-field>
+<h1>Edit profile</h1>
+<h3>Biography</h3>
+<form [formGroup]="newData">
+  <mat-form-field class="text-area" color="accent">
+  <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" type="text" formControlName="bio"
+            placeholder="Write something about yourself">
+  </textarea>
+    <mat-hint align="start">
+      <mat-icon>lightbulb_outline</mat-icon>
+      Where are you from, what do you like...
+    </mat-hint>
+    <mat-hint align="end"
+              [ngStyle]="{'color': bio.value.length >= 200 ? 'red' : bio.value.length > 180 ? 'orange' : 'green' }">
+      {{bio.value.length}}/ 200
+    </mat-hint>
+    <mat-error *ngIf="bio.errors && bio.errors.maxlength">
+      The biography can't be longer than 200 characters <strong>long.</strong>
+    </mat-error>
+  </mat-form-field>
+  <br>
+  <br>
+  <h3>Social links</h3>
+  <div class="social-div">
+    <mat-form-field color="accent">
+      <input matInput type="text" placeholder="Facebook profile" formControlName="facebook">
+      <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="facebook" (click)="facebook.reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="facebook.errors && facebook.errors.pattern">Enter a valid URL</mat-error>
+    </mat-form-field>
 
-      <mat-form-field>
-        <label>
-          <input matInput placeholder="Last name" formControlName="lastName">
-        </label>
-        <mat-error *ngIf="lastName.errors && lastName.errors.minlength">
-          Last name is too <strong>short.</strong>
-        </mat-error>
-        <mat-error *ngIf="lastName.errors && lastName.errors.required">
-          Last name is <strong>required.</strong>
-        </mat-error>
-        <mat-error *ngIf="lastName.errors && lastName.errors.maxlength">
-          Last name is too <strong>long.</strong>
-        </mat-error>
-        <mat-error *ngIf="lastName.errors && lastName.errors.pattern
-        && !lastName.errors.minlength && !lastName.errors.maxlength">
-          {{lastName.value | slice:0:4}}... has <strong>invalid characters.</strong>
-        </mat-error>
-      </mat-form-field>
-      <br>
+    <mat-form-field color="accent">
+      <input matInput type="text" placeholder="Github profile" formControlName="github">
+      <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="github" (click)="github.reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="github.errors && github.errors.pattern">Enter a valid URL</mat-error>
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Gender</mat-label>
-        <mat-select formControlName="gender">
-          <mat-option value="male">Male</mat-option>
-          <mat-option value="female">Female</mat-option>
-          <mat-option value="undefined">Leave blank</mat-option>
-        </mat-select>
-        <mat-error *ngIf="gender.errors && gender.errors.required">
-          Gender is <strong>required.</strong>
-        </mat-error>
-      </mat-form-field>
+    <mat-form-field color="accent">
+      <input matInput type="text" placeholder="Twitter profile" formControlName="twitter">
+      <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="twitter" (click)="twitter.reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="twitter.errors && twitter.errors.pattern">Enter a valid URL</mat-error>
+    </mat-form-field>
 
-      <mat-form-field>
-        <label>
-          <input matInput [matDatepicker]="picker" formControlName="birthday" placeholder="Birthday">
-        </label>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="birthday.errors && birthday.errors.required">
-          Birthday is <strong>required.</strong>
-        </mat-error>
-      </mat-form-field>
-      <br>
-      <mat-hint align="end" *ngIf="this.isSetUp">
-        You can't change this information.
-      </mat-hint>
+    <mat-form-field color="accent">
+      <input matInput type="text" placeholder="Youtube profile" formControlName="youtube">
+      <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="youtube" (click)="youtube.reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="youtube.errors && youtube.errors.pattern">Enter a valid URL</mat-error>
+    </mat-form-field>
 
+    <mat-form-field color="accent">
+      <input matInput type="text" placeholder="Linkedin profile" formControlName="linkedin">
+      <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="linkedin" (click)="linkedin.reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="linkedin.errors && linkedin.errors.pattern">Enter a valid URL</mat-error>
+    </mat-form-field>
 
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
+    <mat-form-field color="accent">
+      <input matInput type="text" placeholder="Instagram profile" formControlName="instagram">
+      <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="instagram" (click)="instagram.reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="instagram.errors && instagram.errors.pattern">Enter a valid URL</mat-error>
+    </mat-form-field>
 
-
-
-  <mat-step [stepControl]="accountForm">
-    <form [formGroup]="accountForm">
-      <ng-template matStepLabel>Account</ng-template>
-      <mat-form-field>
-        <label>
-          <input matInput placeholder="Username" formControlName="userName">
-        </label>
-        <mat-error
-          *ngIf="userName.errors && userName.invalid && (userName.dirty || userName.touched)
-         && !userName.errors.required && !userName.errors.minlength
-         && !userName.errors.maxlength && !userName.errors.pattern"
-          class="alert alert-danger">
-          <b>{{userName.value}}</b> is taken.
-        </mat-error>
-        <mat-error *ngIf="userName.errors && userName.errors.required">
-          The username is <strong>required.</strong>
-        </mat-error>
-        <mat-error *ngIf="userName.errors && userName.errors.minlength">
-          The username is too <strong>short.</strong>
-        </mat-error>
-        <mat-error *ngIf="userName.errors && userName.errors.maxlength">
-          The username is too <strong>long.</strong>
-        </mat-error>
-        <mat-error *ngIf="userName.errors && userName.errors.pattern
-        && !userName.errors.minlength && !userName.errors.maxlength">
-          <strong>Invalid format.</strong>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Select your country</mat-label>
-        <mat-select formControlName="country">
-          <mat-option *ngFor="let country of countryList" [value]="country">
-            {{country}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="country.errors && country.errors.required">
-          Country is <strong>required.</strong>
-        </mat-error>
-      </mat-form-field>
-      <br>
-
-      <mat-form-field class="width">
-        <label>
-          <textarea matInput placeholder="Write something about yourself..." formControlName="bio"></textarea>
-        </label>
-        <mat-hint align="end">
-          <span [ngStyle]="{'color': bio.value.length > '200' ? 'red' : bio.value.length > 180 ? 'orange' : 'green' }"
-                *ngIf="bio.value; else zero">
-            {{bio.value.length}}
-          </span>
-          <ng-template #zero>0</ng-template>
-          / 200
-        </mat-hint>
-        <mat-error *ngIf="bio.errors && bio.errors.required">
-          biography is <strong>required.</strong>
-        </mat-error>
-      </mat-form-field>
-
-
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    You are all set up!
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="saveChanges()">Save</button>
-    </div>
-  </mat-step>
-</mat-vertical-stepper>
+  </div>
+</form>
 <div mat-dialog-actions>
-  <button mat-flat-button color="warn" (click)="onNoClick()">Cancel</button>
+  <button mat-button color="warn" (click)="onNoClick()">Cancel</button>
+  <button mat-button color="accent" [disabled]="!this.newData.valid" (click)="saveData()"
+          [mat-dialog-close]="userData.accountInfo.bio" cdkFocusInitial>
+    Save
+  </button>
 </div>
+

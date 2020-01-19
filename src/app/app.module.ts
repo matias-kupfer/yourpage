@@ -19,6 +19,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { NavbarComponent } from './core/utilities/navbar/navbar.component';
 import {SignupComponent } from './components/loginAndsignup/signup/signup.component';
+import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 
 import {NotifierModule, NotifierOptions} from 'angular-notifier';
 
@@ -30,8 +31,7 @@ import {MatDividerModule, MatInputModule, MatNativeDateModule} from '@angular/ma
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
-import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
@@ -39,11 +39,12 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LoaderComponent } from './components/loader/loader.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 @NgModule({
   entryComponents: [
-    EditProfileComponent,
+    EditProfileComponent
   ],
   declarations: [
     AppComponent,
@@ -52,9 +53,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     NotFoundComponent,
     ProfileComponent,
     NavbarComponent,
-    EditProfileComponent,
     SignupComponent,
     LoaderComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,7 +83,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatSnackBarModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatBadgeModule,
+    FormsModule
   ],
   providers: [
     AuthenticationGuard,

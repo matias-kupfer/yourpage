@@ -6,8 +6,8 @@ import {FirestoreService} from '../../core/services/firestore.service';
 import {ActivatedRoute} from '@angular/router';
 import {SnackbarService} from '../../core/services/snackbar.service';
 import {NotifierService} from 'angular-notifier';
-import {Subject, Subscription} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {MatDialog} from '@angular/material';
+import {EditProfileComponent} from './edit-profile/edit-profile.component';
 
 
 @Component({
@@ -18,6 +18,7 @@ import {takeUntil} from 'rxjs/operators';
 export class ProfileComponent implements OnInit {
   userData: User = null;
   public userName = this.route.snapshot.paramMap.get('userName');
+  public isUserProfile = true;
   private notifier: NotifierService;
 
   constructor(
@@ -27,12 +28,14 @@ export class ProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private notificationService: SnackbarService,
     notifier: NotifierService,
-    private ngZone: NgZone) {
+    private ngZone: NgZone,
+    public dialog: MatDialog) {
     this.notifier = notifier;
   }
 
   ngOnInit() {
     if (this.userName) {
+      this.isUserProfile = false;
       this.getUserByUsername();
     } else {
       this.userDataSubscription();
@@ -58,6 +61,34 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-  // @todo loader while profile loads
+  public editProfile() {
+    const dialogRef = this.dialog.open(EditProfileComponent, {
+      width: '700px',
+      data: this.userData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        this.snackBar.open('No changes were made', '', {
+          duration: 5000
+        });
+      } else {
+        this.snackBar.open('Profile updated successfuly!', '', {
+          duration: 5000
+        });
+        this.updateBioFirestore(result.bio);
+        this.updateSocialLinks(result.socialLinks);
+      }
+    });
+  }
+
+  public updateBioFirestore(newBio: string) {
+    this.firestoreService.updateBioFirestore(newBio);
+  }
+
+  public updateSocialLinks(newSocialLinks: any) {
+    this.firestoreService.updateSocialLinks(newSocialLinks);
+  }
+
   // @todo if firestore observable doesnt return, user doesnt exist, -> login page
 }

@@ -5,7 +5,7 @@ import {User} from './interfaces/user';
 import {SnackbarService} from './core/services/snackbar.service';
 import {MatSnackBar} from '@angular/material';
 import {Router, RouterLink, RouterOutlet} from '@angular/router';
-import {SnackbarData} from './interfaces/snackbarData';
+import {NotificationData} from './interfaces/notificationData';
 import {fadeAnimation} from './interfaces/routeAnimation';
 
 @Component({
@@ -27,12 +27,12 @@ export class AppComponent implements OnInit {
     private snackBar: MatSnackBar,
     private router: Router,
   ) {
-    this.notificationService.notification$.subscribe((snackbarData: SnackbarData) => {
-      this.snackBar.open(snackbarData.message, snackbarData.button, {
+    this.notificationService.notification$.subscribe((notificationData: NotificationData) => {
+      this.snackBar.open(notificationData.message, notificationData.button, {
         duration: 4000,
       }).afterDismissed().subscribe(() => {
-        if (snackbarData.action) {
-          this.router.navigate([snackbarData.action]);
+        if (notificationData.action) {
+          this.router.navigate([notificationData.action]);
         }
       });
     });

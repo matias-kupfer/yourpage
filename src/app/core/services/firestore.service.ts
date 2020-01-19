@@ -10,7 +10,7 @@ import DocumentReference = firebase.firestore.DocumentReference;
 })
 export class FirestoreService {
   public db = firebase.firestore();
-  userId: User = JSON.parse(localStorage.getItem('user')) || {} as User;
+  user: User = JSON.parse(localStorage.getItem('user')) || {} as User;
 
   constructor(
     public afs: AngularFirestore,
@@ -30,4 +30,15 @@ export class FirestoreService {
     return this.db.collection('users')
       .where('accountInfo.userName', '==', userName).limit(1);
   }
+
+  public updateBioFirestore(newBio: string) {
+    this.db.collection('users').doc(this.user.personalInfo.userId)
+      .update({'accountInfo.bio': newBio});
+  }
+
+  public updateSocialLinks(newLinks: any) {
+    this.db.collection('users').doc(this.user.personalInfo.userId)
+      .update({'accountInfo.socialLinks': newLinks});
+  }
 }
+// @todo centralize firestore request, create query and send to same function always

@@ -5,6 +5,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {User} from '../../../interfaces/user';
 import {AuthService} from '../../../core/services/auth.service';
 import {debounceTime, map, take} from 'rxjs/operators';
+import {DefaultRegex} from '../../../enums/regex.enum';
 
 @Component({
   selector: 'app-signup',
@@ -30,13 +31,13 @@ export class SignupComponent implements OnInit {
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(15),
-        Validators.pattern('[A-zÀ-ÿ ]*'),
+        Validators.pattern(DefaultRegex.default),
       ]),
       lastName: new FormControl('lastexample', [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(15),
-        Validators.pattern('[A-zÀ-ÿ ]*'),
+        Validators.pattern(DefaultRegex.default),
       ]),
       gender: new FormControl(Validators.required),
       birthday: new FormControl(Validators.required),
@@ -47,7 +48,7 @@ export class SignupComponent implements OnInit {
         [Validators.required,
           Validators.minLength(4),
           Validators.maxLength(20),
-          Validators.pattern('^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+$')],
+          Validators.pattern(DefaultRegex.userName)],
         CustomValidator.userName(this.afs),
       ),
       country: new FormControl(Validators.required),
@@ -101,7 +102,15 @@ export class SignupComponent implements OnInit {
         registrationDate: null,
         imageUrl: null,
         country: this.country.value,
-        bio: this.bio.value
+        bio: this.bio.value,
+        socialLinks: {
+          facebook: null,
+          github: null,
+          instagram: null,
+          linkedin: null,
+          twitter: null,
+          youtube: null,
+        }
       },
       statisticsInfo: {
         followers: 0,
