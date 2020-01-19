@@ -7,6 +7,7 @@ div.outter {
     width: 1000px;
     margin: 2% auto;
     overflow: hidden;
+    //box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
     div.float-left {
       padding: 1% 0;
@@ -83,7 +84,7 @@ div.outter {
           background-color: $accent;
           border-radius: 12px;
           box-shadow: none;
-          margin: 15px auto;
+          margin: 20px auto;
         }
 
         div.statistics {

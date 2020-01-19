@@ -38,6 +38,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LoaderComponent } from './components/loader/loader.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import { LoaderComponent } from './components/loader/loader.component';
     MatNativeDateModule,
     MatSnackBarModule,
     MatMenuModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTooltipModule
   ],
   providers: [
     AuthenticationGuard,
