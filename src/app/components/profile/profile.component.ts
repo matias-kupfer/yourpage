@@ -3,11 +3,13 @@ import {AuthService} from '../../core/services/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {User} from '../../interfaces/user';
 import {FirestoreService} from '../../core/services/firestore.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {SnackbarService} from '../../core/services/snackbar.service';
 import {NotifierService} from 'angular-notifier';
 import {MatDialog} from '@angular/material';
 import {EditProfileComponent} from './edit-profile/edit-profile.component';
+import {error} from 'util';
+import {DefaultRoutes} from '../../enums/default.routes';
 
 
 @Component({
@@ -26,6 +28,7 @@ export class ProfileComponent implements OnInit {
     private firestoreService: FirestoreService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
+    public router: Router,
     private notificationService: SnackbarService,
     notifier: NotifierService,
     private ngZone: NgZone,
