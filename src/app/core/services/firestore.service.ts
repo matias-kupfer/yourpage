@@ -4,6 +4,7 @@ import {User} from '../../interfaces/user';
 import {AuthService} from './auth.service';
 import * as firebase from 'firebase';
 import DocumentReference = firebase.firestore.DocumentReference;
+import {Pointer} from '../../interfaces/pointer';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,16 @@ export class FirestoreService {
     this.db.collection('users').doc(this.user.personalInfo.userId)
       .update({'accountInfo.socialLinks': newLinks});
   }
+
+  public addMapPointer(newPointer: Pointer) {
+    this.db.collection('users').doc(this.user.personalInfo.userId).update({
+      'accountInfo.mapPointers': firebase.firestore.FieldValue.arrayUnion(newPointer)
+    });
+  }
+
+  public deleteMapPointer(newPointer: Pointer) {
+    this.db.collection('users').doc(this.user.personalInfo.userId).update({
+      'accountInfo.mapPointers': firebase.firestore.FieldValue.arrayRemove(newPointer)
+    });
+  }
 }
-// @todo centralize firestore request, create query and send to same function always

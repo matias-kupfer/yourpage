@@ -110,7 +110,15 @@ export class SignupComponent implements OnInit {
           linkedin: null,
           twitter: null,
           youtube: null,
-        }
+        },
+        mapPointers: [
+          {
+            lat: null,
+            lng: null,
+            title: null,
+            description: null,
+          }
+        ],
       },
       statisticsInfo: {
         followers: 0,

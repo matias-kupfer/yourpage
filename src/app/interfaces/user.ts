@@ -21,6 +21,15 @@ export interface User {
       linkedin: string;
       twitter: string;
     };
+    mapPointers:
+      [
+        {
+          lat: number;
+          lng: number;
+          title: string;
+          description: string;
+        }
+      ]
   };
   statisticsInfo: {
     followers: number;

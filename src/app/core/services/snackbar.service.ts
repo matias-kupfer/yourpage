@@ -10,5 +10,4 @@ export class SnackbarService {
 
   constructor() { }
 
-// @TODO actions from service not working
 }

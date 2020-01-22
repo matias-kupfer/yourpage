@@ -57,7 +57,7 @@ div.outter {
           margin: 15px 30px 15px 0;
         }
 
-        div.description{
+        div.description {
 
           p {
             margin-top: 0;
@@ -82,12 +82,8 @@ div.outter {
         }
 
         hr.hr {
-          width: 150px;
-          height: 10px;
-          background-color: $accent;
-          border-radius: 12px;
-          box-shadow: none;
-          margin: 20px auto;
+          width: 55px;
+          border: 2px solid $accent;
         }
 
         div.statistics {
@@ -104,8 +100,16 @@ div.outter {
     }
 
   }
+}
 
+agm-map{
+  height: 300px;
+  width: 700px;
+  margin: auto;
 
+  button{
+    margin-right: 5px;
+  }
 }
 
 app-loader {

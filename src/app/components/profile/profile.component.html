@@ -74,6 +74,23 @@
 
   <br>
   <p>Content</p>
+  <agm-map (mapClick)="createPointer($event)" [zoom]="2">
+    <agm-marker *ngFor="let pointer of userData.accountInfo.mapPointers" [latitude]="pointer.lat"
+                [longitude]="pointer.lng">
+      <agm-info-window>
+        <div class="agm-info-window">
+          <strong>{{ pointer.title }}</strong>
+          <p>
+            {{ pointer.description }}
+          </p>
+          <div *ngIf="isUserProfile">
+            <button mat-raised-button color="accent" (click)="editPointer(pointer)">Edit</button>
+            <button mat-raised-button color="warn" (click)="removePointer(pointer)">Remove</button>
+          </div>
+        </div>
+      </agm-info-window>
+    </agm-marker>
+  </agm-map>
 </div>
 
 

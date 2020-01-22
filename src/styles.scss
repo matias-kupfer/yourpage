@@ -24,6 +24,14 @@ mat-form-field {
   font-size: 1.5em;
 }
 
+.agm-info-window{
+  max-width: 200px;
+
+  button{
+    transform: scale(0.9);
+  }
+}
+
 
 .center {
   text-align: center;
