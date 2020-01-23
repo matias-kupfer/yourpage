@@ -53,4 +53,8 @@ export class FirestoreService {
       'accountInfo.mapPointers': firebase.firestore.FieldValue.arrayRemove(newPointer)
     });
   }
+
+  public getAllUsers() {
+    return this.db.collection('users');
+  }
 }

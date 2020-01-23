@@ -43,6 +43,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoaderComponent} from './components/loader/loader.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatBadgeModule} from '@angular/material/badge';
+import { UsersListComponent } from './components/users-list/users-list.component';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import {MatBadgeModule} from '@angular/material/badge';
     LoaderComponent,
     EditProfileComponent,
     EditPointerComponent,
+    UsersListComponent,
   ],
   imports: [
     BrowserModule,
