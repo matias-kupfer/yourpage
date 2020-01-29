@@ -1,5 +1,6 @@
 @import "../../../style/variables";
 
+
 mat-form-field {
   width: 49%;
   margin: 5px 0;
@@ -15,4 +16,9 @@ div.social-div mat-form-field:nth-child(even) {
 
 h3 {
   margin: 5px 0;
+}
+
+img {
+  height: auto;
+  width: 50px;
 }

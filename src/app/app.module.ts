@@ -30,7 +30,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import {MatDividerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
+import {MatDividerModule, MatInputModule, MatListModule, MatNativeDateModule} from '@angular/material';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -44,12 +44,21 @@ import {LoaderComponent} from './components/loader/loader.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatBadgeModule} from '@angular/material/badge';
 import { UsersListComponent } from './components/users-list/users-list.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import { NewPostSelectorComponent } from './components/new-post-selector/new-post-selector.component';
+import { NewTextPostComponent } from './components/new-post/new-text-post/new-text-post.component';
+import { FileUploadDirective } from './directives/file-upload.directive';
+import { ChangePictureComponent } from './components/profile/change-picture/change-picture.component';
 
 
 @NgModule({
   entryComponents: [
     EditProfileComponent,
-    EditPointerComponent
+    EditPointerComponent,
+    ChangePictureComponent,
+    NewPostSelectorComponent,
+    NewTextPostComponent
   ],
   declarations: [
     AppComponent,
@@ -63,6 +72,10 @@ import { UsersListComponent } from './components/users-list/users-list.component
     EditProfileComponent,
     EditPointerComponent,
     UsersListComponent,
+    NewPostSelectorComponent,
+    NewTextPostComponent,
+    FileUploadDirective,
+    ChangePictureComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,7 +108,10 @@ import { UsersListComponent } from './components/users-list/users-list.component
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatBadgeModule,
-    FormsModule
+    FormsModule,
+    MatSidenavModule,
+    MatBottomSheetModule,
+    MatListModule
   ],
   providers: [
     AuthenticationGuard,

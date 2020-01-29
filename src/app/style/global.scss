@@ -10,6 +10,37 @@ app-loader {
   bottom: 0;
   right: 0;
 }
+
+mat-icon {
+  vertical-align: middle;
+}
+
+/* Drop Zone */
+.drop-zone {
+  border: dotted 3px lightgray;
+  opacity: 0.5;
+  color: #666;
+  text-align: center
+}
+
+.file-over {
+  border: dotted 3px dodgerblue;
+}
+
+.table {
+  margin-top: 30px;
+}
+
+.text-green {
+  color: green
+}
+
+.progress {
+  height: 5px;
+  width: 0px;
+  background-color: red;
+}
+
 // sign in with google button
 .google-button {
   height: 40px;

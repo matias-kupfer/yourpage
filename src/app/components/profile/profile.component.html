@@ -2,7 +2,8 @@
   <div class="header">
 
     <div class="float-left">
-      <img [src]="userData.accountInfo.imageUrl">
+        <img [src]="userData.accountInfo.imageUrl" (click)="editProfilePicture()">
+<!--        <mat-icon (click)="editProfilePicture()">edit</mat-icon>-->
       <br>
       <p>@{{userData.accountInfo.userName}}</p>
       <div class="social-div">

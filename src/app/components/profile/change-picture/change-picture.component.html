@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-4">
+    <h3>Select files</h3>
+    <div appFileUpload [files]="files" (customMouseOver)="hover = $event" [ngClass]="{'file-over': hover}"
+         class="well drop-zone file-over">
+      <h4>Drop files</h4>
+      <img src="assets/drop-images.png">
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <h4>Load files</h4>
+    <button class="btn btn-success" (click)="uploadImages()" [disabled]="files.length === 0">Upload</button>
+    <button class="btn btn-danger" (click)="emptyFiles()">Empty</button>
+
+    <table class="table">
+      <thead class="thead=dark">
+      <tr>
+        <th>File name</th>
+        <th>Size</th>
+        <th>Progress</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr *ngFor="let file of files">
+        <td>{{file.fileName}}</td>
+        <td>{{file.file.size / 1024 / 1024 | number: '.2-2'}} MB</td>
+        <td>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" [ngStyle]="{'width': file.progress + '%'}"></div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

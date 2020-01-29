@@ -10,6 +10,7 @@ import {MatDialog} from '@angular/material';
 import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {EditPointerComponent} from './edit-pointer/edit-pointer.component';
 import {Pointer} from '../../interfaces/pointer';
+import {ChangePictureComponent} from './change-picture/change-picture.component';
 
 
 @Component({
@@ -22,7 +23,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public userName = this.route.snapshot.paramMap.get('userName');
   public isUserProfile = true;
   private notifier: NotifierService;
-  public pointers: Pointer[] = [];
 
   constructor(
     private authService: AuthService,
@@ -84,20 +84,35 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.snackBar.open('Profile updated successfuly!', '', {
           duration: 5000
         });
-        this.updateBioFirestore(result.bio);
-        this.updateSocialLinks(result.socialLinks);
+        this.updateUserData(result);
       }
     });
   }
 
-  public updateBioFirestore(newBio: string) {
-    this.firestoreService.updateBioFirestore(newBio);
+  // EDIT PROFILE PICTURE
+  public editProfilePicture() {
+    const dialogRef = this.dialog.open(ChangePictureComponent, {
+      width: '500px',
+      data: this.userData
+    });
+
+    dialogRef.afterClosed().subscribe((result: User) => {
+      if (!result || result.accountInfo.imageUrl === this.userData.accountInfo.imageUrl) {
+        this.snackBar.open('No changes were made', '', {
+          duration: 5000
+        });
+      } else {
+        this.snackBar.open('Profile picture updated successfuly!', '', {
+          duration: 5000
+        });
+        this.updateUserData(result);
+      }
+    });
   }
 
-  public updateSocialLinks(newSocialLinks: any) {
-    this.firestoreService.updateSocialLinks(newSocialLinks);
+  public updateUserData(updatedUser: User) {
+    this.firestoreService.updateUserData(updatedUser);
   }
-
 
   // MAP
   createPointer(newCoords) {
