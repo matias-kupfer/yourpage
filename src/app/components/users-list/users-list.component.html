@@ -7,15 +7,16 @@
   </mat-form-field>
   <br>
   <ng-container *ngFor="let user of allUsers">
-    <ng-template [ngIf]="searchUsers(user)">
+    <div *ngIf="searchUsers(user)">
       <img [src]="user.accountInfo.imageUrl" style="width: 150px;">
       <h3>{{user.personalInfo.name}} {{user.personalInfo.lastName}}</h3>
       <h3>@{{user.accountInfo.userName}}</h3>
       <button mat-raised-button [routerLink]="'/u/' + user.accountInfo.userName">Profile</button>
       <hr>
-    </ng-template>
+    </div>
   </ng-container>
 </div>
 <ng-template #loader>
   <app-loader></app-loader>
 </ng-template>
+<!--@TODO show not found message-->

@@ -19,7 +19,6 @@ export class UsersListComponent implements OnInit {
       querySnapshot => {
         this.allUsers = [];
         querySnapshot.forEach(user => {
-          // user.exists
           this.allUsers.push(user.data() as User);
         });
       }
