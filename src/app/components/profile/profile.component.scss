@@ -21,6 +21,10 @@ div.outter {
         height: 150px;
       }
 
+      .radius {
+        border-radius: 50%;
+      }
+
       p {
         margin: 10px;
         font-size: 1.5em;
@@ -100,12 +104,12 @@ div.outter {
   }
 }
 
-agm-map{
+agm-map {
   height: 300px;
   width: 700px;
   margin: auto;
 
-  button{
+  button {
     margin-right: 5px;
   }
 }

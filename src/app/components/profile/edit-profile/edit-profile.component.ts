@@ -81,18 +81,16 @@ export class EditProfileComponent implements OnInit {
   }
 
   saveData() {
-    const changes = {
-        bio: this.bio.value,
-        socialLinks: {
-          facebook: this.facebook.value,
-          github: this.github.value,
-          twitter: this.twitter.value,
-          youtube: this.facebook.value,
-          linkedin: this.linkedin.value,
-          instagram: this.instagram.value,
-        }
-      };
-    this.dialogRef.close(changes);
+    this.userData.accountInfo.bio = this.bio.value;
+    this.userData.accountInfo.socialLinks = {
+      facebook: this.facebook.value,
+      github: this.github.value,
+      twitter: this.twitter.value,
+      youtube: this.facebook.value,
+      linkedin: this.linkedin.value,
+      instagram: this.instagram.value,
+    };
+    this.dialogRef.close(this.userData);
   }
 
   onNoClick() {

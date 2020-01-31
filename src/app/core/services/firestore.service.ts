@@ -12,6 +12,8 @@ import {UploadFile} from '../../class/uploadFile';
 })
 export class FirestoreService {
   public db = firebase.firestore();
+  public storageRef = firebase.storage().ref();
+  public storageProfileImageReference = 'images/profileImages/';
   user: User = JSON.parse(localStorage.getItem('user')) || {} as User;
 
   constructor(
@@ -22,10 +24,6 @@ export class FirestoreService {
 
   public updateUserData(user: User) {
     return this.afs.collection('users').doc(user.personalInfo.userId).update(user);
-  }
-
-  public getUserById(userId: string): DocumentReference<any> {
-    return this.db.collection('users').doc(userId);
   }
 
   public getUserByUserName(userName: string): DocumentData {
@@ -49,16 +47,15 @@ export class FirestoreService {
     return this.db.collection('users');
   }
 
-  loadImagesFirebase(images: UploadFile[], user: User) {
-    const storageRef = firebase.storage().ref();
-
+  public uploadImagesFirebase(images: UploadFile[], user: User) {
+    // path to save location as parameter so this can be used to upload any type of picture
     for (const item of images) {
       item.uploading = true;
       if (item.progress >= 100) {
         continue;
       }
       const uploadTask: firebase.storage.UploadTask =
-        storageRef.child(`/profileImages/${item.fileName}`)
+        this.storageRef.child(`${this.storageProfileImageReference}${user.personalInfo.userId}`)
           .put(item.file);
 
       uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,

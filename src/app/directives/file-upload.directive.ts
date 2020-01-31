@@ -65,6 +65,7 @@ export class FileUploadDirective {
     if (!this._fileDropped(file.name) && this._isImage(file.type)) {
       return true;
     } else {
+      this.snackBar.open('Drop files of type image only');
       return false;
     }
   }
@@ -84,34 +85,6 @@ export class FileUploadDirective {
   }
 
   private _isImage(fileType: string): boolean {
-    return (fileType === '' || fileType === undefined) ? false : fileType.startsWith('image');
-  }
-
-
-  // compatibility
-  private getTransfer(event: any) {
-    return event.dataTransfer ? event.dataTransfer : event.originalEvent.dataTransfer;
-  }
-
-  // validations
-  private fileIsValid(file: File): boolean {
-    if (!this.fileAlredyDropped(file.name) && this.isImage(file.type)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  private fileAlredyDropped(fileName: string): boolean {
-    if (this.files[0].fileName === fileName) {
-      console.log('file alredy exists');
-      return true;
-    }
-
-    return false;
-  }
-
-  private isImage(fileType: string): boolean {
     return (fileType === '' || fileType === undefined) ? false : fileType.startsWith('image');
   }
 

@@ -2,8 +2,12 @@
   <div class="header">
 
     <div class="float-left">
-        <img [src]="userData.accountInfo.imageUrl" (click)="editProfilePicture()">
-<!--        <mat-icon (click)="editProfilePicture()">edit</mat-icon>-->
+      <img class="radius" *ngIf="userData.accountInfo.imageUrl; else noPicture" [src]="userData.accountInfo.imageUrl"
+           (click)="editProfilePicture()">
+      <!--        <mat-icon (click)="editProfilePicture()">edit</mat-icon>-->
+      <ng-template #noPicture>
+        <img class="radius" src="https://i.stack.imgur.com/ZQT8Z.png" (click)="editProfilePicture()">
+      </ng-template>
       <br>
       <p>@{{userData.accountInfo.userName}}</p>
       <div class="social-div">

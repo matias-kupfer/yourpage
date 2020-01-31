@@ -20,7 +20,12 @@ mat-icon {
   border: dotted 3px lightgray;
   opacity: 0.5;
   color: #666;
-  text-align: center
+  height: 200px;
+  text-align: center;
+  background-image: url("https://colorlib.com/wp/wp-content/uploads/sites/2/jquery-file-upload-scripts.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .file-over {
@@ -33,12 +38,6 @@ mat-icon {
 
 .text-green {
   color: green
-}
-
-.progress {
-  height: 5px;
-  width: 0px;
-  background-color: red;
 }
 
 // sign in with google button
