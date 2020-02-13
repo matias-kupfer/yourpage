@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FirestoreService} from '../../core/services/firestore.service';
-import {User} from '../../interfaces/user';
+import {User} from '../../class/user';
 
 @Component({
   selector: 'app-users-list',
