@@ -77,9 +77,9 @@
   </div>
 
 
-  <br>
+  <br><br>
   <p>Content</p>
-  <agm-map (mapClick)="createPointer($event)" [zoom]="2">
+  <agm-map (mapClick)="!userName && isUserProfile && createPointer($event)" [zoom]="2">
     <agm-marker *ngFor="let pointer of userData.accountInfo.mapPointers" [latitude]="pointer.lat"
                 [longitude]="pointer.lng">
       <agm-info-window>

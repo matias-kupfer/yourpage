@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../core/services/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {User} from '../../interfaces/user';
+import {User} from '../../class/user';
 import {FirestoreService} from '../../core/services/firestore.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SnackbarService} from '../../core/services/snackbar.service';
