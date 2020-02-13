@@ -1,1 +1,29 @@
+@import "style/variables";
 
+mat-drawer-container {
+  background-color: $background-blue;
+  min-height: 100%;
+
+  mat-drawer {
+    width: 250px;
+    position: fixed;
+    box-shadow: $material-shadow;
+
+    img {
+      margin: 15px auto 40px;
+      display: block;
+      width: 150px;
+      height: auto;
+    }
+
+    .side-nav-container {
+      padding: 5px 20px;
+    }
+  }
+}
+
+button {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}

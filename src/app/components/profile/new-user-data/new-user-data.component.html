@@ -1,0 +1,167 @@
+<div class="outter">
+  <mat-card>
+    <h1>YOU NEED TO FINISH YOUR PROFILE SETUP</h1>
+    <h1>WELCOME TO YOURPAGE</h1>
+
+
+    <mat-vertical-stepper [linear]="true" color="accent">
+      <mat-step [stepControl]="personalForm">
+        <form [formGroup]="personalForm">
+          <ng-template matStepLabel>Personal information</ng-template>
+          <mat-form-field>
+            <label>
+              <input matInput placeholder="First name" formControlName="name">
+            </label>
+            <mat-error *ngIf="name.errors && name.errors.minlength">
+              Name is too <strong>short.</strong>
+            </mat-error>
+            <mat-error *ngIf="name.errors && name.errors.required">
+              Name is <strong>required.</strong>
+            </mat-error>
+            <mat-error *ngIf="name.errors && name.errors.maxlength">
+              Name is too <strong>long.</strong>
+            </mat-error>
+            <mat-error *ngIf="name.errors && name.errors.pattern && !name.errors.minlength && !name.errors.maxlength">
+              {{name.value | slice:0:4}}... has <strong>invalid characters.</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <label>
+              <input matInput placeholder="Last name" formControlName="lastName">
+            </label>
+            <mat-error *ngIf="lastName.errors && lastName.errors.minlength">
+              Last name is too <strong>short.</strong>
+            </mat-error>
+            <mat-error *ngIf="lastName.errors && lastName.errors.required">
+              Last name is <strong>required.</strong>
+            </mat-error>
+            <mat-error *ngIf="lastName.errors && lastName.errors.maxlength">
+              Last name is too <strong>long.</strong>
+            </mat-error>
+            <mat-error *ngIf="lastName.errors && lastName.errors.pattern
+        && !lastName.errors.minlength && !lastName.errors.maxlength">
+              {{lastName.value | slice:0:4}}... has <strong>invalid characters.</strong>
+            </mat-error>
+          </mat-form-field>
+          <br>
+          <br>
+
+          <mat-form-field>
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="male">Male</mat-option>
+              <mat-option value="female">Female</mat-option>
+              <mat-option value="undefined">Leave blank</mat-option>
+            </mat-select>
+            <mat-error *ngIf="gender.errors && gender.errors.required">
+              Gender is <strong>required.</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <label>
+              <input matInput [matDatepicker]="picker" formControlName="birthday" placeholder="Birthday">
+            </label>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="birthday.errors && birthday.errors.required">
+              Birthday is <strong>required.</strong>
+            </mat-error>
+          </mat-form-field>
+          <br>
+          <mat-hint align="end" *ngIf="this.isSetUp">
+            You can't change this information.
+          </mat-hint>
+
+
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+
+      <mat-step [stepControl]="accountForm">
+        <form [formGroup]="accountForm">
+          <ng-template matStepLabel>Account</ng-template>
+          <mat-form-field>
+            <label>
+              <input matInput placeholder="Username" formControlName="userName">
+            </label>
+            <mat-error
+              *ngIf="userName.errors && userName.invalid && (userName.dirty || userName.touched)
+         && !userName.errors.required && !userName.errors.minlength
+         && !userName.errors.maxlength && !userName.errors.pattern"
+              class="alert alert-danger">
+              <b>{{userName.value}}</b> is taken.
+            </mat-error>
+            <mat-error *ngIf="userName.errors && userName.errors.required">
+              The username is <strong>required.</strong>
+            </mat-error>
+            <mat-error *ngIf="userName.errors && userName.errors.minlength">
+              The username is too <strong>short.</strong>
+            </mat-error>
+            <mat-error *ngIf="userName.errors && userName.errors.maxlength">
+              The username is too <strong>long.</strong>
+            </mat-error>
+            <mat-error *ngIf="userName.errors && userName.errors.pattern
+        && !userName.errors.minlength && !userName.errors.maxlength">
+              <strong>Invalid format.</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Select your country</mat-label>
+            <mat-select formControlName="country">
+              <mat-option *ngFor="let country of countryList" [value]="country">
+                {{country}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="country.errors && country.errors.required">
+              Country is <strong>required.</strong>
+            </mat-error>
+          </mat-form-field>
+          <br>
+          <br>
+
+          <mat-form-field class="width">
+            <label>
+              <textarea matInput placeholder="Write something about yourself..." formControlName="bio"></textarea>
+            </label>
+            <mat-hint align="end">
+          <span [ngStyle]="{'color': bio.value.length > '200' ? 'red' : bio.value.length > 180 ? 'orange' : 'green' }"
+                *ngIf="bio.value; else zero">
+            {{bio.value.length}}
+          </span>
+              <ng-template #zero>0</ng-template>
+              / 200
+            </mat-hint>
+            <mat-error *ngIf="bio.errors && bio.errors.required">
+              biography is <strong>required.</strong>
+            </mat-error>
+          </mat-form-field>
+
+
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        You are all set up!
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button>Save</button>
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
+  </mat-card>
+</div>
+
+<button (click)="onLogout()" mat-button>
+  <mat-icon>power_settings_new</mat-icon>
+  <span>Logout</span>
+</button>

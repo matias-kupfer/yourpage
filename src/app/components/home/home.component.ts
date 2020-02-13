@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../core/services/auth.service';
 import {MatDialog} from '@angular/material';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {User} from '../../interfaces/user';
+import {User} from '../../class/user';
 import {FirestoreService} from '../../core/services/firestore.service';
 
 @Component({

@@ -50,6 +50,7 @@ import { NewPostSelectorComponent } from './components/new-post-selector/new-pos
 import { NewTextPostComponent } from './components/new-post/new-text-post/new-text-post.component';
 import { FileUploadDirective } from './directives/file-upload.directive';
 import { ChangePictureComponent } from './components/profile/change-picture/change-picture.component';
+import { NewUserDataComponent } from './components/profile/new-user-data/new-user-data.component';
 
 
 @NgModule({
@@ -76,6 +77,7 @@ import { ChangePictureComponent } from './components/profile/change-picture/chan
     NewTextPostComponent,
     FileUploadDirective,
     ChangePictureComponent,
+    NewUserDataComponent,
   ],
   imports: [
     BrowserModule,

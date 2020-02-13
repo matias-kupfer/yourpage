@@ -122,7 +122,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       title: 'Title',
       description: 'Add description'
     };
-    this.firestoreService.addMapPointer(newPointer);
+    this.firestoreService.addMapPointer(newPointer, this.userData.personalInfo.userId);
   }
 
   editPointer(pointer: Pointer) {
@@ -148,7 +148,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.removePointer(pointer);
       pointer.title = result.title;
       pointer.description = result.description;
-      this.firestoreService.addMapPointer(pointer);
+      this.firestoreService.addMapPointer(pointer, this.userData.personalInfo.userId);
       this.snackBar.open('Pointer updated succesfully', '', {
         duration: 5000
       });
@@ -156,7 +156,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   removePointer(pointer: Pointer) {
-    this.firestoreService.deleteMapPointer(pointer);
+    this.firestoreService.deleteMapPointer(pointer, this.userData.personalInfo.userId);
   }
 
   // @todo undo action ?

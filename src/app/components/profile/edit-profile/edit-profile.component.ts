@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {ProfileComponent} from '../profile.component';
-import {User} from '../../../interfaces/user';
+import {User} from '../../../class/user';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DefaultRegex} from '../../../enums/regex.enum';
 

@@ -1,5 +1,42 @@
-<app-navbar></app-navbar>
-<main [@fadeAnimation]="getRouterOutletState(o)">
-  <router-outlet #o="outlet"></router-outlet>
-</main>
+<ng-container *ngIf="this.authService.isLoggedIn !== null; else loader">
+  <app-navbar *ngIf="authService.isSetUp || authService.isSetUp === null"></app-navbar>
+
+  <!--  LOGGED IN -->
+  <mat-drawer-container
+    *ngIf="this.authService.isLoggedIn && authService.isSetUp !== null && this.authService.user$.getValue() !== null">
+    <mat-drawer #drawer mode="side" opened *ngIf="this.authService.isSetUp">
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/yourpage-4e4b4.appspot.com/o/kleanLogo.png?alt=media&token=5ef878cc-5cda-4133-b994-7fdeb42bf1e4">
+      <div class="side-nav-container" *ngIf="userData !== null; else loader;">
+        <img [src]="userData.accountInfo.imageUrl">
+        <h1>{{userData.personalInfo.name}} {{userData.personalInfo.lastName}}</h1>
+      </div>
+      <ng-template #loader>
+        <app-loader></app-loader>
+      </ng-template>
+    </mat-drawer>
+    <mat-drawer-content>
+      <main [@fadeAnimation]="getRouterOutletState(o)">
+        <router-outlet #o="outlet"></router-outlet>
+      </main>
+      <button mat-fab (click)="openNewPostSelector()" color="accent" *ngIf="authService.isSetUp">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-drawer-content>
+  </mat-drawer-container>
+
+
+  <!--  NOT LOGGED IN -->
+  <ng-container *ngIf="!this.authService.isLoggedIn">
+    <main [@fadeAnimation]="getRouterOutletState(o)">
+      <router-outlet #o="outlet"></router-outlet>
+    </main>
+  </ng-container>
+</ng-container>
+
+<!--loader until islogged has value-->
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>
+
 <notifier-container></notifier-container>
