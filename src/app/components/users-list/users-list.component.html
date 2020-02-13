@@ -7,7 +7,7 @@
   </mat-form-field>
   <br>
   <ng-container *ngFor="let user of allUsers">
-    <div *ngIf="searchUsers(user) && user.accountInfo.userName !== null">
+    <div *ngIf="user.accountInfo.userName !== null && searchUsers(user)">
       <img [src]="user.accountInfo.imageUrl" style="width: 150px;">
       <h3>{{user.personalInfo.name}} {{user.personalInfo.lastName}}</h3>
       <h3>@{{user.accountInfo.userName}}</h3>
