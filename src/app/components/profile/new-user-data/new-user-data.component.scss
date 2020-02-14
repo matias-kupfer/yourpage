@@ -4,6 +4,14 @@ div.outter {
   background-color: #303030;
   width: 100%;
   min-height: 100%;
+
+  img {
+    width: 150px;
+    height: auto;
+    display: block;
+    margin: auto;
+    border-radius: 50%;
+  }
 }
 mat-card {
   margin: 0;

@@ -1,10 +1,10 @@
 export class User {
-  constructor(uid: string, userEmail: string, displayName: string, photoURL: string) {
+  constructor(uid: string, username: string, userLastName: string, userEmail: string, displayName: string, photoURL: string) {
     this.personalInfo = {
       userId: uid,
       email: userEmail,
-      name: displayName,
-      lastName: null,
+      name: username,
+      lastName: userLastName,
       gender: null,
       birthday: null,
     };

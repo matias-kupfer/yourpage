@@ -9,6 +9,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {NotifierService} from 'angular-notifier';
 import {map} from 'rxjs/operators';
 import {FirestoreService} from './firestore.service';
+import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class AuthService {
       .then((result) => {
         if (result) {
           if (result.additionalUserInfo.isNewUser) { // sign up
-            this.firestoreService.updateUserData(JSON.parse(JSON.stringify(this.createNewUserObject(result.user))));
+            this.firestoreService.updateUserData(JSON.parse(JSON.stringify(this.createNewUserObject(result))));
             this.notifier.notify('default', 'Successfully registered as ' + result.user.email);
           } else { // login
             this.userDataSubscription();
@@ -68,8 +69,12 @@ export class AuthService {
     });
   }
 
-  public createNewUserObject(firebaseUser: firebase.User): User {
-    return new User(firebaseUser.uid, firebaseUser.email, firebaseUser.displayName, firebaseUser.photoURL);
+  public createNewUserObject(firebaseUser: UserCredential): User {
+    // @ts-ignore
+    return new User(firebaseUser.user.uid, firebaseUser.additionalUserInfo.profile.given_name,
+      // @ts-ignore
+      firebaseUser.additionalUserInfo.profile.family_name, firebaseUser.user.email,
+      firebaseUser.user.displayName, firebaseUser.user.photoURL);
   }
 
   public get isLoggedInGetter(): Observable<boolean> {

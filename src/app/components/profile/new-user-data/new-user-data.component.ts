@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 import {User} from '../../../class/user';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AngularFirestore} from '@angular/fire/firestore';
@@ -6,6 +6,10 @@ import {AuthService} from '../../../core/services/auth.service';
 import {DefaultRegex} from '../../../enums/regex.enum';
 import {debounceTime, map, take} from 'rxjs/operators';
 import {countryList} from '../../../enums/countries.enum';
+import {MatDatepicker} from '@angular/material';
+import {FirestoreService} from '../../../core/services/firestore.service';
+import {Router} from '@angular/router';
+import {DefaultRoutes} from '../../../enums/default.routes';
 
 @Component({
   selector: 'app-new-user-data',
@@ -14,7 +18,7 @@ import {countryList} from '../../../enums/countries.enum';
 })
 export class NewUserDataComponent implements OnInit {
   countryList: any[] = countryList;
-  newUserData: User;
+  userData: User;
   canSignUp = false;
 
   personalForm: FormGroup;
@@ -22,41 +26,55 @@ export class NewUserDataComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private afs: AngularFirestore,
-              private authService: AuthService) {
+              private authService: AuthService,
+              public firestoreService: FirestoreService,
+              public router: Router,
+              private ngZone: NgZone) {
   }
 
   ngOnInit() {
+    this.authService.user$
+      .subscribe((doc) => {
+        this.ngZone.run(() => {
+          this.userData = doc;
+        });
+      });
+
     this.personalForm = new FormGroup({
-      name: new FormControl('example', [
+      name: new FormControl(this.userData.personalInfo.name, [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(15),
         Validators.pattern(DefaultRegex.default),
       ]),
-      lastName: new FormControl('lastexample', [
+      lastName: new FormControl(this.userData.personalInfo.lastName, [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(15),
         Validators.pattern(DefaultRegex.default),
       ]),
-      gender: new FormControl(Validators.required),
-      birthday: new FormControl(Validators.required),
+      gender: new FormControl('', [Validators.required]),
+      birthday: new FormControl('', [Validators.required]),
     });
 
     this.accountForm = new FormGroup({
-      userName: new FormControl('usernameexample',
+      userName: new FormControl('',
         [Validators.required,
           Validators.minLength(4),
           Validators.maxLength(20),
           Validators.pattern(DefaultRegex.userName)],
-        CustomValidator.userName(this.afs),
+        UsernameValidator.userName(this.afs),
       ),
       country: new FormControl(Validators.required),
-      bio: new FormControl('bio example', [
+      bio: new FormControl('', [
         Validators.required,
         Validators.maxLength(200)
       ]),
     });
+  }
+
+  public validateDate(date: MatDatepicker<any>) {
+    console.log(date);
   }
 
   get name() {
@@ -88,46 +106,16 @@ export class NewUserDataComponent implements OnInit {
   }
 
   saveData() {
-    const newUserData: User = {
-      personalInfo: {
-        userId: null,
-        email: null,
-        name: this.name.value,
-        lastName: this.lastName.value,
-        gender: this.gender.value,
-        birthday: this.birthday.value
-      },
-      accountInfo: {
-        userName: this.userName.value,
-        registrationDate: null,
-        imageUrl: null,
-        country: this.country.value,
-        bio: this.bio.value,
-        socialLinks: {
-          facebook: null,
-          github: null,
-          instagram: null,
-          linkedin: null,
-          twitter: null,
-          youtube: null,
-        },
-        mapPointers: [
-          {
-            lat: null,
-            lng: null,
-            title: null,
-            description: null,
-          }
-        ],
-      },
-      statisticsInfo: {
-        followers: 0,
-        following: 0,
-        posts: 0
-      }
-    };
-    this.newUserData = newUserData;
-    this.canSignUp = true;
+    const updatedUser: User = this.userData;
+    updatedUser.personalInfo.name = this.name.value;
+    updatedUser.personalInfo.lastName = this.lastName.value;
+    updatedUser.personalInfo.gender = this.gender.value;
+    updatedUser.personalInfo.birthday = this.birthday.value;
+    updatedUser.accountInfo.bio = this.bio.value;
+    updatedUser.accountInfo.country = this.country.value;
+    updatedUser.accountInfo.userName = this.userName.value;
+    this.firestoreService.updateUserData(updatedUser);
+    this.router.navigate([DefaultRoutes.OnLogin]);
   }
 
   public onLogout() {
@@ -136,7 +124,7 @@ export class NewUserDataComponent implements OnInit {
 
 }
 
-export class CustomValidator {
+export class UsernameValidator {
   static userName(afs: AngularFirestore) {
     return (control: AbstractControl) => {
       const username = control.value.toLowerCase();

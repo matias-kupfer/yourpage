@@ -1,7 +1,8 @@
 <div class="outter">
   <mat-card>
+    <img [src]="userData.accountInfo.imageUrl">
+    <h1>WELCOME to YOURPAGE {{userData.personalInfo.name}} {{userData.personalInfo.lastName}}</h1>
     <h1>YOU NEED TO FINISH YOUR PROFILE SETUP</h1>
-    <h1>WELCOME TO YOURPAGE</h1>
 
 
     <mat-vertical-stepper [linear]="true" color="accent">
@@ -69,10 +70,7 @@
               Birthday is <strong>required.</strong>
             </mat-error>
           </mat-form-field>
-          <br>
-          <mat-hint align="end" *ngIf="this.isSetUp">
-            You can't change this information.
-          </mat-hint>
+          <br><br>
 
 
           <div>
@@ -151,10 +149,11 @@
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>Done</ng-template>
-        You are all set up!
+        You are all set up!<br>
+        <b>you wont be able to change some of the info</b>
         <div>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-button>Save</button>
+          <button mat-button (click)="saveData()">Save</button>
         </div>
       </mat-step>
     </mat-vertical-stepper>

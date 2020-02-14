@@ -23,7 +23,7 @@ export class AuthenticationGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<any> | Promise<boolean> | boolean {
+  ): Observable<any> {
     return this.fireAuth.authState.pipe(
       take(1),
       switchMap(authUser => {
