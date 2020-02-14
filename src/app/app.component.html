@@ -1,5 +1,5 @@
 <ng-container *ngIf="this.authService.isLoggedIn !== null; else loader">
-  <app-navbar *ngIf="authService.isSetUp || authService.isSetUp === null"></app-navbar>
+  <app-navbar *ngIf="authService.isSetUp || authService.isSetUp === null && !authService.isLoggedIn"></app-navbar>
 
   <!--  LOGGED IN -->
   <mat-drawer-container
