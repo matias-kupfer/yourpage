@@ -22,7 +22,7 @@ export class User {
         linkedin: null,
         twitter: null,
       },
-      mapPointers: [null],
+      mapPointers: null,
     };
     this.statisticsInfo = {
       followers: 0,

@@ -115,6 +115,7 @@ export class NewUserDataComponent implements OnInit {
     updatedUser.accountInfo.country = this.country.value;
     updatedUser.accountInfo.userName = this.userName.value;
     this.firestoreService.updateUserData(updatedUser);
+    this.authService.user$.next(updatedUser);
     this.router.navigate([DefaultRoutes.OnLogin]);
   }
 
