@@ -1,12 +1,11 @@
-<ng-container *ngIf="this.authService.isLoggedIn !== null; else loader">
+<ng-container *ngIf="this.authService.isLoggedIn !== null">
   <app-navbar *ngIf="authService.isSetUp || authService.isSetUp === null && !authService.isLoggedIn"></app-navbar>
 
   <!--  LOGGED IN -->
   <mat-drawer-container
-    *ngIf="this.authService.isLoggedIn && authService.isSetUp !== null && this.authService.user$.getValue() !== null">
+    *ngIf="this.authService.isLoggedIn && authService.isSetUp !== null && userData !== null">
     <mat-drawer #drawer mode="side" opened *ngIf="this.authService.isSetUp">
-      <img
-        src="https://firebasestorage.googleapis.com/v0/b/yourpage-4e4b4.appspot.com/o/kleanLogo.png?alt=media&token=5ef878cc-5cda-4133-b994-7fdeb42bf1e4">
+      <img src="../assets/images/kleanLogo.png" height="61" width="220"/>
       <div class="side-nav-container" *ngIf="userData !== null; else loader;">
         <img [src]="userData.accountInfo.imageUrl">
         <h1>{{userData.personalInfo.name}} {{userData.personalInfo.lastName}}</h1>
@@ -34,9 +33,7 @@
   </ng-container>
 </ng-container>
 
-<!--loader until islogged has value-->
-<ng-template #loader>
-  <app-loader></app-loader>
-</ng-template>
+<app-loader *ngIf="this.authService.isLoggedIn === null ||
+  this.authService.isLoggedIn && (authService.isSetUp === null || userData === null)"></app-loader>
 
 <notifier-container></notifier-container>
