@@ -23,7 +23,7 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard]},
 
   {path: '**', redirectTo: '/not-found', pathMatch: 'full', canActivate: [AuthenticationGuard]},
-  {path: 'not-found', component: NotFoundComponent},
+  {path: 'not-found', component: NotFoundComponent, canActivate: [AuthenticationGuard]},
 ];
 
 @NgModule({
