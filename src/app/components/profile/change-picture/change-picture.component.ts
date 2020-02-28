@@ -25,7 +25,6 @@ export class ChangePictureComponent implements OnInit {
 
   updateProfileImage() {
     this.firestoreService.uploadImagesFirebase(this.files, this.userData);
-    this.dialogRef.close();
   }
 
   emptyFiles() {
