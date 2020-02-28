@@ -3,7 +3,7 @@
   <img class="radius" src="https://i.stack.imgur.com/ZQT8Z.png">
 </ng-template>
 <h3>Select files</h3>
-<div appFileUpload [files]="files" [limit]="1" (customMouseOver)="hover = $event"
+<div *ngIf="!files.length" appFileUpload [files]="files" [limit]="1" (customMouseOver)="hover = $event"
      [ngClass]="{'file-over': hover}"
      class="well drop-zone file-over">
 </div>
