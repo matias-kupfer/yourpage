@@ -2,7 +2,8 @@
   <div class="header">
 
     <div class="float-left">
-      <img class="radius" *ngIf="userData.accountInfo.imageUrl; else noPicture" [src]="userData.accountInfo.imageUrl"
+      <img  class="radius" *ngIf="userData.accountInfo.imageUrl; else noPicture"
+           [src]="userData.accountInfo.imageUrl"
            (click)="editProfilePicture()">
       <!--        <mat-icon (click)="editProfilePicture()">edit</mat-icon>-->
       <ng-template #noPicture>

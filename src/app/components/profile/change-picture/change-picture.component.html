@@ -3,14 +3,15 @@
   <img class="radius" src="https://i.stack.imgur.com/ZQT8Z.png">
 </ng-template>
 <h3>Select files</h3>
-<div appFileUpload [files]="files" (customMouseOver)="hover = $event"
+<div appFileUpload [files]="files" [limit]="1" (customMouseOver)="hover = $event"
      [ngClass]="{'file-over': hover}"
      class="well drop-zone file-over">
 </div>
 
 <div class="col-md-8">
   <h4>Load files</h4>
-  <button mat-raised-button color="accent" (click)="updateProfileImage()" [disabled]="files.length === 0">Upload</button>
+  <button mat-raised-button color="accent" (click)="updateProfileImage()" [disabled]="files.length === 0">Upload
+  </button>
   <button mat-raised-button color="warn" (click)="emptyFiles()">empty</button>
 
   <table class="table">
@@ -21,7 +22,6 @@
       <th>Progress</th>
     </tr>
     </thead>
-
     <tbody>
     <tr *ngFor="let file of files">
       <td>{{file.fileName}}</td>
@@ -38,3 +38,4 @@
 <div mat-dialog-actions>
   <button mat-button color="warn" cdkFocusInitial [mat-dialog-close]>Close</button>
 </div>
+<!--TODO input type file-->

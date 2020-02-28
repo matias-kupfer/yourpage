@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {UploadFile} from '../../../class/uploadFile';
 import {FirestoreService} from '../../../core/services/firestore.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {User} from '../../../interfaces/user';
+import {User} from '../../../class/user';
 import {ProfileComponent} from '../profile.component';
 
 @Component({
@@ -12,6 +12,7 @@ import {ProfileComponent} from '../profile.component';
 })
 export class ChangePictureComponent implements OnInit {
   hover = false;
+  preview: string;
   files: UploadFile[] = [];
 
   constructor(private firestoreService: FirestoreService,
@@ -30,6 +31,5 @@ export class ChangePictureComponent implements OnInit {
   emptyFiles() {
     this.files = [];
   }
-}
 
-// @TODO delete old profile pictures
+}

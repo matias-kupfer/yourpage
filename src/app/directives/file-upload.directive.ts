@@ -9,7 +9,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class FileUploadDirective {
 
   @Input() files: UploadFile[] = [];
+  @Input() limit: number = null;
   @Output() customMouseOver: EventEmitter<boolean> = new EventEmitter();
+  @Output() urls: EventEmitter<string[]> = new EventEmitter();
 
   constructor(private snackBar: MatSnackBar) {
   }
@@ -44,8 +46,8 @@ export class FileUploadDirective {
   }
 
   private _getFiles(filesList: FileList) {
-    if (filesList.length > 1) {
-      this.snackBar.open('The limit is one file', '', {
+    if (filesList.length > this.limit) {
+      this.snackBar.open('The limit is ' + this.limit + ' file(s)', '', {
         duration: 5000
       });
       return;
@@ -65,7 +67,9 @@ export class FileUploadDirective {
     if (!this._fileDropped(file.name) && this._isImage(file.type)) {
       return true;
     } else {
-      this.snackBar.open('Drop files of type image only');
+      this.snackBar.open('Drop files of type image only', '', {
+        duration: 5000
+      });
       return false;
     }
   }
@@ -78,10 +82,13 @@ export class FileUploadDirective {
   private _fileDropped(fileName: string): boolean {
     for (const file of this.files) {
       if (file.fileName === fileName) {
-        console.log('exists');
+        this.snackBar.open('The file has alredy been uploaded', '', {
+          duration: 5000
+        });
         return true;
       }
     }
+    return false;
   }
 
   private _isImage(fileType: string): boolean {

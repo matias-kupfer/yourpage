@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../core/services/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {User} from '../../class/user';
@@ -19,7 +19,7 @@ import {ChangePictureComponent} from './change-picture/change-picture.component'
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  userData: User = null;
+  public userData: User = null;
   public userName = this.route.snapshot.paramMap.get('userName');
   public isUserProfile = true;
   private notifier: NotifierService;
@@ -63,8 +63,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.firestoreService.getUserByUserName(this.userName)
       .onSnapshot((doc) => {
         if (doc.docs[0]) {
-          const updatedUser: User = doc.docs[0].data();
-          this.userData = updatedUser;
+          this.userData = doc.docs[0].data();
         }
       });
   }
@@ -93,25 +92,25 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public editProfilePicture() {
     const dialogRef = this.dialog.open(ChangePictureComponent, {
       width: '500px',
-      data: this.userData
+      data: this.userData,
     });
 
-    dialogRef.afterClosed().subscribe((result: User) => {
-      if (!result || result.accountInfo.imageUrl === this.userData.accountInfo.imageUrl) {
-        this.snackBar.open('No changes were made', '', {
-          duration: 5000
-        });
-      } else {
-        this.snackBar.open('Profile picture updated successfuly!', '', {
-          duration: 5000
-        });
-        this.updateUserData(result);
-      }
-    });
+    // dialogRef.afterClosed().subscribe((result: User) => {
+    //   console.log(result)
+    //   if (!result || result.accountInfo.imageUrl === this.userData.accountInfo.imageUrl) {
+    //     this.snackBar.open('No changes were made', '', {
+    //       duration: 5000
+    //     });
+    //   } else {
+    //     this.snackBar.open('Profile picture updated successfuly!', '', {
+    //       duration: 5000
+    //     });
+    //   }
+    // });
   }
 
   public updateUserData(updatedUser: User) {
-    this.firestoreService.updateUserData(updatedUser);
+    this.firestoreService.updateUserData(updatedUser).then(res => console.log(res));
   }
 
   // MAP
