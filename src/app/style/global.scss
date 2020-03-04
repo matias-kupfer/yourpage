@@ -14,12 +14,13 @@ app-loader {
 mat-icon {
   vertical-align: middle;
 }
+
 /* Drop Zone */
 .drop-zone {
   border: dotted 3px lightgray;
   opacity: 0.5;
   color: #666;
-  height: 200px;
+  height: 50px;
   text-align: center;
   background-image: url("https://colorlib.com/wp/wp-content/uploads/sites/2/jquery-file-upload-scripts.png");
   background-position: center;
@@ -35,6 +36,13 @@ mat-icon {
   margin-top: 30px;
 }
 
+.progress-bar {
+  background-color: green;
+  height: 10px;
+  width: 1px;
+  border: 1px solid green;
+}
+
 .text-green {
   color: green
 }
@@ -47,7 +55,7 @@ mat-icon {
   color: #737373;
   border-radius: 5px;
   white-space: nowrap;
-  box-shadow: 1px 1px 0px 1px rgba(0,0,0,0.05);
+  box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
   transition-property: background-color, box-shadow;
   transition-duration: 150ms;
   transition-timing-function: ease-in-out;
@@ -55,7 +63,7 @@ mat-icon {
 
   &:focus,
   &:hover {
-    box-shadow: 1px 4px 5px 1px rgba(0,0,0,0.1);
+    box-shadow: 1px 4px 5px 1px rgba(0, 0, 0, 0.1);
   }
 
   &:active {
@@ -84,5 +92,5 @@ mat-icon {
   padding: 0 24px;
   font-size: 14px;
   font-weight: bold;
-  font-family: 'Roboto',arial,sans-serif;
+  font-family: 'Roboto', arial, sans-serif;
 }

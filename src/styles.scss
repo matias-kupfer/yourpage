@@ -1,18 +1,18 @@
 @import "app/style/variables";
 @import "~angular-notifier/styles.css";
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,800&display=swap');
+//@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,800&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,600,800&display=swap');
 
 html, body {
   height: 100%;
 }
 
 * {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Nunito' ;
 }
 
 body {
   margin: 0;
-  background-color: #f7fafc;
 }
 
 mat-toolbar {

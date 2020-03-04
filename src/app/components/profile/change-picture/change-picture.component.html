@@ -19,21 +19,24 @@
     <th>File name</th>
     <th>Size</th>
     <th>Progress</th>
+    <th>Progress num</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let file of files">
+    <td><img [src]="file.previewUrl" style="width: 50px; margin-right: 5px;"></td>
     <td>{{file.fileName}}</td>
-    <td>{{file.file.size / 1024 / 1024 | number: '.2-2'}} MB</td>
+    <!--    <td>{{file.file.size / 1024 / 1024 | number: '.2-2'}} MB</td>-->
     <td>
-      <div class="progress">
-        <div class="progress-bar" role="progressbar" [ngStyle]="{'width': file.progress + '%'}"></div>
-      </div>
+      <div class="progress-bar" [ngStyle]="{'width': file.progress + '%'}"></div>
+    </td>
+    <td>
+      {{file.progress}}
     </td>
   </tr>
   </tbody>
 </table>
 <div mat-dialog-actions>
-  <button mat-button color="warn" cdkFocusInitial [mat-dialog-close]>Close</button>
+  <button mat-button color="warn" [mat-dialog-close]>Close</button>
 </div>
 <!--TODO input type file-->

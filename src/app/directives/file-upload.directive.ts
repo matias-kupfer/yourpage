@@ -47,7 +47,7 @@ export class FileUploadDirective {
 
   private _getFiles(filesList: FileList) {
     if (filesList.length > this.limit) {
-      this.snackBar.open('The limit is ' + this.limit + ' file(s)', '', {
+      this.snackBar.open('Files remaining is ' + this.limit + ' file(s)', '', {
         duration: 5000
       });
       return;
@@ -57,19 +57,29 @@ export class FileUploadDirective {
       const tempFile = filesList[property];
 
       if (this._canUpload(tempFile)) {
-        const newFile = new UploadFile(tempFile);
-        this.files.push(newFile);
+        const reader = new FileReader();
+        reader.readAsDataURL(tempFile);
+        reader.onloadend = () => {
+          const newFile = new UploadFile(tempFile, reader.result);
+          this.files.push(newFile);
+        };
       }
     }
   }
 
   private _canUpload(file: File): boolean {
-    if (!this._fileDropped(file.name) && this._isImage(file.type)) {
+    if (this._isImage(file.type) && !this._fileDropped(file.name)) {
       return true;
     } else {
-      this.snackBar.open('Drop files of type image only', '', {
-        duration: 5000
-      });
+      if (!this._isImage(file.type)) {
+        this.snackBar.open('Drop files of type image only', '', {
+          duration: 5000
+        });
+      } else {
+        this.snackBar.open('The file has already been uploaded', '', {
+          duration: 5000
+        });
+      }
       return false;
     }
   }
