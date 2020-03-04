@@ -15,7 +15,6 @@ import UserCredential = firebase.auth.UserCredential;
   providedIn: 'root'
 })
 export class AuthService {
-  public db = firebase.firestore();
   public user$: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   public isSetUp: boolean = null;
   public isLoggedIn: boolean = null;
@@ -53,11 +52,14 @@ export class AuthService {
           }
           this.router.navigate([DefaultRoutes.OnLogin]);
         }
-      }).catch((error) => console.log(error));
+      }).catch((error) => {
+        console.log(error);
+        this.notifier.notify('warning', 'Error trying to login, check your conexion and try again.');
+      });
   }
 
-  async userDataSubscription(): Promise<any> {
-    return this.fireAuth.user.subscribe(firebaseUser => {
+  public userDataSubscription(): void {
+    this.fireAuth.user.subscribe(firebaseUser => {
       if (firebaseUser) {
         this.firestoreService.getUserById(firebaseUser.uid)
           .onSnapshot(res => {
@@ -90,7 +92,7 @@ export class AuthService {
     this.user$.next(null);
     this.isSetUp = null;
     this.notifier.notify('default', 'Successfully logged out');
-    this.router.navigate([DefaultRoutes.OnLogOut]);
+    await this.router.navigate([DefaultRoutes.OnLogOut]);
   }
 }
 

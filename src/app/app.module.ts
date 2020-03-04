@@ -43,14 +43,15 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoaderComponent} from './components/loader/loader.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatBadgeModule} from '@angular/material/badge';
-import { UsersListComponent } from './components/users-list/users-list.component';
+import {UsersListComponent} from './components/users-list/users-list.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
-import { NewPostSelectorComponent } from './components/new-post-selector/new-post-selector.component';
-import { NewTextPostComponent } from './components/new-post/new-text-post/new-text-post.component';
-import { FileUploadDirective } from './directives/file-upload.directive';
-import { ChangePictureComponent } from './components/profile/change-picture/change-picture.component';
-import { NewUserDataComponent } from './components/profile/new-user-data/new-user-data.component';
+import {NewPostSelectorComponent} from './components/new-post/new-post-selector/new-post-selector.component';
+import {NewTextPostComponent} from './components/new-post/new-text-post/new-text-post.component';
+import {FileUploadDirective} from './directives/file-upload.directive';
+import {ChangePictureComponent} from './components/profile/change-picture/change-picture.component';
+import {NewUserDataComponent} from './components/profile/new-user-data/new-user-data.component';
+import {NewImagePostComponent} from './components/new-post/new-image-post/new-image-post.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import { NewUserDataComponent } from './components/profile/new-user-data/new-use
     EditPointerComponent,
     ChangePictureComponent,
     NewPostSelectorComponent,
-    NewTextPostComponent
+    NewTextPostComponent,
+    NewImagePostComponent
   ],
   declarations: [
     AppComponent,
@@ -78,6 +80,7 @@ import { NewUserDataComponent } from './components/profile/new-user-data/new-use
     FileUploadDirective,
     ChangePictureComponent,
     NewUserDataComponent,
+    NewImagePostComponent,
   ],
   imports: [
     BrowserModule,

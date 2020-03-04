@@ -8,7 +8,7 @@ import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import {NotificationData} from './interfaces/notificationData';
 import {fadeAnimation} from './interfaces/routeAnimation';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
-import {NewPostSelectorComponent} from './components/new-post-selector/new-post-selector.component';
+import {NewPostSelectorComponent} from './components/new-post/new-post-selector/new-post-selector.component';
 
 @Component({
   selector: 'app-root',

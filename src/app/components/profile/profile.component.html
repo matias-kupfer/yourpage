@@ -2,7 +2,7 @@
   <div class="header">
 
     <div class="float-left">
-      <img  class="radius" *ngIf="userData.accountInfo.imageUrl; else noPicture"
+      <img class="radius" *ngIf="userData.accountInfo.imageUrl; else noPicture"
            [src]="userData.accountInfo.imageUrl"
            (click)="editProfilePicture()">
       <!--        <mat-icon (click)="editProfilePicture()">edit</mat-icon>-->
@@ -99,7 +99,27 @@
   </agm-map>
 </div>
 
+<!--POSTS-->
+<h1>posts:</h1>
+<mat-form-field>
+  <mat-label>order</mat-label>
+  <mat-select (selectionChange)="orderBy($event.value)">
+    <mat-option value="asc" selected>ascend</mat-option>
+    <mat-option value="desc">desc</mat-option>
+  </mat-select>
+</mat-form-field>
 
+<div *ngFor="let post of userImagePosts;">
+  <ng-container *ngIf="post.imagesUrls.length">
+    <h1>{{post.title}}</h1>
+    <h3>{{post.date.seconds * 1000| date:'d/M/yy, h:mm'}}</h3>
+    <img style="width: 200px; height: auto" src="{{post.imagesUrls[0]}}" (load)="x()">
+    <hr>
+  </ng-container>
+</div>
+
+
+<!-- LOADER -->
 <ng-template #loader>
   <app-loader></app-loader>
 </ng-template>

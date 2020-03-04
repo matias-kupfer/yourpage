@@ -11,6 +11,9 @@ import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {EditPointerComponent} from './edit-pointer/edit-pointer.component';
 import {Pointer} from '../../interfaces/pointer';
 import {ChangePictureComponent} from './change-picture/change-picture.component';
+import {ImagePost} from '../../class/imagePost';
+import {BehaviorSubject} from 'rxjs';
+import OrderByDirection = firebase.firestore.OrderByDirection;
 
 
 @Component({
@@ -20,6 +23,7 @@ import {ChangePictureComponent} from './change-picture/change-picture.component'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   public userData: User = null;
+  public userImagePosts: ImagePost[] = null;
   public userName = this.route.snapshot.paramMap.get('userName');
   public isUserProfile = true;
   private notifier: NotifierService;
@@ -38,6 +42,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.userImagePostsSubscription();
     if (this.userName) {
       this.isUserProfile = false;
       this.getUserByUsername();
@@ -55,6 +60,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe((doc) => {
         this.ngZone.run(() => {
           this.userData = doc;
+        });
+      });
+  }
+
+  userImagePostsSubscription() {
+    this.firestoreService.imagePosts$
+      .subscribe((doc: ImagePost[]) => {
+        this.ngZone.run(() => {
+          this.userImagePosts = doc;
         });
       });
   }
@@ -86,6 +100,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.updateUserData(result);
       }
     });
+  }
+
+  // POSTS
+  public orderBy(value: OrderByDirection) {
+    this.firestoreService.postsOrder$.next(value);
+  }
+
+  x() {
   }
 
   // EDIT PROFILE PICTURE

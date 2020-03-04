@@ -1,10 +1,17 @@
-import {forwardRef, inject, Inject, Injectable, NgZone} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AngularFirestore, AngularFirestoreDocument, DocumentData} from '@angular/fire/firestore';
 import {User} from '../../class/user';
-import {AuthService} from './auth.service';
 import * as firebase from 'firebase';
 import {Pointer} from '../../interfaces/pointer';
 import {UploadFile} from '../../class/uploadFile';
+import {NotifierService} from 'angular-notifier';
+import {ImagePost} from '../../class/imagePost';
+import {Reference} from '@angular/fire/storage/interfaces';
+import {BehaviorSubject} from 'rxjs';
+import {AngularFireAuth} from '@angular/fire/auth';
+import CollectionReference = firebase.firestore.CollectionReference;
+import QuerySnapshot = firebase.firestore.QuerySnapshot;
+import OrderByDirection = firebase.firestore.OrderByDirection;
 
 @Injectable({
   providedIn: 'root'
@@ -12,20 +19,60 @@ import {UploadFile} from '../../class/uploadFile';
 export class FirestoreService {
   public db = firebase.firestore();
   public storageRef = firebase.storage().ref();
-  public storageProfileImageReference = 'images/profileImages/';
+  public imagePosts$: BehaviorSubject<ImagePost[]> = new BehaviorSubject<ImagePost[]>([]);
+  public postsOrder$: BehaviorSubject<OrderByDirection> = new BehaviorSubject<OrderByDirection>('desc');
+  public userId: string = null;
+  private notifier: NotifierService;
+  readonly storageImgRef: string[] = ['/images/profileImage/', '/images/posts/'];
+  x: ImagePost[] = [];
 
-  constructor() {
+  constructor(notifier: NotifierService, fireAuth: AngularFireAuth) {
+    this.notifier = notifier;
+    fireAuth.user.subscribe(user => {
+      this.userId = user.uid;
+      this.imagePostSubscription();
+      this.postsOrder$.subscribe(() => {
+        this.imagePostSubscription();
+      });
+    });
+
   }
 
-  public updateUserData(user: User) {
-    this.db.collection('users').doc(user.personalInfo.userId).set(user, {
-      merge: true
-    });
+  public imagePostSubscription(): void {
+    this.getPostsByUserId(this.userId)
+      .onSnapshot((res: QuerySnapshot<ImagePost>) => {
+        if (res) {
+          this.imagePosts$.next([]);
+          res.forEach(post => this.imagePosts$.next(this.imagePosts$.getValue().concat(post.data())));
+        }
+      });
+  }
+
+  public getUserById(userId: string): DocumentData {
+    return this.db.collection('users').doc(userId);
+  }
+
+  public getPostsByUserId(userId: string): DocumentData {
+    return this.db.collection('users').doc(userId).collection('posts')
+      .orderBy('date', this.postsOrder$.getValue()).limit(10);
   }
 
   public getUserByUserName(userName: string): DocumentData {
     return this.db.collection('users')
       .where('accountInfo.userName', '==', userName).limit(1);
+  }
+
+  public updateUserData(user: User): Promise<void> {
+    return this.db.collection('users').doc(user.personalInfo.userId).set(user, {
+      merge: true
+    });
+  }
+
+  public updatePost(imagePost: ImagePost, user: User): Promise<void> {
+    return this.db.collection('users').doc(user.personalInfo.userId)
+      .collection('posts').doc(imagePost.postId).set(imagePost, {
+        merge: true
+      });
   }
 
   public addMapPointer(newPointer: Pointer, userId: string) {
@@ -44,35 +91,74 @@ export class FirestoreService {
     return this.db.collection('users');
   }
 
-  public getUserById(userId: string): DocumentData {
-    return this.db.collection('users').doc(userId);
+  public newImagePost(newImagePost: ImagePost, images: UploadFile[], user: User) {
+    this.db.collection(`users/${user.personalInfo.userId}/posts`).add(newImagePost)
+      .then(response => {
+        newImagePost.postId = response.id;
+        newImagePost.date = new Date();
+        this.uploadImagesFirebase(images, user, newImagePost);
+      }).catch((e) => {
+      console.error(e);
+      this.notifier.notify('warning', 'Error trying to save post to subcollection');
+    });
   }
 
-  public uploadImagesFirebase(images: UploadFile[], user: User) {
-    // path to save location as parameter so this can be used to upload any type of picture
-    for (const item of images) {
-      item.uploading = true;
-      if (item.progress >= 100) {
+  public uploadImagesFirebase(images: UploadFile[], user: User, newImagePost: ImagePost = null) {
+    // let uploadTask: firebase.storage.UploadTask;
+    let uploadTask: Reference;
+    for (const image of images) {
+      image.uploading = true;
+      if (image.progress >= 100) {
         continue;
       }
-      const uploadTask: firebase.storage.UploadTask =
-        this.storageRef.child(`${this.storageProfileImageReference}${user.personalInfo.userId}`)
-          .put(item.file);
+      if (newImagePost === null) { // update profile picture
+        uploadTask = this.storageRef.child(`users/${user.personalInfo.userId}${this.storageImgRef[0]}${user.personalInfo.userId}`);
+      }
+      if (newImagePost) { // new image post
+        uploadTask = this.storageRef.child(`users/${user.personalInfo.userId}${this.storageImgRef[1]}${newImagePost.postId}/${image.fileName}`);
+      }
 
-      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-        (snapshot: firebase.storage.UploadTaskSnapshot) =>
-          item.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
-        (error) => console.error('error on upload ', error),
+      uploadTask.put(image.file).then((snapshot: firebase.storage.UploadTaskSnapshot) => {
+        image.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        snapshot.ref.getDownloadURL().then(
+          (response: any) => {
+            image.url = response;
+            image.uploading = false;
+            if (newImagePost === null) {
+              user.accountInfo.imageUrl = image.url;
+              this.updateUserData(user);
+            }
+            if (newImagePost) {
+              newImagePost.imagesUrls.push(image.url);
+              this.updatePost(newImagePost, user);
+            }
+          }
+        );
+      }).catch((e) => {
+        this.notifier.notify('default', 'Error uploading file');
+        console.log(e);
+      });
+
+      /*uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot: firebase.storage.UploadTaskSnapshot) => {
+          image.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        }, (e) => this.notifier.notify('default', 'Error uploading file'),
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(
             (response: any) => {
-              item.url = response;
-              item.uploading = false;
-              user.accountInfo.imageUrl = item.url;
-              this.updateUserData(user);
+              console.log(response);
+              image.url = response;
+              image.uploading = false;
+              if (newImagePost === null) {
+                user.accountInfo.imageUrl = image.url;
+                this.updateUserData(user);
+              }
+              if (newImagePost) {
+                newImagePost.imagesUrls.push(image.url);
+                this.updatePost(newImagePost, user);
+              }
             }
           );
-        });
+        });*/
     }
   }
 }

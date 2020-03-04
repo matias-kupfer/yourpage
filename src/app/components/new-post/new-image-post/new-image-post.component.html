@@ -1,0 +1,78 @@
+<h1>New image post</h1>
+<h3>Select files</h3>
+<div *ngIf="files.length < filesLimit" appFileUpload [files]="files" [limit]="filesLimit - files.length"
+     (customMouseOver)="hover = $event"
+     [ngClass]="{'file-over': hover}"
+     class="well drop-zone file-over">
+</div>
+<br>
+
+<table class="table" *ngIf="files.length">
+  <tr>
+    <th>File name</th>
+    <th>Size</th>
+    <th>Progress</th>
+    <th>Progress num</th>
+  </tr>
+  <tbody>
+  <tr *ngFor="let file of files">
+    <td><img [src]="file.previewUrl" style="width: 50px; margin-right: 5px;"></td>
+    <td>{{file.fileName}}</td>
+    <td>
+      <div class="progress-bar" [ngStyle]="{'width': file.progress + '%'}"></div>
+    </td>
+    <td>
+      {{file.progress}}
+    </td>
+  </tr>
+  </tbody>
+</table>
+<button mat-raised-button color="accent" [disabled]="files.length === 0">Upload</button>
+<button mat-raised-button color="warn" (click)="files = []">empty</button>
+<br>
+<br>
+
+<form [formGroup]="newPostForm">
+  <mat-form-field style="width: 100%">
+    <mat-label>Post title</mat-label>
+    <label>
+      <input matInput formControlName="title"
+             placeholder="My trip to mars"
+             style="width: 100%; font-size: 40px;">
+    </label>
+    <mat-error *ngIf="title.errors && title.errors.required">
+      Title is <strong>required.</strong>
+    </mat-error>
+    <mat-error *ngIf="title.errors && title.errors.maxlength">
+      Title is too <strong>long.</strong>
+    </mat-error>
+  </mat-form-field>
+  <br>
+  <br>
+  <mat-form-field style="width: 100%">
+    <mat-label>Caption</mat-label>
+    <label>
+    <textarea matInput formControlName="caption"
+              cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="3"
+              placeholder="I forgot the oxygen..."
+              style="width: 100%; font-size: 25px"></textarea>
+    </label>
+    <mat-hint align="end">
+          <span
+            [ngStyle]="{'color': caption.value.length > '200' ? 'red' : caption.value.length > 180 ? 'orange' : 'green' }"
+            *ngIf="caption.value; else zero">
+            {{caption.value.length}}
+          </span>
+      <ng-template #zero>0</ng-template>
+      / 200
+    </mat-hint>
+    <mat-error *ngIf="caption.errors && caption.errors.maxlength">
+      Caption is too <strong>long.</strong>
+    </mat-error>
+  </mat-form-field>
+  <button mat-raised-button color="accent" (click)="post()" [disabled]="!newPostForm.valid">Post</button>
+</form>
+
+<div mat-dialog-actions>
+  <button mat-button color="warn" [mat-dialog-close]>Close</button>
+</div>
