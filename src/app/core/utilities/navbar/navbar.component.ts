@@ -1,8 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
-import {DefaultRoutes} from '../../../enums/default.routes';
-import {User} from '../../../class/user';
-import {FirestoreService} from '../../services/firestore.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,20 +8,28 @@ import {FirestoreService} from '../../services/firestore.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  public userData = this.authService.user$.getValue();
 
-  public onLoginButtonClick: string = DefaultRoutes.OnLoginButtonClick;
-  public onSignUpButtonClick: string = DefaultRoutes.OnSignupButtonClick;
-  public onProfileButtonClick: string = DefaultRoutes.OnProfileButtonClick;
-
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private ngZone: NgZone) {
 
   }
 
   ngOnInit(): void {
+    this.userDataSubscription();
   }
 
   public onLogout() {
     this.authService.onLogout();
   }
+
+  userDataSubscription() {
+    this.authService.user$
+      .subscribe((doc) => {
+        this.ngZone.run(() => {
+          this.userData = doc;
+        });
+      });
+  }
+
 
 }

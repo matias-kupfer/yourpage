@@ -11,6 +11,11 @@ app-loader {
   right: 0;
 }
 
+app-image {
+  margin: auto;
+  display: block;
+}
+
 mat-icon {
   vertical-align: middle;
 }
@@ -93,4 +98,20 @@ mat-icon {
   font-size: 14px;
   font-weight: bold;
   font-family: 'Roboto', arial, sans-serif;
+}
+
+/* IMAGES */
+.side-bar-profile-picture {
+  display: block;
+  margin: auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.small-profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  vertical-align: middle;
 }

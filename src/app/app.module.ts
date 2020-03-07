@@ -22,6 +22,13 @@ import {NavbarComponent} from './core/utilities/navbar/navbar.component';
 import {SignupComponent} from './components/loginAndsignup/signup/signup.component';
 import {EditProfileComponent} from './components/profile/edit-profile/edit-profile.component';
 import {EditPointerComponent} from './components/profile/edit-pointer/edit-pointer.component';
+import {NewPostSelectorComponent} from './components/new-post/new-post-selector/new-post-selector.component';
+import {NewTextPostComponent} from './components/new-post/new-text-post/new-text-post.component';
+import {FileUploadDirective} from './directives/file-upload.directive';
+import {ChangePictureComponent} from './components/profile/change-picture/change-picture.component';
+import {NewUserDataComponent} from './components/profile/new-user-data/new-user-data.component';
+import {NewImagePostComponent} from './components/new-post/new-image-post/new-image-post.component';
+import {ImageComponent} from './core/utilities/image/image.component';
 
 import {NotifierModule, NotifierOptions} from 'angular-notifier';
 import {AgmCoreModule} from '@agm/core';
@@ -40,18 +47,12 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {LoaderComponent} from './components/loader/loader.component';
+import {LoaderComponent} from './core/utilities/loader/loader.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatBadgeModule} from '@angular/material/badge';
 import {UsersListComponent} from './components/users-list/users-list.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
-import {NewPostSelectorComponent} from './components/new-post/new-post-selector/new-post-selector.component';
-import {NewTextPostComponent} from './components/new-post/new-text-post/new-text-post.component';
-import {FileUploadDirective} from './directives/file-upload.directive';
-import {ChangePictureComponent} from './components/profile/change-picture/change-picture.component';
-import {NewUserDataComponent} from './components/profile/new-user-data/new-user-data.component';
-import {NewImagePostComponent} from './components/new-post/new-image-post/new-image-post.component';
 
 
 @NgModule({
@@ -81,6 +82,7 @@ import {NewImagePostComponent} from './components/new-post/new-image-post/new-im
     ChangePictureComponent,
     NewUserDataComponent,
     NewImagePostComponent,
+    ImageComponent,
   ],
   imports: [
     BrowserModule,

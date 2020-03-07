@@ -1,28 +1,94 @@
+@import "style/global";
 @import "style/variables";
 
 mat-drawer-container {
-  background-color: $background-blue;
   min-height: 100%;
 
   mat-drawer {
     width: 250px;
     position: fixed;
-    box-shadow: $material-shadow;
+    color: $lightGray;
+    overflow: auto;
 
-    img {
-      margin: 15px auto 40px;
+    img.logo {
+      margin: 20px auto 10px;
       display: block;
       width: 150px;
       height: auto;
     }
 
-    .side-nav-container {
-      padding: 5px 20px;
+    hr {
+      margin: 20px;
+      border: 0.5px solid $lightGray;
     }
+
+    span {
+      vertical-align: middle;
+    }
+
+    h3.category {
+      font-size: 1em;
+      font-weight: 600;
+      font-variant: small-caps;
+      margin: 10px 20px;
+    }
+
+    div.nav-button {
+      padding: 2px 0;
+      margin: 6px 0;
+      border-left: 4px solid transparent;
+      cursor: pointer;
+      outline: none;
+
+      div {
+        margin: 10px 20px;
+
+        mat-icon {
+          color: $accent;
+          font-size: 1.5em;
+        }
+
+        span {
+          margin-left: 15px;
+          font-size: 1em;
+
+          &:hover {
+            color: $darkGray;
+          }
+        }
+      }
+    }
+
+    .active {
+      border-left: 4px solid $accent !important;
+
+      span {
+        font-weight: 600;
+      }
+    }
+
+    h3.username {
+      font-size: 1.5em;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    table {
+      margin: auto;
+
+      td {
+        font-variant: small-caps;
+        font-size: 1em;
+      }
+    }
+  }
+
+  main {
+    margin: 30px;
   }
 }
 
-button {
+button.add-post {
   position: fixed;
   bottom: 10px;
   right: 10px;

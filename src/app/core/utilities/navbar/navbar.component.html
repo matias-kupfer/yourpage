@@ -1,26 +1,17 @@
 <mat-toolbar>
-  <button mat-button [routerLink]="'home'" routerLinkActive="active">
-    <span>Home</span>
-  </button>
-  <button mat-button [routerLink]="'users'" routerLinkActive="active">
-    <span>Users</span>
-  </button>
-  <button mat-button *ngIf="this.authService.isLoggedIn" routerLinkActive="active"
-          [routerLink]="onProfileButtonClick">
-    <span>Profile</span>
-  </button>
-
   <span class="spacer"></span>
-  <button *ngIf="this.authService.isLoggedIn; else showLoginButton" (click)="onLogout()" mat-button>
-    <mat-icon>power_settings_new</mat-icon>
-    <span>Logout</span>
-  </button>
-  <ng-template #showLoginButton>
-    <button mat-button [routerLink]="onLoginButtonClick" routerLinkActive="active">
-      <span>Log in</span>
+  <div class="card" [matMenuTriggerFor]="menu">
+    <app-image [image]="userData.accountInfo.imageUrl"
+               [class]="'small-profile-picture'"></app-image>
+    <span>{{userData.personalInfo.name}}
+      {{userData.personalInfo.lastName}}</span>
+  </div>
+  <mat-menu #menu="matMenu" xPosition="after">
+    <button mat-menu-item (click)="onLogout()">
+      <mat-icon style="color: #D51B1B">power_settings_new</mat-icon>
+      <span>Logout</span>
     </button>
-    <button mat-button [routerLink]="onSignUpButtonClick" routerLinkActive="active">
-      <span>Sign up</span>
-    </button>
-  </ng-template>
+  </mat-menu>
 </mat-toolbar>
+
+
