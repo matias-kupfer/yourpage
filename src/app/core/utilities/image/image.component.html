@@ -1,0 +1,2 @@
+<mat-spinner *ngIf="imageLoader" color="accent"></mat-spinner>
+<img [hidden]="imageLoader" [src]="image" (load)="this.imageLoader = false" [ngClass]="class">
