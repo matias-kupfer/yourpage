@@ -1,13 +1,15 @@
 @import '../../../node_modules/@angular/material/theming';
 // own
 $darkGray: #202124;
+$medGray: #343434;
 $lightGray: #707070;
-$white: white;
+$white: #FFF;
 
 $primary: map-get($mat-gray, 900);
-$accent: map-get($mat-purple, 800);
+$accent: map-get($mat-purple, 700);
 
 
 $gradient: linear-gradient(90deg, rgba(33,182,168,1) 0%, rgba(17,101,48,1) 100%);
-$background-blue: #f8f9fe;
 $material-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+

@@ -2,7 +2,7 @@
 
 mat-toolbar {
   height: 80px;
-  background-color: white;
+  background-color: $darkGray;
 
   .spacer {
     flex: 1 1 auto;
@@ -21,7 +21,7 @@ mat-toolbar {
       color: $lightGray;
 
       &:hover {
-        color: $darkGray;
+        color: white;
       }
     }
   }

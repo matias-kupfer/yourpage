@@ -2,10 +2,11 @@
 
   <!--  AUTH STATUS KNOWN -->
   <mat-drawer-container *ngIf="!this.authService.isLoggedIn ||
-    this.authService.isLoggedIn && authService.isSetUp !== null && userData !== null">
+    this.authService.isLoggedIn && authService.isSetUp !== null && userData !== null" autosize>
     <mat-drawer mode="side" opened *ngIf="this.authService.isLoggedIn && this.authService.isSetUp">
+
       <!-- LOGGED IN AND SET UP-->
-      <img src="../assets/images/kleanLogo.png" class="logo"/>
+      <img src="../assets/images/kleanLogoWhite.png" class="logo"/>
       <hr>
       <h3 class="category">NAVIGATION</h3>
       <div class="nav-button" *ngFor="let link of navigationLinks" [routerLink]="link.componentName"
@@ -43,7 +44,7 @@
 
     <!-- NOT LOGGED IN -->
     <mat-drawer mode="side" opened *ngIf="!this.authService.isLoggedIn">
-      <img src="../assets/images/kleanLogo.png" class="logo"/>
+      <img src="../assets/images/kleanLogoWhite.png" class="logo"/>
       <hr>
       <h3 class="category">NAVIGATION</h3>
       <div class="nav-button" *ngFor="let link of navigationLinksNotLoggedIn" [routerLink]="link.componentName"
@@ -57,7 +58,7 @@
 
     <!-- CONTENT -->
     <mat-drawer-content>
-      <app-navbar></app-navbar>
+      <app-navbar *ngIf="this.authService.isLoggedIn"></app-navbar>
       <main [@fadeAnimation]="getRouterOutletState(o)">
         <router-outlet #o="outlet"></router-outlet>
       </main>
@@ -70,3 +71,4 @@
   this.authService.isLoggedIn && (authService.isSetUp === null || userData === null)"></app-loader>
 
 <notifier-container></notifier-container>
+

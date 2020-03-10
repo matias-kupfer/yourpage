@@ -1,16 +1,16 @@
-import {Component, Inject, NgZone, OnInit} from '@angular/core';
-import {DefaultRoutes} from './enums/default.routes';
+import {Component, NgZone, OnInit} from '@angular/core';
 import {AuthService} from './core/services/auth.service';
 import {FirestoreService} from './core/services/firestore.service';
 import {User} from './class/user';
 import {SnackbarService} from './core/services/snackbar.service';
-import {MatSnackBar} from '@angular/material';
-import {Router, RouterLink, RouterOutlet} from '@angular/router';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {Router} from '@angular/router';
 import {NotificationData} from './interfaces/notificationData';
 import {fadeAnimation} from './interfaces/routeAnimation';
-import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
-import {NewPostSelectorComponent} from './components/new-post/new-post-selector/new-post-selector.component';
+import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {SideNavActions, SideNavLinks} from './interfaces/sideNavLinks';
+import {EditProfileComponent} from './components/profile/edit-profile/edit-profile.component';
+import {NewImagePostComponent} from './components/new-post/new-image-post/new-image-post.component';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +23,6 @@ import {SideNavActions, SideNavLinks} from './interfaces/sideNavLinks';
 export class AppComponent implements OnInit {
   title = 'yourpage | By: Matias Kupfer';
   userData: User = null;
-  localStorageUser: User = JSON.parse(localStorage.getItem('user'));
   navigationLinks: SideNavLinks[];
   navigationLinksNotLoggedIn: SideNavLinks[];
   actions: SideNavActions[];
@@ -36,6 +35,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private bottomSheet: MatBottomSheet,
     private ngZone: NgZone,
+    public dialog: MatDialog,
   ) {
     this.notificationService.notification$.subscribe((notificationData: NotificationData) => {
       this.snackBar.open(notificationData.message, notificationData.button, {
@@ -58,8 +58,9 @@ export class AppComponent implements OnInit {
   }
 
   openNewPostSelector(): void {
-    this.bottomSheet.open(NewPostSelectorComponent, {
-      data: this.localStorageUser
+    const dialogRef = this.dialog.open(NewImagePostComponent, {
+      width: '700px',
+      data: this.userData
     });
   }
 
@@ -74,6 +75,30 @@ export class AppComponent implements OnInit {
 
   public onLogout() {
     this.authService.onLogout();
+  }
+
+  public editProfile() {
+    const dialogRef = this.dialog.open(EditProfileComponent, {
+      width: '700px',
+      data: this.userData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        this.snackBar.open('No changes were made', '', {
+          duration: 5000
+        });
+      } else {
+        this.snackBar.open('Profile updated successfuly!', '', {
+          duration: 5000
+        });
+        this.updateUserData(result);
+      }
+    });
+  }
+
+  public updateUserData(updatedUser: User) {
+    this.firestoreService.updateUserData(updatedUser).then(res => console.log(res));
   }
 
   public sideNavInit() {
@@ -109,7 +134,7 @@ export class AppComponent implements OnInit {
         matIcon: 'settings',
         iconColor: '#DDD51C',
         text: 'Edit Profile',
-        action: 'openNewPostSelector',
+        action: 'editProfile',
       },
       {
         matIcon: 'edit',

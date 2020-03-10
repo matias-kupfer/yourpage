@@ -53,6 +53,8 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {UsersListComponent} from './components/users-list/users-list.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 
 
 @NgModule({
@@ -118,7 +120,8 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
     FormsModule,
     MatSidenavModule,
     MatBottomSheetModule,
-    MatListModule
+    MatListModule,
+    MatProgressBarModule
   ],
   providers: [
     AuthenticationGuard,

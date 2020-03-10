@@ -1,13 +1,15 @@
 @import "style/global";
 @import "style/variables";
+@import "style/theme";
 
 mat-drawer-container {
   min-height: 100%;
 
   mat-drawer {
+    background-color: $medGray;
+    color: $white;
     width: 250px;
     position: fixed;
-    color: $lightGray;
     overflow: auto;
 
     img.logo {
@@ -23,7 +25,7 @@ mat-drawer-container {
     }
 
     span {
-      vertical-align: middle;
+
     }
 
     h3.category {
@@ -34,11 +36,10 @@ mat-drawer-container {
     }
 
     div.nav-button {
-      padding: 2px 0;
+      padding: 1px 0;
       margin: 6px 0;
-      border-left: 4px solid transparent;
+      border-left: 3px solid transparent;
       cursor: pointer;
-      outline: none;
 
       div {
         margin: 10px 20px;
@@ -51,18 +52,21 @@ mat-drawer-container {
         span {
           margin-left: 15px;
           font-size: 1em;
+          vertical-align: middle;
+          color: #c9c9c9;
 
           &:hover {
-            color: $darkGray;
+            color: #e5e5e5;
           }
         }
       }
     }
 
     .active {
-      border-left: 4px solid $accent !important;
+      border-left: 3px solid $accent !important;
 
       span {
+        color: $white !important;
         font-weight: 600;
       }
     }
@@ -83,13 +87,31 @@ mat-drawer-container {
     }
   }
 
-  main {
-    margin: 30px;
+  mat-drawer-content {
+    background-color: $darkGray;
+
+    main {
+      //margin: 90px;
+      //border-radius: 14px;
+      //background-color: $medGray;
+      //box-shadow: $material-shadow;
+      //padding: 50px;
+    }
   }
+}
+
+app-navbar {
+  display: block;
 }
 
 button.add-post {
   position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+
+button.fixed {
+  position: absolute;
   bottom: 10px;
   right: 10px;
 }
