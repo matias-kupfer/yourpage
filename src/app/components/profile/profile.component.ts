@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public userName = this.route.snapshot.paramMap.get('userName');
   public isUserProfile = true;
   private notifier: NotifierService;
+  imageLoader = true;
 
   constructor(
     private authService: AuthService,
@@ -40,6 +41,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     public dialog: MatDialog) {
     this.notifier = notifier;
   }
+
 
   ngOnInit() {
     this.userImagePostsSubscription();
@@ -82,32 +84,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
       });
   }
 
-  public editProfile() {
-    const dialogRef = this.dialog.open(EditProfileComponent, {
-      width: '700px',
-      data: this.userData
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (!result) {
-        this.snackBar.open('No changes were made', '', {
-          duration: 5000
-        });
-      } else {
-        this.snackBar.open('Profile updated successfuly!', '', {
-          duration: 5000
-        });
-        this.updateUserData(result);
-      }
-    });
-  }
-
   // POSTS
   public orderBy(value: OrderByDirection) {
     this.firestoreService.postsOrder$.next(value);
   }
 
-  x() {
+  public deletePost(imagePostToDelete: ImagePost) {
+    this.firestoreService.deleteImagePost(imagePostToDelete).then(() => {
+      this.snackBar.open('Posted removed', 'dismiss', {
+        duration: 5000
+      });
+    });
   }
 
   // EDIT PROFILE PICTURE
@@ -155,7 +142,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (!result) {
         this.snackBar.open('Edit pointer canceled', '', {
-          duration: 5000
+          duration: 5000,
         });
         return;
       }

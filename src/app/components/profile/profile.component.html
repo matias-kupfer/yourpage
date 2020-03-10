@@ -2,13 +2,10 @@
   <div class="header">
 
     <div class="float-left">
-      <img class="radius" *ngIf="userData.accountInfo.imageUrl; else noPicture"
-           [src]="userData.accountInfo.imageUrl"
-           (click)="editProfilePicture()">
+      <app-image [image]="userData.accountInfo.imageUrl" [class]="'side-bar-profile-picture'"
+                 (click)="editProfilePicture()">
+      </app-image>
       <!--        <mat-icon (click)="editProfilePicture()">edit</mat-icon>-->
-      <ng-template #noPicture>
-        <img class="radius" src="https://i.stack.imgur.com/ZQT8Z.png" (click)="editProfilePicture()">
-      </ng-template>
       <br>
       <p>@{{userData.accountInfo.userName}}</p>
       <div class="social-div">
@@ -42,10 +39,7 @@
     <div class="float-right">
       <div class="right-content">
         <h1>{{userData.personalInfo.name + ' ' + userData.personalInfo.lastName|uppercase}}</h1>
-        <button mat-raised-button *ngIf="!isUserProfile; else editButton" color="accent">Follow</button>
-        <ng-template #editButton>
-          <button mat-stroked-button color="accent" (click)="editProfile()">Edit profile</button>
-        </ng-template>
+        <button mat-raised-button *ngIf="!isUserProfile" color="accent">Follow</button>
         <div class="description">
           <p>{{userData.accountInfo.bio}}</p>
         </div>
@@ -101,7 +95,7 @@
 
 <!--POSTS-->
 <h1>posts:</h1>
-<mat-form-field>
+<mat-form-field color="accent">
   <mat-label>order</mat-label>
   <mat-select (selectionChange)="orderBy($event.value)">
     <mat-option value="asc" selected>ascend</mat-option>
@@ -113,7 +107,10 @@
   <ng-container *ngIf="post.imagesUrls.length">
     <h1>{{post.title}}</h1>
     <h3>{{post.date.seconds * 1000| date:'d/M/yy, h:mm'}}</h3>
-    <img style="width: 200px; height: auto" src="{{post.imagesUrls[0]}}" (load)="x()">
+    <ng-container *ngFor="let postImageUrl of post.imagesUrls">
+      <app-image [image]="postImageUrl" [class]="'small-profile-picture'" style="margin: 5px"></app-image>
+    </ng-container>
+    <button mat-flat-button color="warn" (click)="deletePost(post)">Delete</button>
     <hr>
   </ng-container>
 </div>
@@ -124,3 +121,10 @@
   <app-loader></app-loader>
 </ng-template>
 <!--@todo ngif for social links-->
+
+<!--
+<img class="radius" *ngIf="userData.accountInfo.imageUrl; else noPicture"
+           [src]="userData.accountInfo.imageUrl"
+           (click)="editProfilePicture()"
+           [hidden]="imageLoader" (load)="this.imageLoader = false">
+-->

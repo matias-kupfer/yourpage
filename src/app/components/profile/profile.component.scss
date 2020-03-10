@@ -1,14 +1,18 @@
 @import "../../style/variables";
 @import "../../style/global";
+@import "../../style/theme";
 
 div.outter {
-  color: $darkGray;
+  //color: $darkGray;
+  //color: #E8E8E8;
 
   div.header {
-    background-color: white;
+    background-color: $medGray;
     width: 1000px;
-    margin: 2% auto;
+    margin: 30px auto;
     overflow: hidden;
+    border-radius: 14px;
+    padding: 10px;
     box-shadow: $material-shadow;
 
     div.float-left {
@@ -20,10 +24,6 @@ div.outter {
       img {
         width: 150px;
         height: 150px;
-      }
-
-      .radius {
-        border-radius: 50%;
       }
 
       p {
@@ -110,7 +110,13 @@ agm-map {
   width: 700px;
   margin: auto;
 
-  button {
-    margin-right: 5px;
+  .agm-info-window {
+    max-width: 200px;
+    background-color: $medGray;
+
+    button {
+      transform: scale(0.9);
+      margin-right: 5px;
+    }
   }
 }

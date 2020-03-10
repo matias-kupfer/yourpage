@@ -28,7 +28,7 @@
     <td>{{file.fileName}}</td>
     <!--    <td>{{file.file.size / 1024 / 1024 | number: '.2-2'}} MB</td>-->
     <td>
-      <div class="progress-bar" [ngStyle]="{'width': file.progress + '%'}"></div>
+      <mat-progress-bar mode="determinate" [value]="file.progress" color="accent"></mat-progress-bar>
     </td>
     <td>
       {{file.progress}}
@@ -36,6 +36,7 @@
   </tr>
   </tbody>
 </table>
+<mat-progress-bar mode="indeterminate" color="accent" *ngIf="uploading"></mat-progress-bar>
 <div mat-dialog-actions>
   <button mat-button color="warn" [mat-dialog-close]>Close</button>
 </div>

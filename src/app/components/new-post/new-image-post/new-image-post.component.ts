@@ -7,6 +7,8 @@ import {ImagePost} from '../../../class/imagePost';
 import {AuthService} from '../../../core/services/auth.service';
 import {FirestoreService} from '../../../core/services/firestore.service';
 import {User} from '../../../class/user';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-new-image-post',
@@ -18,10 +20,14 @@ export class NewImagePostComponent implements OnInit {
   files: UploadFile[] = [];
   filesLimit = 5;
   newPostForm: FormGroup;
+  disablePostButton = false;
 
-  constructor(private formBuilder: FormBuilder,
-              private authService: AuthService,
-              private firestoreService: FirestoreService) {
+  constructor(
+    public dialogRef: MatDialogRef<NewImagePostComponent>,
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private firestoreService: FirestoreService) {
   }
 
   ngOnInit() {
@@ -45,9 +51,25 @@ export class NewImagePostComponent implements OnInit {
   }
 
   public post() {
+    this.disablePostButton = !this.disablePostButton;
     const user: User = this.authService.user$.getValue();
     const newImagePost = new ImagePost(user.personalInfo.userId, this.title.value, this.caption.value);
-    this.firestoreService.newImagePost(JSON.parse(JSON.stringify(newImagePost)), this.files, this.authService.user$.getValue());
+    this.firestoreService.newImagePost(JSON.parse(JSON.stringify(newImagePost)), this.files, this.authService.user$.getValue())
+      .then(() => {
+        this.disablePostButton = !this.disablePostButton;
+        this.snackBar.open('Posted successfully', 'dismiss', {
+          duration: 5000
+        });
+        // this.dialogRef.close();
+      });
     // todo image description on each
+  }
+
+  public totalUploadProgress() {
+    let totalProgress = 0;
+    for (const file of this.files) {
+      totalProgress = (totalProgress + file.progress);
+    }
+    return totalProgress / this.files.length;
   }
 }

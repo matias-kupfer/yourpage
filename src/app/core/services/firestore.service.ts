@@ -29,11 +29,13 @@ export class FirestoreService {
   constructor(notifier: NotifierService, fireAuth: AngularFireAuth) {
     this.notifier = notifier;
     fireAuth.user.subscribe(user => {
-      this.userId = user.uid;
-      this.imagePostSubscription();
-      this.postsOrder$.subscribe(() => {
+      if (user !== null) {
+        this.userId = user.uid;
         this.imagePostSubscription();
-      });
+        this.postsOrder$.subscribe(() => {
+          this.imagePostSubscription();
+        });
+      }
     });
 
   }
@@ -54,7 +56,7 @@ export class FirestoreService {
 
   public getPostsByUserId(userId: string): DocumentData {
     return this.db.collection('users').doc(userId).collection('posts')
-      .orderBy('date', this.postsOrder$.getValue()).limit(10);
+      .orderBy('date', this.postsOrder$.getValue()).limit(3);
   }
 
   public getUserByUserName(userName: string): DocumentData {
@@ -91,21 +93,37 @@ export class FirestoreService {
     return this.db.collection('users');
   }
 
-  public newImagePost(newImagePost: ImagePost, images: UploadFile[], user: User) {
-    this.db.collection(`users/${user.personalInfo.userId}/posts`).add(newImagePost)
+  public newImagePost(newImagePost: ImagePost, images: UploadFile[], user: User): Promise<void> {
+    return this.db.collection(`users/${user.personalInfo.userId}/posts`).add(newImagePost)
       .then(response => {
         newImagePost.postId = response.id;
         newImagePost.date = new Date();
-        this.uploadImagesFirebase(images, user, newImagePost);
+        return this.uploadImagesFireStorage(images, user, newImagePost);
       }).catch((e) => {
-      console.error(e);
-      this.notifier.notify('warning', 'Error trying to save post to subcollection');
-    });
+        console.error(e);
+        this.notifier.notify('warning', 'Error trying to save post to subcollection');
+      });
   }
 
-  public uploadImagesFirebase(images: UploadFile[], user: User, newImagePost: ImagePost = null) {
+  public deleteImagePost(imagePostToDelete: ImagePost): Promise<void> {
+    return this.db.collection('users').doc(this.userId).collection('posts').doc(imagePostToDelete.postId).delete()
+      .then(() => {
+        for (let i = 0; i < imagePostToDelete.imagesUrls.length; i++) {
+          const deleteRef: Reference = this.storageRef.child(`users/${this.userId}${this.storageImgRef[1]}${imagePostToDelete.postId}/${i}`);
+          this.deleteFileFirebase(deleteRef).catch(error => console.log(error));
+        }
+      });
+  }
+// todo notify success delete
+  async deleteFileFirebase(path: Reference): Promise<any> {
+    return await path.delete();
+  }
+
+
+  async uploadImagesFireStorage(images: UploadFile[], user: User, newImagePost: ImagePost = null) {
     // let uploadTask: firebase.storage.UploadTask;
     let uploadTask: Reference;
+    let index = 0;
     for (const image of images) {
       image.uploading = true;
       if (image.progress >= 100) {
@@ -115,10 +133,10 @@ export class FirestoreService {
         uploadTask = this.storageRef.child(`users/${user.personalInfo.userId}${this.storageImgRef[0]}${user.personalInfo.userId}`);
       }
       if (newImagePost) { // new image post
-        uploadTask = this.storageRef.child(`users/${user.personalInfo.userId}${this.storageImgRef[1]}${newImagePost.postId}/${image.fileName}`);
+        uploadTask = this.storageRef.child(`users/${user.personalInfo.userId}${this.storageImgRef[1]}${newImagePost.postId}/${index}`);
       }
 
-      uploadTask.put(image.file).then((snapshot: firebase.storage.UploadTaskSnapshot) => {
+      await uploadTask.put(image.file).then((snapshot: firebase.storage.UploadTaskSnapshot) => {
         image.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         snapshot.ref.getDownloadURL().then(
           (response: any) => {
@@ -159,6 +177,7 @@ export class FirestoreService {
             }
           );
         });*/
+      index++;
     }
   }
 }
