@@ -54,6 +54,7 @@ import {UsersListComponent} from './components/users-list/users-list.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { UserCardComponent } from './components/profile/user-card/user-card.component';
 
 
 
@@ -85,6 +86,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     NewUserDataComponent,
     NewImagePostComponent,
     ImageComponent,
+    UserCardComponent,
   ],
   imports: [
     BrowserModule,

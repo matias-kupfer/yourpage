@@ -1,118 +1,52 @@
-<div class="outter" *ngIf="userData !== null; else loader">
-  <div class="header">
+<div class="outer" *ngIf="userData !== null; else loader">
 
-    <div class="float-left">
-      <app-image [image]="userData.accountInfo.imageUrl" [class]="'side-bar-profile-picture'"
-                 (click)="editProfilePicture()">
-      </app-image>
-      <!--        <mat-icon (click)="editProfilePicture()">edit</mat-icon>-->
-      <br>
-      <p>@{{userData.accountInfo.userName}}</p>
-      <div class="social-div">
-        <a [href]="userData.accountInfo.socialLinks.facebook" target="_blank" rel="noopener">
-          <img matTooltip="Facebook"
-               src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Facebook_colored_svg_copy-128.png">
-        </a>
-        <a [href]="userData.accountInfo.socialLinks.github" target="_blank" rel="noopener">
-          <img matTooltip="Github"
-               src="https://cdn0.iconfinder.com/data/icons/octicons/1024/mark-github-128.png">
-        </a>
-        <a [href]="userData.accountInfo.socialLinks.linkedin" target="_blank" rel="noopener">
-          <img matTooltip="Linkedin"
-               src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Linkedin_unofficial_colored_svg-128.png">
-        </a>
-        <a [href]="userData.accountInfo.socialLinks.twitter" target="_blank" rel="noopener">
-          <img matTooltip="Twitter"
-               src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Twitter_colored_svg-128.png">
-        </a>
-        <a [href]="userData.accountInfo.socialLinks.instagram" target="_blank" rel="noopener">
-          <img matTooltip="Instagram"
-               src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Instagram_colored_svg_1-128.png">
-        </a>
-        <a [href]="userData.accountInfo.socialLinks.youtube" target="_blank" rel="noopener">
-          <img matTooltip="Youtube"
-               src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Youtube_colored_svg-128.png">
-        </a>
-        <br>
-      </div>
-    </div>
-    <div class="float-right">
-      <div class="right-content">
-        <h1>{{userData.personalInfo.name + ' ' + userData.personalInfo.lastName|uppercase}}</h1>
-        <button mat-raised-button *ngIf="!isUserProfile" color="accent">Follow</button>
-        <div class="description">
-          <p>{{userData.accountInfo.bio}}</p>
-        </div>
-        <div class="additional-info">
-          <div>
-            <mat-icon>location_on</mat-icon>
-            <span>{{userData.accountInfo.country}}</span>
-          </div>
-          <div>
-            <mat-icon>cake</mat-icon>
-            <span>{{userData.accountInfo.registrationDate.seconds * 1000| date:'dd/MM/yyyy'}}</span>
-          </div>
-          <div>
-            <mat-icon>person</mat-icon>
-            <span>{{userData.personalInfo.gender}}</span>
-          </div>
-          <div>
-            <mat-icon>accessibility</mat-icon>
-            <span>{{userData.personalInfo.gender}}</span>
-          </div>
-        </div>
-        <hr class="hr">
-        <div class="statistics">
-          <span><b>{{userData.statisticsInfo.followers}}</b> followers</span>
-          <span><b>{{userData.statisticsInfo.following}}</b> following</span>
-          <span><b>{{userData.statisticsInfo.posts}}</b> posts</span>
-        </div>
-      </div>
+  <div class="profile-content">
+    <!--POSTS-->
+    <h1>posts:</h1>
+    <mat-form-field color="accent">
+      <mat-label>order</mat-label>
+      <mat-select (selectionChange)="orderBy($event.value)">
+        <mat-option value="asc" selected>ascend</mat-option>
+        <mat-option value="desc">desc</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div *ngFor="let post of userImagePosts;">
+      <ng-container *ngIf="post.imagesUrls.length">
+        <h1>{{post.title}}</h1>
+        <h3>{{post.date.seconds * 1000| date:'d/M/yy, h:mm'}}</h3>
+        <ng-container *ngFor="let postImageUrl of post.imagesUrls">
+          <app-image [image]="postImageUrl" [class]="'small-profile-picture'" style="margin: 5px"></app-image>
+        </ng-container>
+        <button mat-flat-button color="warn" (click)="deletePost(post)">Delete</button>
+        <hr>
+      </ng-container>
     </div>
   </div>
-
-
-  <br><br>
-  <p>Content</p>
-  <agm-map (mapClick)="!userName && isUserProfile && createPointer($event)" [zoom]="2">
-    <agm-marker *ngFor="let pointer of userData.accountInfo.mapPointers" [latitude]="pointer.lat"
-                [longitude]="pointer.lng">
-      <agm-info-window>
-        <div class="agm-info-window">
-          <strong>{{ pointer.title }}</strong>
-          <p>
-            {{ pointer.description }}
-          </p>
-          <div *ngIf="isUserProfile">
-            <button mat-raised-button color="accent" (click)="editPointer(pointer)">Edit</button>
-            <button mat-raised-button color="warn" (click)="removePointer(pointer)">Remove</button>
+  <div class="right-column">
+    <app-user-card [userData]="userData"></app-user-card>
+<br>
+<br>
+    <!--MAP-->
+    <agm-map (mapClick)="!userName && isUserProfile && createPointer($event)" [styles]="mapStyle" [zoom]="1">
+      <agm-marker *ngFor="let pointer of userData.accountInfo.mapPointers" [latitude]="pointer.lat"
+                  [longitude]="pointer.lng">
+        <agm-info-window>
+          <div class="agm-info-window">
+            <strong>{{ pointer.title }}</strong>
+            <p>
+              {{ pointer.description }}
+            </p>
+            <div *ngIf="isUserProfile">
+              <button mat-raised-button color="accent" (click)="editPointer(pointer)">Edit</button>
+              <button mat-raised-button color="warn" (click)="removePointer(pointer)">Remove</button>
+            </div>
           </div>
-        </div>
-      </agm-info-window>
-    </agm-marker>
-  </agm-map>
-</div>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
 
-<!--POSTS-->
-<h1>posts:</h1>
-<mat-form-field color="accent">
-  <mat-label>order</mat-label>
-  <mat-select (selectionChange)="orderBy($event.value)">
-    <mat-option value="asc" selected>ascend</mat-option>
-    <mat-option value="desc">desc</mat-option>
-  </mat-select>
-</mat-form-field>
-
-<div *ngFor="let post of userImagePosts;">
-  <ng-container *ngIf="post.imagesUrls.length">
-    <h1>{{post.title}}</h1>
-    <h3>{{post.date.seconds * 1000| date:'d/M/yy, h:mm'}}</h3>
-    <ng-container *ngFor="let postImageUrl of post.imagesUrls">
-      <app-image [image]="postImageUrl" [class]="'small-profile-picture'" style="margin: 5px"></app-image>
-    </ng-container>
-    <button mat-flat-button color="warn" (click)="deletePost(post)">Delete</button>
-    <hr>
-  </ng-container>
+  </div>
 </div>
 
 
@@ -121,10 +55,4 @@
   <app-loader></app-loader>
 </ng-template>
 <!--@todo ngif for social links-->
-
-<!--
-<img class="radius" *ngIf="userData.accountInfo.imageUrl; else noPicture"
-           [src]="userData.accountInfo.imageUrl"
-           (click)="editProfilePicture()"
-           [hidden]="imageLoader" (load)="this.imageLoader = false">
--->
+<!--todo bigger description like bio under the map with 400 char-->

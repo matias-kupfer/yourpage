@@ -14,6 +14,7 @@ import {ChangePictureComponent} from './change-picture/change-picture.component'
 import {ImagePost} from '../../class/imagePost';
 import {BehaviorSubject} from 'rxjs';
 import OrderByDirection = firebase.firestore.OrderByDirection;
+import {mapStyle} from '../../enums/map-style.enum';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public userName = this.route.snapshot.paramMap.get('userName');
   public isUserProfile = true;
   private notifier: NotifierService;
-  imageLoader = true;
+  public mapStyle: any = mapStyle;
+  // todo map theme based on users theme preferences
 
   constructor(
     private authService: AuthService,

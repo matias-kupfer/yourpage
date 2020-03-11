@@ -1,122 +1,40 @@
 @import "../../style/variables";
 @import "../../style/global";
-@import "../../style/theme";
 
-div.outter {
-  //color: $darkGray;
-  //color: #E8E8E8;
+div.outer {
+  display: flex;
 
-  div.header {
+  div.profile-content {
+    flex: 2;
     background-color: $medGray;
-    width: 1000px;
-    margin: 30px auto;
-    overflow: hidden;
     border-radius: 14px;
-    padding: 10px;
     box-shadow: $material-shadow;
-
-    div.float-left {
-      padding: 1% 0;
-      float: left;
-      text-align: center;
-      width: 30%;
-
-      img {
-        width: 150px;
-        height: 150px;
-      }
-
-      p {
-        margin: 10px;
-        font-size: 1.5em;
-        text-align: center;
-        font-weight: bold;
-      }
-
-      div.social-div {
-
-        img {
-          width: 35px;
-          height: 35px;
-          margin: 7px;
-          transition: 0.2s;
-
-          &:hover {
-            transform: scale(1.2);
-          }
-        }
-      }
-    }
-
-    div.float-right {
-      float: right;
-      width: 70%;
-
-      div.right-content {
-        margin-right: 20px;
-
-        h1 {
-          font-size: 2.5em;
-          font-weight: 800;
-          display: inline-block;
-          vertical-align: middle;
-          margin: 15px 30px 15px 0;
-        }
-
-        div.description {
-
-          p {
-            margin-top: 0;
-            font-size: 1em;
-          }
-        }
-
-        div.additional-info {
-          display: block;
-          text-align: center;
-          margin: auto;
-
-          div {
-            margin: 0 15px;
-            display: inline-block;
-          }
-
-
-        }
-
-        hr.hr {
-          width: 55px;
-          border: 2px solid $accent;
-        }
-
-        div.statistics {
-          display: block;
-          margin: auto;
-          text-align: center;
-
-          span {
-            margin: 0 20px;
-            font-size: 1.5em;
-          }
-        }
-      }
-    }
+    margin: 20px;
+    padding: 30px;
 
   }
-}
 
-agm-map {
-  height: 300px;
-  width: 700px;
-  margin: auto;
+  div.right-column {
+    margin: 20px;
+    flex: 1;
 
-  .agm-info-window {
-    max-width: 200px;
-    background-color: $medGray;
+    app-user-card {
+    }
 
-    button {
-      transform: scale(0.9);
-      margin-right: 5px;
+    agm-map {
+      height: 300px;
+      width: 100%;
+
+      button {
+        transform: scale(0.9);
+        margin-right: 5px;
+      }
+
+      .agm-info-window {
+        max-width: 200px;
+        background-color: $medGray;
+      }
     }
   }
+
 }
