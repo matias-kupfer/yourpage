@@ -58,6 +58,32 @@ export class AuthService {
       });
   }
 
+  public loginWithUserPassword(email: string, password: string) {
+    return this.fireAuth.auth.signInWithEmailAndPassword(email, password)
+      .then((result) => {
+        this.userDataSubscription();
+        this.notifier.notify('default', 'Welcome back ' + result.user.email);
+        this.router.navigate([DefaultRoutes.OnLogin]);
+      }).catch(e => {
+        this.notifier.notify('warning', e.message);
+      });
+  }
+
+  async signUpWithUserAndPassword(username: string, lastName: string, email: string, password: string) {
+    return await this.fireAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        // verify it doesnt exist
+        console.log(result.user.uid);
+        const newEmailUser = new User(result.user.uid, username, lastName, email,
+          'https://firebasestorage.googleapis.com/v0/b/yourpage-4e4b4.appspot.com/o/defaultProfilePicture.png?alt=media&token=a69202d2-27ce-4329-a593-09809ac04a8d');
+        this.firestoreService.updateUserData(JSON.parse(JSON.stringify(newEmailUser)));
+        this.notifier.notify('default', 'Successfully registered as ' + result.user.email);
+        this.router.navigate([DefaultRoutes.OnLogin]);
+      }).catch(e => {
+        this.notifier.notify('warning', e.message);
+      });
+  }
+
   public userDataSubscription(): void {
     this.fireAuth.user.subscribe(firebaseUser => {
       if (firebaseUser) {
@@ -75,8 +101,7 @@ export class AuthService {
     // @ts-ignore
     return new User(firebaseUser.user.uid, firebaseUser.additionalUserInfo.profile.given_name,
       // @ts-ignore
-      firebaseUser.additionalUserInfo.profile.family_name, firebaseUser.user.email,
-      firebaseUser.user.displayName, firebaseUser.user.photoURL);
+      firebaseUser.additionalUserInfo.profile.family_name, firebaseUser.user.email, firebaseUser.user.photoURL);
   }
 
   public get isLoggedInGetter(): Observable<boolean> {
@@ -96,4 +121,4 @@ export class AuthService {
   }
 }
 
-// TODO DO unsuscrinbe on log out
+// TODO DO unsubscribe on log out

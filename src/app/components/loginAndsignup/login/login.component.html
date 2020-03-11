@@ -18,5 +18,27 @@
       <span class="google-button__text">Sign in with Google</span>
     </button>
   </mat-card>
+
+  <form [formGroup]="login">
+
+    <mat-form-field appearance="outline" color="accent">
+      <mat-label>email</mat-label>
+      <label>
+        <input matInput type="email" placeholder="email" formControlName="email">
+      </label>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" color="accent">
+      <mat-label>password</mat-label>
+      <label>
+        <input matInput placeholder="password" formControlName="password">
+      </label>
+    </mat-form-field>
+
+    <button [disabled]="!login.valid" mat-flat-button color="accent" (click)="loginWithEmail()">
+      sign up
+    </button>
+  </form>
 </div>
 
+<!--todo hide/show password also on sign up component-->

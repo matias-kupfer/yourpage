@@ -1,10 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {countryList} from '../../../enums/countries.enum';
-import {AngularFirestore} from '@angular/fire/firestore';
-import {User} from '../../../class/user';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../../core/services/auth.service';
-import {debounceTime, map, take} from 'rxjs/operators';
 import {DefaultRegex} from '../../../enums/regex.enum';
 
 @Component({
@@ -13,56 +9,58 @@ import {DefaultRegex} from '../../../enums/regex.enum';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
+  signUpForm: FormGroup;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
-
+    this.signUpForm = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(15),
+        Validators.pattern(DefaultRegex.default),
+      ]),
+      lastName: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(15),
+        Validators.pattern(DefaultRegex.default),
+      ]),
+      email: new FormControl('', [
+        Validators.required,
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(30),
+      ]),
+    });
   }
 
-  /*saveData() {
-    const newUserData: User = {
-      personalInfo: {
-        userId: null,
-        email: null,
-        name: this.name.value,
-        lastName: this.lastName.value,
-        gender: this.gender.value,
-        birthday: this.birthday.value
-      },
-      accountInfo: {
-        userName: this.userName.value,
-        registrationDate: null,
-        imageUrl: null,
-        country: this.country.value,
-        bio: this.bio.value,
-        socialLinks: {
-          facebook: null,
-          github: null,
-          instagram: null,
-          linkedin: null,
-          twitter: null,
-          youtube: null,
-        },
-        mapPointers: [
-          {
-            lat: null,
-            lng: null,
-            title: null,
-            description: null,
-          }
-        ],
-      },
-      statisticsInfo: {
-        followers: 0,
-        following: 0,
-        posts: 0
-      }
-    };*/
+  get name() {
+    return this.signUpForm.get('name');
+  }
+
+  get lastName() {
+    return this.signUpForm.get('lastName');
+  }
+
+  get email() {
+    return this.signUpForm.get('email');
+  }
+
+  get password() {
+    return this.signUpForm.get('password');
+  }
 
   signUpWithGoogle() {
     this.authService.googleAuth();
+  }
+
+  signUpWithEmailAndPassword() {
+    this.authService.signUpWithUserAndPassword(this.name.value, this.lastName.value, this.email.value, this.password.value);
   }
 
 }
