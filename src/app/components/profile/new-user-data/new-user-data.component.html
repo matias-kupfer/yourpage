@@ -1,9 +1,40 @@
-<div class="outer">
+<div class="outer" *ngIf="this.authService.isLoggedIn !== null">
   <mat-card>
     <img [src]="userData.accountInfo.imageUrl">
     <h1>WELCOME to YOURPAGE {{userData.personalInfo.name}} {{userData.personalInfo.lastName}}</h1>
     <h1>YOU NEED TO FINISH YOUR PROFILE SETUP</h1>
 
+    <div *ngIf="!files.length" appFileUpload [files]="files" [limit]="1" (customMouseOver)="hover = $event"
+         [ngClass]="{'file-over': hover}"
+         class="well drop-zone file-over">
+    </div>
+
+    <table class="table">
+      <thead class="thead=dark">
+      <tr>
+        <th>File name</th>
+        <th>Size</th>
+        <th>Progress</th>
+        <th>Progress num</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let file of files">
+        <td><img [src]="file.previewUrl" style="width: 50px; margin-right: 5px;"></td>
+        <td>{{file.fileName}}</td>
+        <td>
+          <mat-progress-bar mode="determinate" [value]="file.progress" color="accent"></mat-progress-bar>
+        </td>
+        <td>
+          {{file.progress}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <h4>Load files</h4>
+    <button mat-raised-button color="accent" (click)="updateProfileImage()" [disabled]="files.length === 0">Upload
+    </button>
+    <button mat-raised-button color="warn" (click)="emptyFiles()">empty</button>
 
     <mat-vertical-stepper [linear]="true" color="accent">
       <mat-step [stepControl]="personalForm">
@@ -112,6 +143,7 @@
           <mat-form-field>
             <mat-label>Select your country</mat-label>
             <mat-select formControlName="country">
+              <mat-option>No country selected</mat-option>
               <mat-option *ngFor="let country of countryList" [value]="country">
                 {{country}}
               </mat-option>
@@ -164,3 +196,6 @@
   <mat-icon>power_settings_new</mat-icon>
   <span>Logout</span>
 </button>
+
+<!-- LOADER WHILE GETTING AUTH STATUS-->
+<app-loader *ngIf="this.authService.isLoggedIn === null"></app-loader>

@@ -10,6 +10,8 @@ import {MatDatepicker} from '@angular/material';
 import {FirestoreService} from '../../../core/services/firestore.service';
 import {Router} from '@angular/router';
 import {DefaultRoutes} from '../../../enums/default.routes';
+import {UploadFile} from '../../../class/uploadFile';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-new-user-data',
@@ -19,7 +21,9 @@ import {DefaultRoutes} from '../../../enums/default.routes';
 export class NewUserDataComponent implements OnInit {
   countryList: any[] = countryList;
   userData: User;
-  canSignUp = false;
+  hover = false;
+  files: UploadFile[] = [];
+  uploading = false;
 
   personalForm: FormGroup;
   accountForm: FormGroup;
@@ -29,7 +33,8 @@ export class NewUserDataComponent implements OnInit {
               private authService: AuthService,
               public firestoreService: FirestoreService,
               public router: Router,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -65,7 +70,7 @@ export class NewUserDataComponent implements OnInit {
           Validators.pattern(DefaultRegex.userName)],
         UsernameValidator.userName(this.afs),
       ),
-      country: new FormControl(Validators.required),
+      country: new FormControl('', Validators.required),
       bio: new FormControl('', [
         Validators.required,
         Validators.maxLength(200)
@@ -121,6 +126,20 @@ export class NewUserDataComponent implements OnInit {
 
   public onLogout() {
     this.authService.onLogout();
+  }
+
+  updateProfileImage() {
+    this.uploading = true;
+    this.firestoreService.uploadImagesFireStorage(this.files, this.userData).then(() => {
+      this.snackBar.open('Profile picture updated successfully', 'dismiss', {
+        duration: 5000
+      });
+      this.uploading = false;
+    });
+  }
+
+  emptyFiles() {
+    this.files = [];
   }
 
 }
