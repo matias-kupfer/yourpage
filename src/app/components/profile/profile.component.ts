@@ -7,14 +7,14 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SnackbarService} from '../../core/services/snackbar.service';
 import {NotifierService} from 'angular-notifier';
 import {MatDialog} from '@angular/material';
-import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {EditPointerComponent} from './edit-pointer/edit-pointer.component';
 import {Pointer} from '../../interfaces/pointer';
-import {ChangePictureComponent} from './change-picture/change-picture.component';
 import {ImagePost} from '../../class/imagePost';
-import {BehaviorSubject} from 'rxjs';
 import OrderByDirection = firebase.firestore.OrderByDirection;
+import QuerySnapshot = firebase.firestore.QuerySnapshot;
 import {mapStyle} from '../../enums/map-style.enum';
+import * as firebase from 'firebase';
+import {BehaviorSubject} from 'rxjs';
 
 
 @Component({
@@ -28,7 +28,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public userName = this.route.snapshot.paramMap.get('userName');
   public isUserProfile = true;
   private notifier: NotifierService;
+  public postsOrder$: BehaviorSubject<OrderByDirection> = new BehaviorSubject<OrderByDirection>('desc');
   public mapStyle: any = mapStyle;
+
   // todo map theme based on users theme preferences
 
   constructor(
@@ -46,13 +48,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.userImagePostsSubscription();
     if (this.userName) {
       this.isUserProfile = false;
       this.getUserByUsername();
     } else {
       this.userDataSubscription();
     }
+    this.postsOrder$.subscribe(() => this.getUserPostsById());
   }
 
   ngOnDestroy(): void {
@@ -62,33 +64,41 @@ export class ProfileComponent implements OnInit, OnDestroy {
   userDataSubscription() {
     this.authService.user$
       .subscribe((doc) => {
-        this.ngZone.run(() => {
-          this.userData = doc;
-        });
-      });
-  }
-
-  userImagePostsSubscription() {
-    this.firestoreService.imagePosts$
-      .subscribe((doc: ImagePost[]) => {
-        this.ngZone.run(() => {
-          this.userImagePosts = doc;
-        });
+        this.userData = doc;
+        this.getUserPostsById();
       });
   }
 
   public getUserByUsername() {
+    this.userImagePosts = [];
     this.firestoreService.getUserByUserName(this.userName)
       .onSnapshot((doc) => {
         if (doc.docs[0]) {
           this.userData = doc.docs[0].data();
+          this.getUserPostsById();
         }
       });
+
   }
 
   // POSTS
+  public getUserPostsById() {
+    if (this.userData) {
+      this.firestoreService.getPostsByUserId(this.userData.personalInfo.userId).orderBy('date', this.postsOrder$.getValue()).limit(2)
+        .onSnapshot((res: QuerySnapshot<ImagePost>) => {
+          if (res) {
+            console.log('change!');
+            this.userImagePosts = [];
+            res.docs.forEach(post => {
+              this.userImagePosts.push(post.data());
+            });
+          }
+        });
+    }
+  }
+
   public orderBy(value: OrderByDirection) {
-    this.firestoreService.postsOrder$.next(value);
+    this.postsOrder$.next(value);
   }
 
   public deletePost(imagePostToDelete: ImagePost) {
@@ -97,31 +107,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         duration: 5000
       });
     });
-  }
-
-  // EDIT PROFILE PICTURE
-  public editProfilePicture() {
-    const dialogRef = this.dialog.open(ChangePictureComponent, {
-      width: '500px',
-      data: this.userData,
-    });
-
-    // dialogRef.afterClosed().subscribe((result: User) => {
-    //   console.log(result)
-    //   if (!result || result.accountInfo.imageUrl === this.userData.accountInfo.imageUrl) {
-    //     this.snackBar.open('No changes were made', '', {
-    //       duration: 5000
-    //     });
-    //   } else {
-    //     this.snackBar.open('Profile picture updated successfuly!', '', {
-    //       duration: 5000
-    //     });
-    //   }
-    // });
-  }
-
-  public updateUserData(updatedUser: User) {
-    this.firestoreService.updateUserData(updatedUser).then(res => console.log(res));
   }
 
   // MAP
