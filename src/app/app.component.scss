@@ -79,10 +79,18 @@ mat-drawer-container {
 
     table {
       margin: auto;
+      width: 90%;
+      text-align: center;
+
+      th {
+        width: 40px;
+        font-size: 1em;
+      }
 
       td {
+        width: 90px;
         font-variant: small-caps;
-        font-size: 1em;
+        color: $lightGray;
       }
     }
   }

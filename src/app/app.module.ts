@@ -6,6 +6,7 @@ import {environment} from '../environments/environment';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 
+import {HttpClientModule} from '@angular/common/http';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
@@ -29,6 +30,9 @@ import {ChangePictureComponent} from './components/profile/change-picture/change
 import {NewUserDataComponent} from './components/profile/new-user-data/new-user-data.component';
 import {NewImagePostComponent} from './components/new-post/new-image-post/new-image-post.component';
 import {ImageComponent} from './core/utilities/image/image.component';
+import {UserCardComponent} from './core/utilities/user-card/user-card.component';
+import {UsersListComponent} from './components/profile/users-list/users-list.component';
+
 
 import {NotifierModule, NotifierOptions} from 'angular-notifier';
 import {AgmCoreModule} from '@agm/core';
@@ -50,12 +54,12 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoaderComponent} from './core/utilities/loader/loader.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatBadgeModule} from '@angular/material/badge';
-import {UsersListComponent} from './components/users-list/users-list.component';
+import {UsersComponent} from './components/users/users.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import { UserCardComponent } from './components/profile/user-card/user-card.component';
-
+import {MatTabsModule} from '@angular/material/tabs';
+import { UserTableComponent } from './core/utilities/user-table/user-table.component';
 
 
 @NgModule({
@@ -65,7 +69,8 @@ import { UserCardComponent } from './components/profile/user-card/user-card.comp
     ChangePictureComponent,
     NewPostSelectorComponent,
     NewTextPostComponent,
-    NewImagePostComponent
+    NewImagePostComponent,
+    UsersListComponent
   ],
   declarations: [
     AppComponent,
@@ -78,7 +83,7 @@ import { UserCardComponent } from './components/profile/user-card/user-card.comp
     LoaderComponent,
     EditProfileComponent,
     EditPointerComponent,
-    UsersListComponent,
+    UsersComponent,
     NewPostSelectorComponent,
     NewTextPostComponent,
     FileUploadDirective,
@@ -87,6 +92,8 @@ import { UserCardComponent } from './components/profile/user-card/user-card.comp
     NewImagePostComponent,
     ImageComponent,
     UserCardComponent,
+    UsersListComponent,
+    UserTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,6 +102,7 @@ import { UserCardComponent } from './components/profile/user-card/user-card.comp
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireAuthModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     NotifierModule,
     AgmCoreModule.forRoot({
@@ -123,7 +131,8 @@ import { UserCardComponent } from './components/profile/user-card/user-card.comp
     MatSidenavModule,
     MatBottomSheetModule,
     MatListModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatTabsModule
   ],
   providers: [
     AuthenticationGuard,

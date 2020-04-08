@@ -26,13 +26,14 @@
       </div>
       <hr>
       <h3 class="category">ACCOUNT</h3>
-      <app-image [image]="userData.accountInfo.imageUrl" [class]="'side-bar-profile-picture'"></app-image>
+      <app-image [image]="userData.accountInfo.imageUrl" (click)="editProfilePicture()"
+                 [class]="'side-bar-profile-picture'"></app-image>
       <h3 class="username">@{{userData.accountInfo.userName}}</h3>
       <table>
-        <tr>
-          <th>{{userData.statisticsInfo.followers}}</th>
-          <th>{{userData.statisticsInfo.following}}</th>
-          <th>{{userData.statisticsInfo.posts}}</th>
+        <tr style="cursor: pointer" (click)="seeFollowers(userData)">
+          <th>{{userData.followers.length}}</th>
+          <th>{{userData.following.length}}</th>
+          <th>{{userData.posts}}</th>
         </tr>
         <tr>
           <td>followers</td>

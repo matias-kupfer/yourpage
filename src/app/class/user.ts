@@ -1,5 +1,5 @@
 export class User {
-  constructor(uid: string, username: string, userLastName: string, userEmail: string, displayName: string, photoURL: string) {
+  constructor(uid: string, username: string, userLastName: string, userEmail: string, photoURL?: string) {
     this.personalInfo = {
       userId: uid,
       email: userEmail,
@@ -24,11 +24,9 @@ export class User {
       },
       mapPointers: null,
     };
-    this.statisticsInfo = {
-      followers: 0,
-      following: 0,
-      posts: 0,
-    };
+    this.followers = [];
+    this.following = [];
+    this.posts = 0;
   }
 
   public personalInfo: {
@@ -63,9 +61,7 @@ export class User {
         }
       ]
   };
-  public statisticsInfo: {
-    followers: number;
-    following: number;
-    posts: number;
-  };
+  followers: string[];
+  following: string[];
+  posts: number;
 }

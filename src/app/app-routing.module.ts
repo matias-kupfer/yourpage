@@ -6,7 +6,7 @@ import {AuthenticationGuard} from './core/guards/auth.guard';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {SignupComponent} from './components/loginAndsignup/signup/signup.component';
-import {UsersListComponent} from './components/users-list/users-list.component';
+import {UsersComponent} from './components/users/users.component';
 import {NewUserDataComponent} from './components/profile/new-user-data/new-user-data.component';
 
 
@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full', canActivate: [AuthenticationGuard]},
   {path: 'home', component: HomeComponent, canActivate: [AuthenticationGuard]},
   {path: 'u/:userName', component: ProfileComponent, canActivate: [AuthenticationGuard]},
-  {path: 'users', component: UsersListComponent, canActivate: [AuthenticationGuard]},
+  {path: 'users', component: UsersComponent, canActivate: [AuthenticationGuard]},
 
   {path: 'login', component: LoginComponent, canActivate: [AuthenticationGuard]},
   {path: 'signup', component: SignupComponent, canActivate: [AuthenticationGuard]},

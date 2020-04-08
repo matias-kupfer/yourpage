@@ -1,0 +1,70 @@
+<div class="user-card-container">
+  <img class="profile-image" [src]="userData.accountInfo.imageUrl"
+       (click)="isUserProfile && appComponent.editProfilePicture()">
+  <div class="content">
+    <table>
+      <tr style="cursor: pointer" (click)="appComponent.seeFollowers(userData)">
+        <th>{{userData.followers.length}}</th>
+        <th>{{userData.following.length}}</th>
+        <th>{{userData.posts}}</th>
+      </tr>
+      <tr>
+        <td>followers</td>
+        <td>following</td>
+        <td>posts</td>
+      </tr>
+    </table>
+    <h3>{{userData.personalInfo.name}} {{userData.personalInfo.lastName}}, <span>{{age}}</span></h3>
+    <!--    <p class="username">@{{userData.accountInfo.userName}}</p>-->
+    <div class="basicInfo">
+    <span><mat-icon>location_on</mat-icon>
+      {{userData.accountInfo.country}}</span>
+      <span><mat-icon>date_range</mat-icon>
+        {{userData.accountInfo.registrationDate | date:'dd/MM/yyyy'}}</span>
+    </div>
+    <br>
+    <div class="social-div">
+      <a [href]="userData.accountInfo.socialLinks.facebook" target="_blank" rel="noopener">
+        <img matTooltip="Facebook"
+             src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Facebook_colored_svg_copy-128.png">
+      </a>
+      <a [href]="userData.accountInfo.socialLinks.github" target="_blank" rel="noopener">
+        <img matTooltip="Github"
+             src="https://cdn0.iconfinder.com/data/icons/octicons/1024/mark-github-128.png">
+      </a>
+      <a [href]="userData.accountInfo.socialLinks.linkedin" target="_blank" rel="noopener">
+        <img matTooltip="Linkedin"
+             src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Linkedin_unofficial_colored_svg-128.png">
+      </a>
+      <a [href]="userData.accountInfo.socialLinks.twitter" target="_blank" rel="noopener">
+        <img matTooltip="Twitter"
+             src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Twitter_colored_svg-128.png">
+      </a>
+      <a [href]="userData.accountInfo.socialLinks.instagram" target="_blank" rel="noopener">
+        <img matTooltip="Instagram"
+             src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Instagram_colored_svg_1-128.png">
+      </a>
+      <a [href]="userData.accountInfo.socialLinks.youtube" target="_blank" rel="noopener">
+        <img matTooltip="Youtube"
+             src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Youtube_colored_svg-128.png">
+      </a>
+      <br>
+    </div>
+    <hr class="hr">
+    <p class="bio">{{userData.accountInfo.bio}}</p>
+  </div>
+  <button *ngIf="!authService.isLoggedIn || !loading && !isUserProfile && !isFollowing()"
+          (click)="toggleFollow('0')">
+    FOLLOW
+  </button>
+  <button *ngIf="authService.isLoggedIn && !loading && !isUserProfile && isFollowing()"
+          (click)="toggleFollow('1')">
+    UNFOLLOW
+  </button>
+  <button *ngIf="authService.isLoggedIn &&!loading && isUserProfile" (click)="appComponent.editProfile()">
+    EDIT PROFILE
+  </button>
+  <button *ngIf="loading">
+    <mat-spinner color="primary" diameter="20"></mat-spinner>
+  </button>
+</div>

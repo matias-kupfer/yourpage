@@ -11,6 +11,8 @@ import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {SideNavActions, SideNavLinks} from './interfaces/sideNavLinks';
 import {EditProfileComponent} from './components/profile/edit-profile/edit-profile.component';
 import {NewImagePostComponent} from './components/new-post/new-image-post/new-image-post.component';
+import {ChangePictureComponent} from './components/profile/change-picture/change-picture.component';
+import {UsersListComponent} from './components/profile/users-list/users-list.component';
 
 @Component({
   selector: 'app-root',
@@ -99,6 +101,21 @@ export class AppComponent implements OnInit {
 
   public updateUserData(updatedUser: User) {
     this.firestoreService.updateUserData(updatedUser).then(res => console.log(res));
+  }
+
+  // EDIT PROFILE PICTURE
+  public editProfilePicture() {
+    const dialogRef = this.dialog.open(ChangePictureComponent, {
+      width: '500px',
+      data: this.userData,
+    });
+  }
+
+  // Statistics
+  public seeFollowers(userData: User) {
+    const dialogRef = this.dialog.open(UsersListComponent, {
+      data: userData
+    });
   }
 
   public sideNavInit() {
