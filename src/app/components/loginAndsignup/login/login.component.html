@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!this.authService.isLoggedIn">
   <mat-card>
     <h1>LOG IN</h1>
     <h1>WELCOME TO YOURPAGE</h1>
@@ -36,9 +36,10 @@
     </mat-form-field>
 
     <button [disabled]="!login.valid" mat-flat-button color="accent" (click)="loginWithEmail()">
-      sign up
+      sign in
     </button>
   </form>
 </div>
 
 <!--todo hide/show password also on sign up component-->
+<!-- LOADER WHILE GETTING AUTH STATUS-->

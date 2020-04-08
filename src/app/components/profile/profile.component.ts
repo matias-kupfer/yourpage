@@ -23,9 +23,9 @@ import {BehaviorSubject} from 'rxjs';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  public userData: User = null;
-  public userImagePosts: ImagePost[] = null;
-  public userName = this.route.snapshot.paramMap.get('userName');
+  public userData: User;
+  public userImagePosts: ImagePost[];
+  public userName = null;
   public isUserProfile = true;
   private notifier: NotifierService;
   public postsOrder$: BehaviorSubject<OrderByDirection> = new BehaviorSubject<OrderByDirection>('desc');
@@ -41,17 +41,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
     public router: Router,
     private notificationService: SnackbarService,
     notifier: NotifierService,
-    private ngZone: NgZone,
     public dialog: MatDialog) {
     this.notifier = notifier;
   }
 
 
   ngOnInit() {
-    if (this.userName) {
+    if (this.route.snapshot.paramMap.get('userName')) { // visiting
       this.isUserProfile = false;
-      this.getUserByUsername();
-    } else {
+      this.route.paramMap.subscribe(param => {
+        this.userName = param.get('userName');
+        this.getUserByUsername();
+      });
+    } else { // profile
       this.userDataSubscription();
     }
     this.postsOrder$.subscribe(() => this.getUserPostsById());
@@ -71,6 +73,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   public getUserByUsername() {
     this.userImagePosts = [];
+    this.userData = null;
     this.firestoreService.getUserByUserName(this.userName)
       .onSnapshot((doc) => {
         if (doc.docs[0]) {
@@ -87,7 +90,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.firestoreService.getPostsByUserId(this.userData.personalInfo.userId).orderBy('date', this.postsOrder$.getValue()).limit(2)
         .onSnapshot((res: QuerySnapshot<ImagePost>) => {
           if (res) {
-            console.log('change!');
             this.userImagePosts = [];
             res.docs.forEach(post => {
               this.userImagePosts.push(post.data());

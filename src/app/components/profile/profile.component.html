@@ -1,5 +1,4 @@
 <div class="outer" *ngIf="userData !== null; else loader">
-
   <div class="profile-content">
     <!--POSTS-->
     <h1>posts:</h1>
@@ -18,33 +17,36 @@
         <ng-container *ngFor="let postImageUrl of post.imagesUrls">
           <app-image [image]="postImageUrl" [class]="'small-profile-picture'" style="margin: 5px"></app-image>
         </ng-container>
-        <button mat-flat-button color="warn" (click)="deletePost(post)">Delete</button>
+        <button mat-flat-button color="warn" *ngIf="isUserProfile" (click)="deletePost(post)">Delete</button>
         <hr>
       </ng-container>
     </div>
   </div>
   <div class="right-column">
-    <app-user-card [userData]="userData"></app-user-card>
-<br>
-<br>
+    <app-user-card [userData]="userData" [isUserProfile]="isUserProfile"></app-user-card>
+    <br>
+    <br>
     <!--MAP-->
-    <agm-map (mapClick)="!userName && isUserProfile && createPointer($event)" [styles]="mapStyle" [zoom]="1">
-      <agm-marker *ngFor="let pointer of userData.accountInfo.mapPointers" [latitude]="pointer.lat"
-                  [longitude]="pointer.lng">
-        <agm-info-window>
-          <div class="agm-info-window">
-            <strong>{{ pointer.title }}</strong>
-            <p>
-              {{ pointer.description }}
-            </p>
-            <div *ngIf="isUserProfile">
-              <button mat-raised-button color="accent" (click)="editPointer(pointer)">Edit</button>
-              <button mat-raised-button color="warn" (click)="removePointer(pointer)">Remove</button>
+    <div class="map">
+      <agm-map (mapClick)="!userName && isUserProfile && createPointer($event)" [styles]="mapStyle" [zoom]="1"
+               [backgroundColor]="'#242f3e'">
+        <agm-marker *ngFor="let pointer of userData.accountInfo.mapPointers" [latitude]="pointer.lat"
+                    [longitude]="pointer.lng">
+          <agm-info-window>
+            <div class="agm-info-window">
+              <strong>{{ pointer.title }}</strong>
+              <p>
+                {{ pointer.description }}
+              </p>
+              <div *ngIf="isUserProfile">
+                <button mat-raised-button color="accent" (click)="editPointer(pointer)">Edit</button>
+                <button mat-raised-button color="warn" (click)="removePointer(pointer)">Remove</button>
+              </div>
             </div>
-          </div>
-        </agm-info-window>
-      </agm-marker>
-    </agm-map>
+          </agm-info-window>
+        </agm-marker>
+      </agm-map>
+    </div>
 
   </div>
 </div>

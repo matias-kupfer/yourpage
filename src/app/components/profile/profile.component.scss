@@ -21,13 +21,12 @@ div.outer {
     app-user-card {
     }
 
-    agm-map {
-      height: 300px;
-      width: 100%;
+    div.map {
+      box-shadow: $material-shadow;
 
-      button {
-        transform: scale(0.9);
-        margin-right: 5px;
+      agm-map {
+        height: 300px;
+        width: 100%;
       }
 
       .agm-info-window {

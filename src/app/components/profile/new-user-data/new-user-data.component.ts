@@ -6,7 +6,6 @@ import {AuthService} from '../../../core/services/auth.service';
 import {DefaultRegex} from '../../../enums/regex.enum';
 import {debounceTime, map, take} from 'rxjs/operators';
 import {countryList} from '../../../enums/countries.enum';
-import {MatDatepicker} from '@angular/material';
 import {FirestoreService} from '../../../core/services/firestore.service';
 import {Router} from '@angular/router';
 import {DefaultRoutes} from '../../../enums/default.routes';
@@ -76,10 +75,6 @@ export class NewUserDataComponent implements OnInit {
         Validators.maxLength(200)
       ]),
     });
-  }
-
-  public validateDate(date: MatDatepicker<any>) {
-    console.log(date);
   }
 
   get name() {

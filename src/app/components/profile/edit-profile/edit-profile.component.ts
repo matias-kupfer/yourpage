@@ -16,7 +16,6 @@ export class EditProfileComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ProfileComponent>,
-    private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public userData: User) {
   }
 

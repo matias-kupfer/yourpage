@@ -26,7 +26,6 @@
   <tr *ngFor="let file of files">
     <td><img [src]="file.previewUrl" style="width: 50px; margin-right: 5px;"></td>
     <td>{{file.fileName}}</td>
-    <!--    <td>{{file.file.size / 1024 / 1024 | number: '.2-2'}} MB</td>-->
     <td>
       <mat-progress-bar mode="determinate" [value]="file.progress" color="accent"></mat-progress-bar>
     </td>

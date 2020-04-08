@@ -7,7 +7,6 @@ import {UploadFile} from '../../class/uploadFile';
 import {NotifierService} from 'angular-notifier';
 import {ImagePost} from '../../class/imagePost';
 import {Reference} from '@angular/fire/storage/interfaces';
-import {BehaviorSubject} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
 
 @Injectable({

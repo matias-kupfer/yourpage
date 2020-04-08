@@ -3,7 +3,6 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import {DefaultRoutes} from '../../enums/default.routes';
 import {Router} from '@angular/router';
-import {AngularFirestore, AngularFirestoreDocument, DocumentData} from '@angular/fire/firestore';
 import {User} from '../../class/user';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {NotifierService} from 'angular-notifier';
