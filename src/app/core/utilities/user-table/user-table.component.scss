@@ -1,0 +1,27 @@
+@import "../../../style/variables";
+@import "../../../style/global";
+
+div.container {
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    tr {
+      border-top: 1px solid #5e5e5e;
+      border-bottom: 1px solid #5e5e5e;
+    }
+
+    th {
+      padding: 10px 30px;
+      text-align: left;
+      font-weight: 200;
+      font-variant: small-caps;
+      background-color: #505050;
+    }
+
+    td {
+      padding: 10px 30px;
+    }
+  }
+}

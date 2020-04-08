@@ -1,0 +1,10 @@
+@import "../../style/variables";
+@import "../../style/global";
+
+div.users-container {
+  background-color: $medGray;
+  border-radius: 14px;
+  box-shadow: $material-shadow;
+  margin: 0 20px;
+  padding: 30px 0;
+}

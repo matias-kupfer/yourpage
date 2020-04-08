@@ -1,0 +1,12 @@
+<ng-container *ngIf="allUsers !== null; else loader">
+  <div class="users-container">
+    <h1>Users</h1>
+    <app-user-table [users]="allUsers"></app-user-table>
+  </div>
+</ng-container>
+
+
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>
+<!--@TODO show not found message-->
