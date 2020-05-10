@@ -1,29 +1,49 @@
 @import "../../../style/variables";
+@import "../../../style/global";
 
 mat-toolbar {
   height: 80px;
   background-color: $darkGray;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px;
 
-  .spacer {
-    flex: 1 1 auto;
+  mat-icon.rotate {
+    transition: 1s;
+    cursor: pointer;
+
+    &:hover {
+      transform: rotate(360deg);
+    }
   }
 
   div.card {
-    padding: 0;
-    margin: 0;
-    line-height: 0;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+      vertical-align: middle;
+      color: green;
+    }
 
     span {
       vertical-align: middle;
       margin-left: 10px;
-      margin-right: 30px;
       color: $lightGray;
 
       &:hover {
         color: white;
       }
     }
+  }
+
+}
+
+@media only screen and (max-width: 1000px) {
+
+  mat-toolbar {
+    padding: 0 20px;
   }
 
 }

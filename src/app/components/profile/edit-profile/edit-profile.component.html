@@ -1,10 +1,29 @@
 <h1>Edit profile</h1>
+
+<!--EDIT PICTURE-->
+<h3>Change profile picture</h3>
+<div *ngIf="!files.length && !mobileQuery.matches" appFileUpload [files]="files" [limit]="1"
+     (customMouseOver)="hover = $event"
+     [ngClass]="{'file-over': hover}"
+     class="drop-zone file-over">
+  <div>
+    <mat-icon>cloud_upload</mat-icon>
+    <p>DROP IMAGE</p>
+  </div>
+</div>
+<div class="app-file">
+  <app-file-upload-card *ngIf="files.length" [isUploading]="uploading" [uploadFile]="files[0]"></app-file-upload-card>
+</div>
+
+
 <h3>Biography</h3>
 <form [formGroup]="newData">
-  <mat-form-field class="text-area" color="accent">
-  <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" type="text" formControlName="bio"
-            placeholder="Write something about yourself">
-  </textarea>
+  <mat-form-field class="text-area" color="primary">
+    <label>
+<textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" type="text" formControlName="bio"
+          placeholder="Write something about yourself">
+</textarea>
+    </label>
     <mat-hint align="start">
       <mat-icon>lightbulb_outline</mat-icon>
       Where are you from, what do you like...
@@ -21,48 +40,60 @@
   <br>
   <h3>Social links</h3>
   <div class="social-div">
-    <mat-form-field color="accent">
-      <input matInput type="text" placeholder="Facebook profile" formControlName="facebook">
+    <mat-form-field color="primary">
+      <label>
+        <input matInput type="text" placeholder="Facebook profile" formControlName="facebook">
+      </label>
       <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="facebook" (click)="facebook.reset()">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="facebook.errors && facebook.errors.pattern">Enter a valid URL</mat-error>
     </mat-form-field>
 
-    <mat-form-field color="accent">
-      <input matInput type="text" placeholder="Github profile" formControlName="github">
+    <mat-form-field color="primary">
+      <label>
+        <input matInput type="text" placeholder="Github profile" formControlName="github">
+      </label>
       <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="github" (click)="github.reset()">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="github.errors && github.errors.pattern">Enter a valid URL</mat-error>
     </mat-form-field>
 
-    <mat-form-field color="accent">
-      <input matInput type="text" placeholder="Twitter profile" formControlName="twitter">
+    <mat-form-field color="primary">
+      <label>
+        <input matInput type="text" placeholder="Twitter profile" formControlName="twitter">
+      </label>
       <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="twitter" (click)="twitter.reset()">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="twitter.errors && twitter.errors.pattern">Enter a valid URL</mat-error>
     </mat-form-field>
 
-    <mat-form-field color="accent">
-      <input matInput type="text" placeholder="Youtube profile" formControlName="youtube">
+    <mat-form-field color="primary">
+      <label>
+        <input matInput type="text" placeholder="Youtube profile" formControlName="youtube">
+      </label>
       <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="youtube" (click)="youtube.reset()">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="youtube.errors && youtube.errors.pattern">Enter a valid URL</mat-error>
     </mat-form-field>
 
-    <mat-form-field color="accent">
-      <input matInput type="text" placeholder="Linkedin profile" formControlName="linkedin">
+    <mat-form-field color="primary">
+      <label>
+        <input matInput type="text" placeholder="Linkedin profile" formControlName="linkedin">
+      </label>
       <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="linkedin" (click)="linkedin.reset()">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="linkedin.errors && linkedin.errors.pattern">Enter a valid URL</mat-error>
     </mat-form-field>
 
-    <mat-form-field color="accent">
-      <input matInput type="text" placeholder="Instagram profile" formControlName="instagram">
+    <mat-form-field color="primary">
+      <label>
+        <input matInput type="text" placeholder="Instagram profile" formControlName="instagram">
+      </label>
       <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="instagram" (click)="instagram.reset()">
         <mat-icon>close</mat-icon>
       </button>
@@ -73,8 +104,7 @@
 </form>
 <div mat-dialog-actions>
   <button mat-button color="warn" (click)="onNoClick()">Cancel</button>
-  <button mat-button color="accent" [disabled]="!this.newData.valid" (click)="saveData()"
-          [mat-dialog-close]="userData.accountInfo.bio" cdkFocusInitial>
+  <button mat-button color="primary" [disabled]="!this.newData.valid" (click)="saveData()" cdkFocusInitial>
     Save
   </button>
 </div>

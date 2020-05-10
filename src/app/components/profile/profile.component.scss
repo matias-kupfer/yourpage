@@ -1,28 +1,53 @@
 @import "../../style/variables";
 @import "../../style/global";
 
-div.outer {
+div.container {
+  margin-top: 100px;
   display: flex;
+  justify-content: space-evenly;
 
-  div.profile-content {
-    flex: 2;
-    background-color: $medGray;
-    border-radius: 14px;
-    box-shadow: $material-shadow;
-    margin: 20px;
-    padding: 30px;
-
+  div.posts-container {
+    margin: 10px;
   }
 
-  div.right-column {
-    margin: 20px;
-    flex: 1;
+  div.posts-bar {
+    margin-bottom: 20px;
+    padding: 0 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    background-color: $medGray;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
 
-    app-user-card {
+    div {
+      display: flex;
+      align-items: center;
+      width: 70px;
+      justify-content: space-between;
+
+      button {
+        line-height: 0;
+      }
     }
+  }
+
+  div.post-undefined {
+    margin: 10px;
+    width: 60%;
+
+    h3 {
+      text-align: center;
+    }
+  }
+
+
+  div.right-column {
+    margin: 10px;
+    width: 400px;
 
     div.map {
       box-shadow: $material-shadow;
+      margin-top: 50px;
 
       agm-map {
         height: 300px;
@@ -33,6 +58,42 @@ div.outer {
         max-width: 200px;
         background-color: $medGray;
       }
+    }
+  }
+}
+
+mat-progress-bar {
+  bottom: 0;
+  position: fixed;
+}
+
+
+// Responsive
+@media only screen and (max-width: 1000px) {
+
+  div.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column-reverse;
+
+    div.posts-container {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      div.posts-bar {
+        width: 90%;
+      }
+
+      div.post {
+        width: 100%;
+      }
+    }
+
+    div.right-column {
+      width: auto;
+      margin: 0 0 50px 0;
     }
   }
 

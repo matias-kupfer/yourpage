@@ -1,1 +1,22 @@
-<h3>you are at home</h3>
+<div class="container">
+
+  <div class="posts-container" *ngIf="latestPosts.length > 0">
+
+    <div class="post" *ngFor="let post of latestPosts">
+      <app-post-card [showFollowButton]="true" [post]="post"
+                     [postUser]="null"></app-post-card>
+    </div>
+    <mat-spinner *ngIf="postLoader" style="margin: auto" color="primary" [diameter]="40"></mat-spinner>
+    <div *ngIf="!postLoader && latestPosts.length === 0">
+      <h1>EMPTY</h1>
+    </div>
+  </div>
+
+  <app-loader *ngIf="lastDoc === null"></app-loader>
+</div>
+
+<!--
+<button mat-fab class="scroll-top-button" color="primary" *ngIf="showScrollButton">
+  <mat-icon>vertical_align_top</mat-icon>
+</button>
+-->

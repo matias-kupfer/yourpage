@@ -45,7 +45,7 @@ export class AuthService {
           if (result.additionalUserInfo.isNewUser) { // sign up
             this.firestoreService.updateUserData(JSON.parse(JSON.stringify(this.createNewUserObject(result))));
             this.notifier.notify('default', 'Successfully registered as ' + result.user.email);
-          } else { // login
+          } else { // authenticate
             this.userDataSubscription();
             this.notifier.notify('default', 'Welcome back ' + result.user.email);
           }
@@ -53,7 +53,7 @@ export class AuthService {
         }
       }).catch((error) => {
         console.log(error);
-        this.notifier.notify('warning', 'Error trying to login, check your conexion and try again.');
+        this.notifier.notify('warning', 'Error trying to authenticate, check your conexion and try again.');
       });
   }
 
@@ -71,10 +71,8 @@ export class AuthService {
   async signUpWithUserAndPassword(username: string, lastName: string, email: string, password: string) {
     return await this.fireAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        // verify it doesnt exist
-        console.log(result.user.uid);
-        const newEmailUser = new User(result.user.uid, username, lastName, email,
-          'https://firebasestorage.googleapis.com/v0/b/yourpage-4e4b4.appspot.com/o/defaultProfilePicture.png?alt=media&token=a69202d2-27ce-4329-a593-09809ac04a8d');
+        console.log(result.user.photoURL);
+        const newEmailUser = new User(result.user.uid, username, lastName, email, 'https://firebasestorage.googleapis.com/v0/b/yourpage-4e4b4.appspot.com/o/defaultProfilePicture.png?alt=media&token=9524c6ac-41c0-43b3-b7a1-5549dd472eff');
         this.firestoreService.updateUserData(JSON.parse(JSON.stringify(newEmailUser)));
         this.notifier.notify('default', 'Successfully registered as ' + result.user.email);
         this.router.navigate([DefaultRoutes.OnLogin]);

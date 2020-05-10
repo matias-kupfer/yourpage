@@ -2,20 +2,24 @@
 @import "style/variables";
 @import "style/theme";
 
-mat-drawer-container {
+mat-sidenav-container {
   min-height: 100%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border: none;
 
-  mat-drawer {
+  mat-sidenav {
     background-color: $medGray;
     color: $white;
     width: 250px;
     position: fixed;
     overflow: auto;
+    border: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 
     img.logo {
       margin: 20px auto 10px;
       display: block;
-      width: 150px;
+      width: 200px;
       height: auto;
     }
 
@@ -45,7 +49,7 @@ mat-drawer-container {
         margin: 10px 20px;
 
         mat-icon {
-          color: $accent;
+          color: $primary;
           font-size: 1.5em;
         }
 
@@ -63,7 +67,7 @@ mat-drawer-container {
     }
 
     .active {
-      border-left: 3px solid $accent !important;
+      border-left: 3px solid $primary !important;
 
       span {
         color: $white !important;
@@ -95,31 +99,28 @@ mat-drawer-container {
     }
   }
 
-  mat-drawer-content {
+  mat-sidenav-content {
     background-color: $darkGray;
+    min-height: 100vh;
+
+    div.swipe-area {
+      height: 100%;
+      width: 5%;
+      z-index: 1;
+      position: fixed;
+    }
 
     main {
-      margin: 90px 20px; // CONTENT MARGIN
-      //border-radius: 14px;
-      //background-color: $medGray;
-      //box-shadow: $material-shadow;
-      //padding: 50px;
+      margin: 60px 20px 20px 20px;
     }
   }
 }
 
-app-navbar {
-  display: block;
+@media only screen and (max-width: 1000px) {
+
+  main {
+    margin: 0 5px !important;
+  }
+
 }
 
-button.add-post {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-}
-
-button.fixed {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-}

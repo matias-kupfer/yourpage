@@ -1,5 +1,5 @@
 @import "../../../style/variables";
-
+@import "../../../style/global";
 
 mat-form-field {
   width: 49%;
@@ -18,7 +18,7 @@ h3 {
   margin: 5px 0;
 }
 
-img {
-  height: auto;
-  width: 50px;
+div.app-file {
+  display: flex;
+  justify-content: center;
 }

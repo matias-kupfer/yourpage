@@ -1,6 +1,5 @@
 <div class="user-card-container">
-  <img class="profile-image" [src]="userData.accountInfo.imageUrl"
-       (click)="isUserProfile && appComponent.editProfilePicture()">
+  <img class="profile-image" [src]="userData.accountInfo.imageUrl">
   <div class="content">
     <table>
       <tr style="cursor: pointer" (click)="appComponent.seeFollowers(userData)">
@@ -65,6 +64,6 @@
     EDIT PROFILE
   </button>
   <button *ngIf="loading">
-    <mat-spinner color="primary" diameter="20"></mat-spinner>
+    <mat-spinner color="accent" diameter="20"></mat-spinner>
   </button>
 </div>

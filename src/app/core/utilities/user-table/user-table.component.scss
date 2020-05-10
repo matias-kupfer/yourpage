@@ -8,8 +8,8 @@ div.container {
     border-collapse: collapse;
 
     tr {
-      border-top: 1px solid #5e5e5e;
-      border-bottom: 1px solid #5e5e5e;
+      border-top: 1px solid #292929;
+      border-bottom: 1px solid #292929;
     }
 
     th {
@@ -17,7 +17,22 @@ div.container {
       text-align: left;
       font-weight: 200;
       font-variant: small-caps;
-      background-color: #505050;
+      background-color: #292929;
+      color: #9c9c9c;
+
+      input {
+        border: none;
+        border-bottom: 1px solid $lightGray;
+        font-variant: none;
+        background-color: transparent;
+        font-size: 1em;
+        color: white;
+        transition: 0.5s;
+
+        &:focus {
+          border-bottom: 1px solid $primary;
+        }
+      }
     }
 
     td {
@@ -25,3 +40,8 @@ div.container {
     }
   }
 }
+
+//::ng-deep .mat-form-field-infix {
+//  font-variant: none;
+//  border: 0 !important;
+//}

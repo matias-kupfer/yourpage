@@ -10,12 +10,12 @@ import {AuthService} from '../../core/services/auth.service';
 })
 export class UsersComponent implements OnInit {
   allUsers: User[] = null;
-  searchUser = '';
 
   constructor(private firestoreService: FirestoreService, private authService: AuthService) {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.firestoreService.getAllUsers().get().then(
       querySnapshot => {
         this.allUsers = [];

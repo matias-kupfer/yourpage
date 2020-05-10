@@ -1,4 +1,4 @@
-<mat-tab-group color="accent">
+<mat-tab-group color="primary">
 
   <mat-tab label="Followers">
     <ng-container *ngIf="followers.length">
@@ -6,17 +6,17 @@
         <div>
           <img [src]="user.accountInfo.imageUrl" alt="profile picture">
           <span>
-            <h3>{{user.accountInfo.userName}}</h3>
-            <p>@{{user.personalInfo.name}}</p>
+            <h3>{{user.personalInfo.name}} {{user.personalInfo.lastName}}</h3>
+            <p>@{{user.accountInfo.userName}}</p>
           </span>
         </div>
-        <button mat-raised-button color="accent" [routerLink]="'/u/' + user.accountInfo.userName"
+        <button mat-raised-button color="primary" [routerLink]="'/u/' + user.accountInfo.userName"
                 (click)="dialogRef.close();">Profile
         </button>
       </div>
     </ng-container>
     <h3 *ngIf="userData.followers.length === 0">The users doesn't have followers. Be the first.</h3>
-    <mat-spinner color="accent" *ngIf="followers.length === 0 && userData.followers.length !== 0"></mat-spinner>
+    <mat-spinner color="primary" *ngIf="followers.length === 0 && userData.followers.length !== 0"></mat-spinner>
   </mat-tab>
 
   <mat-tab label="Following">
@@ -25,16 +25,16 @@
         <div>
           <img [src]="user.accountInfo.imageUrl" alt="profile picture">
           <span>
-            <h3>{{user.accountInfo.userName}}</h3>
-            <p>@{{user.personalInfo.name}}</p>
+            <h3>{{user.personalInfo.name}} {{user.personalInfo.lastName}}</h3>
+            <p>@{{user.accountInfo.userName}}</p>
           </span>
         </div>
-        <button mat-raised-button color="accent" (click)="onProfileBtnClick(user.accountInfo.userName)">Profile
+        <button mat-raised-button color="primary" (click)="onProfileBtnClick(user.accountInfo.userName)">Profile
         </button>
       </div>
     </ng-container>
     <h3 *ngIf="userData.following.length === 0">The users doesn't follow anyone.</h3>
-    <mat-spinner color="accent" *ngIf="following.length === 0 && userData.following.length !== 0"></mat-spinner>
+    <mat-spinner color="primary" *ngIf="following.length === 0 && userData.following.length !== 0"></mat-spinner>
   </mat-tab>
 
 </mat-tab-group>

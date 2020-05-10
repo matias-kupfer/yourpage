@@ -14,6 +14,9 @@ export class ImageComponent implements OnInit {
   @Input()
   public class;
 
+  @Input()
+  public smallSpinner;
+
   constructor() {
   }
 

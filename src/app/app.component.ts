@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import {AuthService} from './core/services/auth.service';
 import {FirestoreService} from './core/services/firestore.service';
 import {User} from './class/user';
@@ -10,9 +10,10 @@ import {fadeAnimation} from './interfaces/routeAnimation';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {SideNavActions, SideNavLinks} from './interfaces/sideNavLinks';
 import {EditProfileComponent} from './components/profile/edit-profile/edit-profile.component';
-import {NewImagePostComponent} from './components/new-post/new-image-post/new-image-post.component';
-import {ChangePictureComponent} from './components/profile/change-picture/change-picture.component';
+import {NewImagePostComponent} from './components/posts/new-image-post/new-image-post.component';
 import {UsersListComponent} from './components/profile/users-list/users-list.component';
+import {MediaMatcher} from '@angular/cdk/layout';
+
 
 @Component({
   selector: 'app-root',
@@ -28,6 +29,10 @@ export class AppComponent implements OnInit {
   navigationLinks: SideNavLinks[];
   navigationLinksNotLoggedIn: SideNavLinks[];
   actions: SideNavActions[];
+  public sideNavStatus = true;
+
+  mobileQuery: MediaQueryList;
+  private readonly mobileQueryListener: () => void;
 
   constructor(
     private authService: AuthService,
@@ -38,7 +43,15 @@ export class AppComponent implements OnInit {
     private bottomSheet: MatBottomSheet,
     private ngZone: NgZone,
     public dialog: MatDialog,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher
   ) {
+    // Sidenav responsive
+    this.mobileQuery = media.matchMedia('(max-width: 1400px)');
+    this.mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addEventListener('change', this.mobileQueryListener);
+
+    // Notifications
     this.notificationService.notification$.subscribe((notificationData: NotificationData) => {
       this.snackBar.open(notificationData.message, notificationData.button, {
         duration: 4000, /*not working*/
@@ -82,7 +95,7 @@ export class AppComponent implements OnInit {
   public editProfile() {
     const dialogRef = this.dialog.open(EditProfileComponent, {
       width: '700px',
-      data: this.userData
+      data: this.userData,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -101,14 +114,6 @@ export class AppComponent implements OnInit {
 
   public updateUserData(updatedUser: User) {
     this.firestoreService.updateUserData(updatedUser).then(res => console.log(res));
-  }
-
-  // EDIT PROFILE PICTURE
-  public editProfilePicture() {
-    const dialogRef = this.dialog.open(ChangePictureComponent, {
-      width: '500px',
-      data: this.userData,
-    });
   }
 
   // Statistics
@@ -152,18 +157,21 @@ export class AppComponent implements OnInit {
         iconColor: '#DDD51C',
         text: 'Edit Profile',
         action: 'editProfile',
+        hideResponsive: false,
       },
       {
         matIcon: 'edit',
         iconColor: '#EF0093',
         text: 'New Post',
         action: 'openNewPostSelector',
+        hideResponsive: true,
       },
       {
         matIcon: 'power_settings_new',
         iconColor: '#D51B1B',
         text: 'Logout',
         action: 'onLogout',
+        hideResponsive: false,
       }
     ];
 
@@ -189,14 +197,8 @@ export class AppComponent implements OnInit {
       {
         matIcon: 'vpn_key',
         iconColor: '#319A66',
-        text: 'Login',
-        componentName: 'login'
-      },
-      {
-        matIcon: 'person_add',
-        iconColor: '#D85921',
-        text: 'Register',
-        componentName: 'signup'
+        text: 'Access',
+        componentName: 'authenticate'
       },
     ];
   }

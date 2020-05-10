@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {DocumentData} from '@angular/fire/firestore';
+import {DocumentData, DocumentReference} from '@angular/fire/firestore';
 import {User} from '../../class/user';
 import * as firebase from 'firebase';
 import {Pointer} from '../../interfaces/pointer';
@@ -8,6 +8,7 @@ import {NotifierService} from 'angular-notifier';
 import {ImagePost} from '../../class/imagePost';
 import {Reference} from '@angular/fire/storage/interfaces';
 import {AngularFireAuth} from '@angular/fire/auth';
+import {LatestPostsInfo} from '../../interfaces/latestPostsInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,7 @@ export class FirestoreService {
   }
 
   public getAllUsers() {
-    return this.db.collection('users');
+    return this.db.collection('users').where('accountInfo.userName', '<', '\uf8ff');
   }
 
   // POSTS
@@ -54,18 +55,25 @@ export class FirestoreService {
     return this.db.collection('users').doc(userId).collection('posts');
   }
 
-  public updatePost(imagePost: ImagePost, user: User): Promise<void> {
-    return this.db.collection('users').doc(user.personalInfo.userId)
+  public getLatestPostsInfo(): DocumentData {
+    return this.db.collection('posts').orderBy('date', 'desc');
+  }
+
+  public getPost(postInfo: LatestPostsInfo): DocumentReference {
+    return this.db.collection('users').doc(postInfo.uid).collection('posts').doc(postInfo.postId);
+  }
+
+  public updatePost(imagePost: ImagePost, postUserId: string): Promise<void> {
+    return this.db.collection('users').doc(postUserId)
       .collection('posts').doc(imagePost.postId).set(imagePost, {
         merge: true
       });
   }
 
-  public newImagePost(newImagePost: ImagePost, images: UploadFile[], user: User): Promise<void> {
-    return this.db.collection(`users/${user.personalInfo.userId}/posts`).add(newImagePost)
+  async newImagePost(newImagePost: ImagePost, images: UploadFile[], user: User): Promise<void> {
+    return await this.db.collection(`users/${user.personalInfo.userId}/posts`).add(newImagePost)
       .then(response => {
         newImagePost.postId = response.id;
-        newImagePost.date = new Date();
         return this.uploadImagesFireStorage(images, user, newImagePost);
       }).catch((e) => {
         console.error(e);
@@ -73,8 +81,8 @@ export class FirestoreService {
       });
   }
 
-  public deleteImagePost(imagePostToDelete: ImagePost): Promise<void> {
-    return this.db.collection('users').doc(this.userId).collection('posts').doc(imagePostToDelete.postId).delete()
+  async deleteImagePost(imagePostToDelete: ImagePost): Promise<void> {
+    return await this.db.collection('users').doc(this.userId).collection('posts').doc(imagePostToDelete.postId).delete()
       .then(() => {
         for (let i = 0; i < imagePostToDelete.imagesUrls.length; i++) {
           const deleteRef: Reference = this.storageRef.child(`users/${this.userId}${this.storageImgRef[1]}${imagePostToDelete.postId}/${i}`);
@@ -125,7 +133,7 @@ export class FirestoreService {
             }
             if (newImagePost) {
               newImagePost.imagesUrls.push(image.url);
-              this.updatePost(newImagePost, user);
+              this.updatePost(newImagePost, user.personalInfo.userId);
             }
           }
         );

@@ -1,2 +1,5 @@
-<mat-spinner *ngIf="imageLoader" color="accent"></mat-spinner>
-<img [hidden]="imageLoader" [src]="image" (load)="this.imageLoader = false" [ngClass]="class">
+<div>
+  <mat-spinner *ngIf="imageLoader && !smallSpinner" color="primary"></mat-spinner>
+  <mat-spinner *ngIf="imageLoader && smallSpinner" matSuffix color="primary" diameter="20"></mat-spinner>
+  <img [hidden]="imageLoader" [src]="image" (load)="imageLoader = false" [ngClass]="class">
+</div>

@@ -1,33 +1,35 @@
+<!--suppress AngularUndefinedBinding -->
 <ng-container *ngIf="this.authService.isLoggedIn !== null">
-
   <!--  AUTH STATUS KNOWN -->
-  <mat-drawer-container *ngIf="!this.authService.isLoggedIn ||
+  <mat-sidenav-container *ngIf="!this.authService.isLoggedIn ||
     this.authService.isLoggedIn && authService.isSetUp !== null && userData !== null" autosize>
-    <mat-drawer mode="side" opened *ngIf="this.authService.isLoggedIn && this.authService.isSetUp">
-
+    <mat-sidenav [opened]="sideNavStatus" *ngIf="this.authService.isLoggedIn && this.authService.isSetUp"
+                 [mode]="mobileQuery.matches ? 'over' : 'side'" (closed)="sideNavStatus = false">
       <!-- LOGGED IN AND SET UP-->
-      <img src="../assets/images/kleanLogoWhite.png" class="logo"/>
+      <img src="/assets/images/yourpageLogo.png" class="logo"/>
       <hr>
       <h3 class="category">NAVIGATION</h3>
       <div class="nav-button" *ngFor="let link of navigationLinks" [routerLink]="link.componentName"
            routerLinkActive="active">
-        <div>
+        <div (click)="mobileQuery.matches ? sideNavStatus = false : null">
           <mat-icon [ngStyle]="{color: link.iconColor}">{{link.matIcon}}</mat-icon>
           <span>{{link.text}}</span>
         </div>
       </div>
       <hr>
       <h3 class="category">ACTIONS</h3>
-      <div class="nav-button" *ngFor="let action of actions" (click)="this[action.action]()">
-        <div>
-          <mat-icon [ngStyle]="{color: action.iconColor}">{{action.matIcon}}</mat-icon>
-          <span>{{action.text}}</span>
+      <ng-container *ngFor="let action of actions">
+        <div class="nav-button" *ngIf="mobileQuery.matches && !action.hideResponsive || !mobileQuery.matches"
+             (click)="this[action.action]()">
+          <div (click)="mobileQuery.matches ? sideNavStatus = false : null">
+            <mat-icon [ngStyle]="{color: action.iconColor}">{{action.matIcon}}</mat-icon>
+            <span>{{action.text}}</span>
+          </div>
         </div>
-      </div>
+      </ng-container>
       <hr>
       <h3 class="category">ACCOUNT</h3>
-      <app-image [image]="userData.accountInfo.imageUrl" (click)="editProfilePicture()"
-                 [class]="'side-bar-profile-picture'"></app-image>
+      <app-image [image]="userData.accountInfo.imageUrl" [smallSpinner]="true" [class]="'side-bar-profile-picture'"></app-image>
       <h3 class="username">@{{userData.accountInfo.userName}}</h3>
       <table>
         <tr style="cursor: pointer" (click)="seeFollowers(userData)">
@@ -41,11 +43,11 @@
           <td>posts</td>
         </tr>
       </table>
-    </mat-drawer>
-
+    </mat-sidenav>
     <!-- NOT LOGGED IN -->
-    <mat-drawer mode="side" opened *ngIf="!this.authService.isLoggedIn">
-      <img src="../assets/images/kleanLogoWhite.png" class="logo"/>
+    <mat-sidenav mode="side" opened *ngIf="!this.authService.isLoggedIn" [opened]="sideNavStatus"
+                 [mode]="mobileQuery.matches ? 'over' : 'side'" (closed)="sideNavStatus = false">
+      <img src="/assets/images/yourpageLogo.png" class="logo"/>
       <hr>
       <h3 class="category">NAVIGATION</h3>
       <div class="nav-button" *ngFor="let link of navigationLinksNotLoggedIn" [routerLink]="link.componentName"
@@ -55,16 +57,19 @@
           <span>{{link.text}}</span>
         </div>
       </div>
-    </mat-drawer>
+    </mat-sidenav>
+
 
     <!-- CONTENT -->
-    <mat-drawer-content>
-      <app-navbar *ngIf="this.authService.isLoggedIn"></app-navbar>
+    <mat-sidenav-content>
+      <app-navbar
+        *ngIf="this.authService.isLoggedIn && authService.isSetUp || !this.authService.isLoggedIn"></app-navbar>
+      <div class="swipe-area" *ngIf="!sideNavStatus" (swiperight)="sideNavStatus = true"></div>
       <main [@fadeAnimation]="getRouterOutletState(o)">
         <router-outlet #o="outlet"></router-outlet>
       </main>
-    </mat-drawer-content>
-  </mat-drawer-container>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </ng-container>
 
 <!-- LOADER WHILE GETTING AUTH STATUS-->

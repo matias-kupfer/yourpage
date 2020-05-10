@@ -1,13 +1,11 @@
 <div class="container">
-  <mat-form-field class="example-full-width" color="accent" style="width: 100%">
-    <label>
-      <input matInput placeholder="Search a user" [(ngModel)]="searchUser" style="width: 100%; font-size: 40px;">
-    </label>
-  </mat-form-field>
-  <br>
   <table>
     <tr>
-      <th>USER</th>
+      <th>
+        <label>
+          <input placeholder="search user" autocomplete="off" [(ngModel)]="searchUser">
+        </label>
+      </th>
       <th>LOCATION</th>
       <th>FOLLOWERS</th>
       <th>FOLLOWING</th>
@@ -15,13 +13,13 @@
       <th>MORE</th>
     </tr>
     <tr *ngFor=" let user of users">
-      <ng-template [ngIf]="user.accountInfo.userName !== null && searchUsers(user)">
+      <ng-template [ngIf]="searchUsers(user)">
         <td>
           <div class="user-simple-card">
             <img [src]="user.accountInfo.imageUrl" alt="profile picture">
             <span>
-            <h3>{{user.accountInfo.userName}}</h3>
-            <p>@{{user.personalInfo.name}}</p>
+            <h3>{{user.personalInfo.name}} {{user.personalInfo.lastName}}</h3>
+            <p>@{{user.accountInfo.userName}}</p>
           </span>
           </div>
         </td>
@@ -30,9 +28,9 @@
         <td>{{user.following.length}}</td>
         <td>{{user.posts}}</td>
         <td>
-          <button mat-stroked-button color="accent" [routerLink]="'/u/' + user.accountInfo.userName">Profile</button>
+          <button mat-flat-button color="primary" [routerLink]="'/u/' + user.accountInfo.userName">Profile</button>
         </td>
       </ng-template>
-      </tr>
-      </table>
+    </tr>
+  </table>
 </div>

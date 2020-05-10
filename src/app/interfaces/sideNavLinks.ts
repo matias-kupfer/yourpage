@@ -10,4 +10,5 @@ export interface SideNavActions {
   iconColor: string;
   text: string;
   action: string;
+  hideResponsive: boolean;
 }

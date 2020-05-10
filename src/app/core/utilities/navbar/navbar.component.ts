@@ -1,6 +1,6 @@
 import {Component, NgZone, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
+import {AppComponent} from '../../../app.component';
 
 @Component({
   selector: 'app-navbar',
@@ -10,16 +10,11 @@ import {AuthService} from '../../services/auth.service';
 export class NavbarComponent implements OnInit {
   public userData = this.authService.user$.getValue();
 
-  constructor(private authService: AuthService, private ngZone: NgZone) {
-
+  constructor(private authService: AuthService, private ngZone: NgZone, private appComponent: AppComponent) {
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.userDataSubscription();
-  }
-
-  public onLogout() {
-    this.authService.onLogout();
   }
 
   userDataSubscription() {

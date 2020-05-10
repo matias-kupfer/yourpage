@@ -33,7 +33,7 @@ export class AuthenticationGuard implements CanActivate {
               this.authService.isSetUp = res.data().accountInfo.userName !== null;
               if (this.authService.isSetUp) {
                 // user is set up (VALID USER)
-                if (state.url === '/login' || state.url === '/signup' || state.url === '/configure-profile') {
+                if (state.url === '/authenticate' || state.url === '/signup' || state.url === '/configure-profile') {
                   this.router.navigate([DefaultRoutes.OnDefault]);
                   return false;
                 }

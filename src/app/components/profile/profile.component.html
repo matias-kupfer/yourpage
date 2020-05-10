@@ -1,31 +1,40 @@
-<div class="outer" *ngIf="userData !== null; else loader">
-  <div class="profile-content">
-    <!--POSTS-->
-    <h1>posts:</h1>
-    <mat-form-field color="accent">
-      <mat-label>order</mat-label>
-      <mat-select (selectionChange)="orderBy($event.value)">
-        <mat-option value="asc" selected>ascend</mat-option>
-        <mat-option value="desc">desc</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <div *ngFor="let post of userImagePosts;">
-      <ng-container *ngIf="post.imagesUrls.length">
-        <h1>{{post.title}}</h1>
-        <h3>{{post.date.seconds * 1000| date:'d/M/yy, h:mm'}}</h3>
-        <ng-container *ngFor="let postImageUrl of post.imagesUrls">
-          <app-image [image]="postImageUrl" [class]="'small-profile-picture'" style="margin: 5px"></app-image>
-        </ng-container>
-        <button mat-flat-button color="warn" *ngIf="isUserProfile" (click)="deletePost(post)">Delete</button>
-        <hr>
-      </ng-container>
+<div class="container" *ngIf="userData !== null; else loader">
+  <div class="posts-container" *ngIf="userImagePosts.length">
+    <div class="posts-bar">
+      <p>ALL POSTS</p>
+      <div>
+        <button mat-icon-button *ngIf="postsOrder === 'desc'" (click)="orderBy('asc')"
+                matTooltip="Date added (oldest)">
+          <mat-icon>arrow_upward</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="postsOrder === 'asc'" (click)="orderBy('desc')"
+                matTooltip="Date added (newest)">
+          <mat-icon>arrow_downward</mat-icon>
+        </button>
+        <button mat-icon-button (click)="refreshPosts()"
+                matTooltip="Refresh">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
     </div>
+    <ng-container>
+      <div class="post" *ngFor="let post of userImagePosts">
+        <app-post-card *ngIf="post.imagesUrls.length" [post]="post" [postUser]="userData" [showFollowButton]="false"
+                       (deletePost)="deletePost($event)">
+        </app-post-card>
+      </div>
+    </ng-container>
+    <mat-spinner *ngIf="postLoader" style="margin: auto" color="primary" [diameter]="40"></mat-spinner>
   </div>
-  <div class="right-column">
+
+  <div class="post-undefined" *ngIf="userImagePosts.length === 0">
+    <h3 *ngIf="!postLoader">THE USER DOESN'T HAVE ANY POSTS.</h3>
+    <mat-spinner *ngIf="postLoader" color="primary"></mat-spinner>
+  </div>
+
+
+  <div class="right-column" *ngIf="userData">
     <app-user-card [userData]="userData" [isUserProfile]="isUserProfile"></app-user-card>
-    <br>
-    <br>
     <!--MAP-->
     <div class="map">
       <agm-map (mapClick)="!userName && isUserProfile && createPointer($event)" [styles]="mapStyle" [zoom]="1"
@@ -39,7 +48,7 @@
                 {{ pointer.description }}
               </p>
               <div *ngIf="isUserProfile">
-                <button mat-raised-button color="accent" (click)="editPointer(pointer)">Edit</button>
+                <button mat-raised-button color="primary" (click)="editPointer(pointer)">Edit</button>
                 <button mat-raised-button color="warn" (click)="removePointer(pointer)">Remove</button>
               </div>
             </div>
@@ -56,5 +65,6 @@
 <ng-template #loader>
   <app-loader></app-loader>
 </ng-template>
-<!--@todo ngif for social links-->
+<!--todo ngif for social links-->
 <!--todo bigger description like bio under the map with 400 char-->
+<!--todo refresh button-->

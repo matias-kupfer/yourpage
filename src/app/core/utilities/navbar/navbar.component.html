@@ -1,9 +1,17 @@
 <mat-toolbar>
-  <span class="spacer"></span>
-  <div class="card" [routerLink]="'/profile'">
+  <mat-icon class="rotate" (click)="appComponent.sideNavStatus = !appComponent.sideNavStatus">
+    {{appComponent.sideNavStatus ? 'close' : 'menu'}}
+  </mat-icon>
+  <div *ngIf="this.authService.isLoggedIn" class="card" [routerLink]="'/profile'">
     <app-image [image]="userData.accountInfo.imageUrl"
-               [class]="'small-profile-picture'"></app-image>
+               [class]="'small-profile-picture'" [smallSpinner]="true"></app-image>
     <span>{{userData.personalInfo.name}}
       {{userData.personalInfo.lastName}}</span>
+  </div>
+
+  <div *ngIf="!this.authService.isLoggedIn" class="card" [routerLink]="'/authenticate'">
+<!--    <img src="/assets/images/yourpageIcon.png" class="small-profile-picture">-->
+    <mat-icon>fingerprint</mat-icon>
+    <span>Login / Register</span>
   </div>
 </mat-toolbar>

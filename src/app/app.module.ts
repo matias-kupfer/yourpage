@@ -14,21 +14,25 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {DefaultKeys} from './enums/keys.enum';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
+export class MyHammerConfig extends HammerGestureConfig {
+  overrides = {
+    pinch: { enable: false },
+    rotate: { enable: false }
+  } as any;
+}
+
 import {HomeComponent} from './components/home/home.component';
-import {LoginComponent} from './components/loginAndsignup/login/login.component';
+import {AuthenticateComponent} from './components/authenticate/authenticate.component';
 import {AuthenticationGuard} from './core/guards/auth.guard';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {NavbarComponent} from './core/utilities/navbar/navbar.component';
-import {SignupComponent} from './components/loginAndsignup/signup/signup.component';
 import {EditProfileComponent} from './components/profile/edit-profile/edit-profile.component';
 import {EditPointerComponent} from './components/profile/edit-pointer/edit-pointer.component';
-import {NewPostSelectorComponent} from './components/new-post/new-post-selector/new-post-selector.component';
-import {NewTextPostComponent} from './components/new-post/new-text-post/new-text-post.component';
 import {FileUploadDirective} from './directives/file-upload.directive';
-import {ChangePictureComponent} from './components/profile/change-picture/change-picture.component';
 import {NewUserDataComponent} from './components/profile/new-user-data/new-user-data.component';
-import {NewImagePostComponent} from './components/new-post/new-image-post/new-image-post.component';
+import {NewImagePostComponent} from './components/posts/new-image-post/new-image-post.component';
 import {ImageComponent} from './core/utilities/image/image.component';
 import {UserCardComponent} from './core/utilities/user-card/user-card.component';
 import {UsersListComponent} from './components/profile/users-list/users-list.component';
@@ -60,40 +64,37 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatTabsModule} from '@angular/material/tabs';
 import { UserTableComponent } from './core/utilities/user-table/user-table.component';
+import { PostCardComponent } from './core/utilities/post-card/post-card.component';
+import { FileUploadCardComponent } from './core/utilities/file-upload-card/file-upload-card.component';
 
 
 @NgModule({
   entryComponents: [
     EditProfileComponent,
     EditPointerComponent,
-    ChangePictureComponent,
-    NewPostSelectorComponent,
-    NewTextPostComponent,
     NewImagePostComponent,
     UsersListComponent
   ],
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent,
+    AuthenticateComponent,
     NotFoundComponent,
     ProfileComponent,
     NavbarComponent,
-    SignupComponent,
     LoaderComponent,
     EditProfileComponent,
     EditPointerComponent,
     UsersComponent,
-    NewPostSelectorComponent,
-    NewTextPostComponent,
     FileUploadDirective,
-    ChangePictureComponent,
     NewUserDataComponent,
     NewImagePostComponent,
     ImageComponent,
     UserCardComponent,
     UsersListComponent,
     UserTableComponent,
+    PostCardComponent,
+    FileUploadCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -137,6 +138,10 @@ import { UserTableComponent } from './core/utilities/user-table/user-table.compo
   providers: [
     AuthenticationGuard,
     MatDatepickerModule,
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: MyHammerConfig
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -3,7 +3,8 @@
 
 div.user-card-container {
   background-color: $medGray;
-  border-radius: 14px;
+  border-radius: 5px;
+  border: 1px solid transparent;
   box-shadow: $material-shadow;
 
   img.profile-image {
@@ -13,7 +14,7 @@ div.user-card-container {
     display: block;
     margin: auto;
     transform: translateY(-50%);
-    border: 8px solid #202124;
+    border: 8px solid $darkGray;
     transition: 0.2s;
 
     &:hover {
@@ -105,11 +106,11 @@ div.user-card-container {
     margin: auto;
     padding: 10px 40px;
     transform: translateY(50%);
-    border: 8px solid #202124;
+    border: 8px solid $darkGray;
     transition: 0.2s;
     font-size: 1em;
     letter-spacing: 3px;
-    background-color: $accent;
+    background-color: $primary;
     color: white;
     cursor: pointer;
 

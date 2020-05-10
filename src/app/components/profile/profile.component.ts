@@ -1,4 +1,4 @@
-import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../core/services/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {User} from '../../class/user';
@@ -14,7 +14,6 @@ import OrderByDirection = firebase.firestore.OrderByDirection;
 import QuerySnapshot = firebase.firestore.QuerySnapshot;
 import {mapStyle} from '../../enums/map-style.enum';
 import * as firebase from 'firebase';
-import {BehaviorSubject} from 'rxjs';
 
 
 @Component({
@@ -24,12 +23,15 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   public userData: User;
-  public userImagePosts: ImagePost[];
+  public userImagePosts: ImagePost[] = [];
   public userName = null;
   public isUserProfile = true;
   private notifier: NotifierService;
-  public postsOrder$: BehaviorSubject<OrderByDirection> = new BehaviorSubject<OrderByDirection>('desc');
+  public postsOrder: OrderByDirection = 'desc';
   public mapStyle: any = mapStyle;
+  public postsQuery;
+  public lastDoc = null;
+  public postLoader = false;
 
   // todo map theme based on users theme preferences
 
@@ -45,6 +47,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.notifier = notifier;
   }
 
+  @HostListener('window:scroll', ['$event']) // for window scroll events
+  onScroll() {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100 &&
+      !this.postLoader && this.userImagePosts.length) {
+      this.loadPosts();
+    }
+  }
 
   ngOnInit() {
     if (this.route.snapshot.paramMap.get('userName')) { // visiting
@@ -56,7 +65,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     } else { // profile
       this.userDataSubscription();
     }
-    this.postsOrder$.subscribe(() => this.getUserPostsById());
   }
 
   ngOnDestroy(): void {
@@ -66,49 +74,115 @@ export class ProfileComponent implements OnInit, OnDestroy {
   userDataSubscription() {
     this.authService.user$
       .subscribe((doc) => {
-        this.userData = doc;
-        this.getUserPostsById();
+        this.processNewUserData(doc);
       });
   }
 
   public getUserByUsername() {
-    this.userImagePosts = [];
-    this.userData = null;
     this.firestoreService.getUserByUserName(this.userName)
       .onSnapshot((doc) => {
         if (doc.docs[0]) {
-          this.userData = doc.docs[0].data();
-          this.getUserPostsById();
+          this.processNewUserData(doc.docs[0].data());
         }
       });
 
   }
 
-  // POSTS
-  public getUserPostsById() {
-    if (this.userData) {
-      this.firestoreService.getPostsByUserId(this.userData.personalInfo.userId).orderBy('date', this.postsOrder$.getValue()).limit(2)
-        .onSnapshot((res: QuerySnapshot<ImagePost>) => {
-          if (res) {
-            this.userImagePosts = [];
-            res.docs.forEach(post => {
-              this.userImagePosts.push(post.data());
-            });
-          }
-        });
+  public processNewUserData(newData: User) {
+    if (this.userData && newData.posts !== this.userData.posts || !this.userData) {
+      this.userData = newData;
+      this.userImagePosts = [];
+      this.setQuery();
+    } else {
+      this.userData = newData;
     }
   }
 
-  public orderBy(value: OrderByDirection) {
-    this.postsOrder$.next(value);
+  // POSTS
+  public getUserPostsById() {
+    if (this.userData) {
+      this.postLoader = true;
+      this.postsQuery.onSnapshot((res: QuerySnapshot<ImagePost>) => {
+        if (res) {
+          if (res.docs.length === 0) {
+            this.lastDoc = null;
+          }
+          this.postLoader = false;
+          res.docs.forEach(post => {
+            const postPosition = this.findPost(post.data());
+            if (postPosition === -1) { // the post does not exist
+              this.lastDoc = res.docs[res.docs.length - 1];
+              this.userImagePosts.push(post.data());
+            } else {
+              this.userImagePosts[postPosition].likes = post.data().likes;
+              post.data().comments.length < this.userImagePosts[postPosition].comments.length
+                ? this.userImagePosts[postPosition].comments = post.data().comments
+                : null;
+            }
+          });
+        } // else not found
+      });
+    }
   }
 
-  public deletePost(imagePostToDelete: ImagePost) {
-    this.firestoreService.deleteImagePost(imagePostToDelete).then(() => {
+  public findPost(postToFind: ImagePost): number {
+    let position = -1;
+    this.userImagePosts.forEach((post: ImagePost, index) => {
+      if (post.postId === postToFind.postId) {
+        position = index;
+        return;
+      }
+    });
+    return position;
+  }
+
+  public deletePost(postToDelete: ImagePost) {
+    this.firestoreService.deleteImagePost(postToDelete).then(() => {
       this.snackBar.open('Posted removed', 'dismiss', {
         duration: 5000
       });
+      this.userImagePosts.forEach((post, index) => {
+        if (post.postId === postToDelete.postId) {
+          this.userImagePosts.splice(index, 1);
+          return;
+        }
+      });
+    }).catch((e) => {
+      console.log(e);
+      this.snackBar.open('Failed trying to remove post', '', {
+        duration: 5000
+      });
     });
+  }
+
+  public loadPosts() {
+    if (!this.lastDoc) { // no more posts
+      return;
+    }
+    this.postsQuery = this.firestoreService.getPostsByUserId(this.userData.personalInfo.userId)
+      .orderBy('date', this.postsOrder).startAfter(this.lastDoc)
+      .limit(1);
+    this.getUserPostsById();
+  }
+
+  public setQuery() {
+    this.postsQuery = this.firestoreService.getPostsByUserId(this.userData.personalInfo.userId)
+      .orderBy('date', this.postsOrder).limit(1);
+    this.getUserPostsById();
+  }
+
+  public orderBy(value: OrderByDirection) {
+    this.postsOrder = value;
+    this.refreshPosts();
+  }
+
+  public refreshPosts() {
+    this.postLoader = true;
+    this.lastDoc = null;
+    this.userImagePosts = [];
+    setTimeout(() => {
+      this.setQuery();
+    }, 1000);
   }
 
   // MAP
@@ -157,5 +231,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   // @todo undo action ?
-  // @todo if firestore observable doesnt return, user doesnt exist, -> login page
+  // @todo if firestore observable doesnt return, user doesnt exist, -> authenticate page
+  // @todo reactive last post info if its diferent show notification of new posts
 }

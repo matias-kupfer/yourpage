@@ -3,8 +3,9 @@
 
 div.users-container {
   background-color: $medGray;
-  border-radius: 14px;
+  border-radius: 5px;
   box-shadow: $material-shadow;
+  padding-bottom: 5px;
+  overflow: scroll;
   margin: 0 20px;
-  padding: 30px 0;
 }

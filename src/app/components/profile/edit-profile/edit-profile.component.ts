@@ -1,9 +1,12 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ProfileComponent} from '../profile.component';
 import {User} from '../../../class/user';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DefaultRegex} from '../../../enums/regex.enum';
+import {FirestoreService} from '../../../core/services/firestore.service';
+import {UploadFile} from '../../../class/uploadFile';
+import {MediaMatcher} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-edit-bio',
@@ -12,11 +15,23 @@ import {DefaultRegex} from '../../../enums/regex.enum';
 })
 export class EditProfileComponent implements OnInit {
   newData: FormGroup;
-  socialProfiles: string[] = ['facebook', 'github', 'twitter', 'youtube', 'linkedin', 'instagram'];
+  hover = false;
+  files: UploadFile[] = [];
+  uploading = false;
+
+  mobileQuery: MediaQueryList;
+  private readonly mobileQueryListener: () => void;
 
   constructor(
     public dialogRef: MatDialogRef<ProfileComponent>,
+    private firestoreService: FirestoreService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
     @Inject(MAT_DIALOG_DATA) public userData: User) {
+    // Sidenav responsive
+    this.mobileQuery = media.matchMedia('(max-width: 1000px)');
+    this.mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addEventListener('change', this.mobileQueryListener);
   }
 
   ngOnInit() {
@@ -89,7 +104,21 @@ export class EditProfileComponent implements OnInit {
       linkedin: this.linkedin.value,
       instagram: this.instagram.value,
     };
-    this.dialogRef.close(this.userData);
+    this.updateProfileImage().then(() => {
+      setTimeout(() => {
+        this.dialogRef.close(this.userData);
+      }, 1000);
+    });
+  }
+
+  async updateProfileImage() {
+    if (!this.files.length) {
+      return;
+    }
+    this.uploading = true;
+    await this.firestoreService.uploadImagesFireStorage(this.files, this.userData).then(() => {
+      this.uploading = false;
+    });
   }
 
   onNoClick() {
