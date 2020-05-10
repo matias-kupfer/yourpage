@@ -1,0 +1,113 @@
+<div class="container">
+  <div class="uploading" [ngStyle]="{display: isUploading ? 'block' : 'none'}">
+    <app-loader></app-loader>
+  </div>
+
+  <h1>New post</h1>
+  <p class="files-remaining">{{files.length}}/{{filesLimit}} Files</p>
+  <div *ngIf="files.length < filesLimit" appFileUpload [files]="files" [limit]="filesLimit - files.length"
+       (customMouseOver)="hover = $event"
+       [ngClass]="{'file-over': hover}"
+       class="drop-zone file-over">
+    <div>
+      <mat-icon>cloud_upload</mat-icon>
+      <p>DROP IMAGES</p>
+    </div>
+  </div>
+  <br>
+  <div class="preview-container" *ngIf="files.length">
+    <app-file-upload-card *ngFor="let file of files" [uploadFile]="file" [isUploading]="isUploading"
+                          (remove)="removeImage($event)"></app-file-upload-card>
+  </div>
+
+  <br>
+  <hr>
+  <br>
+
+  <form [formGroup]="newPostForm">
+
+    <mat-form-field style="width: 100%" color="primary">
+      <mat-label>Post title</mat-label>
+      <label>
+        <input matInput formControlName="title" autocomplete="off" placeholder="My trip to mars"
+               style="width: 100%; font-size: 30px;">
+      </label>
+      <mat-error *ngIf="title.errors && title.errors.required">
+        Title is <strong>required.</strong>
+      </mat-error>
+      <mat-error *ngIf="title.errors && title.errors.maxlength">
+        Title is too <strong>long.</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <br>
+    <br>
+
+    <mat-form-field style="width: 100%" color="primary">
+      <mat-label>Caption</mat-label>
+      <label>
+    <textarea matInput formControlName="caption" autocomplete="off" placeholder="I forgot the oxygen..."
+              cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2"
+              style="width: 100%; font-size: 20px"></textarea>
+      </label>
+      <mat-hint align="end">
+          <span
+            [ngStyle]="{'color': caption.value.length > '200' ? 'red' : caption.value.length > 180 ? 'orange' : 'green' }"
+            *ngIf="caption.value; else zero">
+            {{caption.value.length}}
+          </span>
+        <ng-template #zero>0</ng-template>
+        / 200
+      </mat-hint>
+      <mat-error *ngIf="caption.errors && caption.errors.maxlength">
+        Caption is too <strong>long.</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <div class="inputs-container">
+      <mat-form-field color="primary">
+        <mat-label>Select your country</mat-label>
+        <mat-select formControlName="country">
+          <mat-option>No country selected</mat-option>
+          <mat-option *ngFor="let country of countryList" [value]="country">
+            {{country}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="country.errors && country.errors.required">
+          Country is <strong>required.</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field style="width: 60%" color="primary">
+        <mat-label>City</mat-label>
+        <label>
+          <input matInput formControlName="city" autocomplete="off" placeholder="Write a city name"
+                 style="width: 60%; font-size: 20px;">
+        </label>
+        <mat-error *ngIf="city.errors && city.errors.required">
+          City is <strong>required.</strong>
+        </mat-error>
+        <mat-error *ngIf="city.errors && city.errors.maxlength">
+          City is too <strong>long.</strong>
+        </mat-error>
+        <mat-error *ngIf="city.errors && city.errors.pattern">
+          City is not <strong>valid.</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <br>
+
+  <!--  <mat-progress-bar mode="indeterminate" *ngIf="isUploading"
+                      [value]="totalUploadProgress()" color="primary"></mat-progress-bar>-->
+
+  <div mat-dialog-actions>
+    <button mat-button color="warn" [disabled]="isUploading" (click)="dialogRef.close()">Cancel</button>
+    <button mat-flat-button color="primary" (click)="post()" cdkFocusInitial
+            [disabled]="!newPostForm.valid || !files.length || isUploading">
+      Post
+    </button>
+  </div>
+</div>
+

@@ -1,0 +1,9 @@
+<div class="container">
+  <mat-icon style="background-color: red" *ngIf="!isUploading" (click)="onRemove()">close</mat-icon>
+  <img [src]="uploadFile.previewUrl">
+  <div>
+    <p>{{uploadFile.fileName | slice:0:10}}</p>
+    <p>{{uploadFile.progress}}%</p>
+  </div>
+  <mat-progress-bar mode="determinate" [value]="uploadFile.progress" color="primary"></mat-progress-bar>
+</div>

@@ -1,0 +1,134 @@
+<div class="container" *ngIf="(post.comments.length || !post.comments.length) && postUser !== null; else loader">
+
+  <div class="header">
+    <div class="user">
+      <div class="user-simple-card">
+        <img [src]="postUser.accountInfo.imageUrl" alt="profile picture">
+        <span>
+            <h3>{{postUser.personalInfo.name}} {{postUser.personalInfo.lastName}}</h3>
+            <p [routerLink]="'/u/' + postUser.accountInfo.userName">@{{postUser.accountInfo.userName}}</p>
+          </span>
+      </div>
+      <div>
+        <button mat-button color="primary" (click)="toggleFollow('0')"
+                *ngIf="showFollowButton && (!authService.isLoggedIn || !isPostOwner && !isFollowing())">
+          FOLLOW
+        </button>
+        <button class="icon-button" mat-icon-button color="primary" (click)="toggleFollow('1')"
+                *ngIf="showFollowButton && authService.isLoggedIn && !isPostOwner && isFollowing()">
+          <mat-icon>group</mat-icon>
+        </button>
+        <button class="icon-button" mat-icon-button aria-label="Menu button" [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item>
+            <mat-icon>share</mat-icon>
+            <span>Share</span>
+          </button>
+          <button mat-menu-item *ngIf="isPostOwner" (click)="emitDeletePost()">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="slider">
+    <div class="slider-action" [ngStyle]="{'background-image': 'url(' + post.imagesUrls[sliderIndex - 1] + ')'}"
+         style="background-position: right">
+      <button class="icon-button" mat-mini-fab color="primary" *ngIf="sliderIndex !== 0"
+              (click)="sliderIndex = sliderIndex - 1">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+    </div>
+    <!--suppress AngularUndefinedBinding -->
+    <div class="image-container" (swiperight)="sliderIndex !== 0 ? sliderIndex = sliderIndex - 1 : null"
+         (swipeleft)="sliderIndex !== post.imagesUrls.length - 1  ? sliderIndex = sliderIndex + 1 : null">
+      <app-image [image]="post.imagesUrls[sliderIndex]" [class]="'post-img'"></app-image>
+    </div>
+    <div class="slider-action" [ngStyle]="{'background-image': 'url(' + post.imagesUrls[sliderIndex + 1] + ')'}"
+         style="background-position: left">
+      <button class="icon-button" mat-mini-fab color="primary" *ngIf="sliderIndex !== post.imagesUrls.length - 1"
+              (click)="sliderIndex = sliderIndex + 1">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+      <!--<mat-icon *ngIf="sliderIndex !== post.imagesUrls.length - 1" (click)="sliderIndex = sliderIndex + 1">
+        chevron_right
+      </mat-icon>-->
+    </div>
+  </div>
+
+
+  <div class="footer">
+    <div class="title">
+      <button class="icon-button" mat-icon-button (click)="toggleLikePost()" color="warn"
+              [disabled]="!authService.isLoggedIn">
+        <mat-icon *ngIf="!liked">favorite_border</mat-icon>
+        <mat-icon *ngIf="liked">favorite</mat-icon>
+      </button>
+      <h1>{{post.title}}</h1>
+    </div>
+    <p class="caption">{{post.caption}}</p>
+    <div class="social">
+      <div class="statistics">
+        <p><strong>{{post.likes.length}}</strong> Likes</p>
+        <p><strong>{{post.comments.length}}</strong> Comments</p>
+      </div>
+      <div class="comments-container" *ngIf="post.comments.length && profilePictures.length">
+        <div class="comment" *ngFor="let comment of post.comments; let i = index">
+          <img [src]="findUser(comment.commentUsername, true)" alt="profile picture">
+          <span>
+            <span class="userName" [routerLink]="'/u/' + comment.commentUsername">@{{comment.commentUsername}}</span>
+            {{comment.content}}
+            <!--            <p style="float: right">{{comment.date| date:'dd/MM/yyyy'}}</p>-->
+          </span>
+          <div class="right-comment">
+            <button class="icon-button" mat-icon-button *ngIf="isPostOwner && !comment.liked"
+                    (click)="toggleLikeComment(i)">
+              <mat-icon>favorite_border</mat-icon>
+            </button>
+            <button class="icon-button" mat-icon-button *ngIf="comment.liked"
+                    (click)="isPostOwner && toggleLikeComment(i)">
+              <mat-icon>favorite</mat-icon>
+            </button>
+            <p>{{comment.date| date:'dd/MM/yyyy'}}</p>
+          </div>
+        </div>
+      </div>
+      <mat-form-field color="primary" style="width: 100%">
+        <mat-label>{{this.authService.isLoggedIn ? 'Add a comment to the post...' : 'Login to comment'}}</mat-label>
+        <label>
+          <input matInput [disabled]="!this.authService.isLoggedIn" autocomplete="off"
+                 placeholder="What about a compliment...?" [(ngModel)]="newComment" maxlength="200">
+        </label>
+        <button mat-button matSuffix aria-label="Publish comment" color="primary" *ngIf="!commentLoader"
+                [disabled]="!this.authService.isLoggedIn || newComment === undefined ||
+                newComment === '' || commentLoader" (click)="postComment()">
+          Post
+        </button>
+        <mat-spinner *ngIf="commentLoader" matSuffix color="primary" diameter="20"></mat-spinner>
+      </mat-form-field>
+    </div>
+
+    <div class="info">
+      <div class="icon">
+        <mat-icon style="color: orange">location_on</mat-icon>
+        <span>{{post.country}}, {{post.city}}</span>
+      </div>
+      <span class="spacer"> · </span>
+      <div class="icon">
+        <mat-icon style="color: dodgerblue">today</mat-icon>
+        <span>{{post.date | date:'dd/MM/yyyy'}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOADER -->
+<ng-template #loader>
+  <mat-spinner color="primary"></mat-spinner>
+</ng-template>
+

@@ -1,0 +1,30 @@
+div.container {
+  width: max-content;
+  position: relative;
+
+  mat-icon {
+    cursor: pointer;
+    border-radius: 50%;
+    top: 0;
+    right: 0;
+    margin-right: -10px;
+    margin-top: -10px;
+    position: absolute;
+  }
+
+  img {
+    height: 100px;
+    border-radius: 8px;
+  }
+
+  div {
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      margin: 0 0 5px 0;
+      font-size: 12px;
+    }
+  }
+
+}
