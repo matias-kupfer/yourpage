@@ -37,6 +37,7 @@ export class NewUserDataComponent implements OnInit {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.authService.user$
       .subscribe((doc) => {
         this.ngZone.run(() => {
@@ -114,29 +115,35 @@ export class NewUserDataComponent implements OnInit {
     updatedUser.accountInfo.bio = this.bio.value;
     updatedUser.accountInfo.country = this.country.value;
     updatedUser.accountInfo.userName = this.userName.value;
-    this.firestoreService.updateUserData(updatedUser);
-    this.authService.user$.next(updatedUser);
-    this.router.navigate([DefaultRoutes.OnLogin]);
+    this.updateProfileImage().then(() => {
+      this.firestoreService.updateUserData(updatedUser).then(() => {
+        this.authService.user$.next(updatedUser);
+        this.router.navigate([DefaultRoutes.OnLogin]);
+      }).catch((e) => {
+        console.log(e);
+        const errorSnackbar = this.snackBar.open('Error updating profile', 'Try again', {
+          duration: 5000
+        });
+        errorSnackbar.afterDismissed().subscribe(() => {
+          this.saveData();
+        });
+      });
+    });
   }
 
   public onLogout() {
     this.authService.onLogout();
   }
 
-  updateProfileImage() {
+  async updateProfileImage() {
+    if (!this.files.length) {
+      return;
+    }
     this.uploading = true;
-    this.firestoreService.uploadImagesFireStorage(this.files, this.userData).then(() => {
-      this.snackBar.open('Profile picture updated successfully', 'dismiss', {
-        duration: 5000
-      });
+    await this.firestoreService.uploadImagesFireStorage(this.files, this.userData).then(() => {
       this.uploading = false;
     });
   }
-
-  emptyFiles() {
-    this.files = [];
-  }
-
 }
 
 export class UsernameValidator {

@@ -1,0 +1,156 @@
+<div class="container" *ngIf="!this.authService.isLoggedIn">
+
+  <div class="left">
+    <h1><span>Access</span> YOURPAGE</h1>
+    <img src="/assets/images/access.png">
+    <p>Authentication is handled by <strong>Google</strong>*</p>
+  </div>
+
+
+  <div class="right">
+    <mat-tab-group color="primary">
+      <!--LOGIN-->
+      <mat-tab label="Login">
+        <div class="top">
+          <h3>WELCOME BACK!</h3>
+          <p><span>Login</span> with your email and password:</p>
+        </div>
+        <br>
+        <!-- FORM -->
+        <div class="form">
+          <form [formGroup]="loginForm">
+            <mat-form-field appearance="fill" color="primary">
+              <mat-label>Email</mat-label>
+              <label>
+                <input matInput type="email" placeholder="Email" formControlName="email">
+              </label>
+              <mat-error *ngIf="email.errors && email.errors.required">
+                Email is <strong>required.</strong>
+              </mat-error>
+              <mat-error *ngIf="email.errors && !email.errors.required && email.invalid">
+                Enter a valid <strong>email</strong>
+              </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill" color="primary">
+              <mat-label>Password</mat-label>
+              <label>
+                <input matInput type="password" placeholder="Password" formControlName="password">
+              </label>
+              <mat-error *ngIf="password.errors && password.errors.required">
+                Password is <strong>required.</strong>
+              </mat-error>
+              <mat-error *ngIf="password.errors && password.errors.minlength">
+                The password is too <strong>short.</strong>
+              </mat-error>
+              <mat-error *ngIf="password.errors && password.errors.maxlength">
+                The password is too <strong>long.</strong>
+              </mat-error>
+            </mat-form-field>
+            <br>
+            <button [disabled]="!loginForm.valid" mat-flat-button color="primary" (click)="loginWithEmail()">
+              LOGIN
+            </button>
+          </form>
+          <br>
+          <hr>
+          <p>or use your social account:</p>
+          <button mat-button class="social-button" (click)="googleAuth()">
+            <img src="/assets/images/googleIcon.png" alt="google icon">
+          </button>
+        </div>
+      </mat-tab>
+
+
+      <!--SIGN UP-->
+      <mat-tab label="Sign Up">
+        <div class="top">
+          <h3>WELCOME!</h3>
+          <p><span>Sign up</span> with your email and password:</p>
+        </div>
+        <br>
+        <!-- FORM -->
+        <div class="form">
+          <form [formGroup]="signUpForm">
+            <div class="name">
+              <mat-form-field appearance="fill" color="primary" class="float">
+                <mat-label>Name</mat-label>
+                <label>
+                  <input matInput type="text" placeholder="Name" formControlName="name">
+                </label>
+                <mat-error *ngIf="name.errors && name.errors.required">
+                  Name is <strong>required.</strong>
+                </mat-error>
+                <mat-error *ngIf="name.errors && name.errors.minlength">
+                  Name too <strong>short.</strong>
+                </mat-error>
+                <mat-error *ngIf="name.errors && name.errors.maxlength">
+                  Name is too <strong>short.</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill" color="primary" class="float">
+                <mat-label>Last name</mat-label>
+                <label>
+                  <input matInput type="text" placeholder="Last name" formControlName="lastName">
+                </label>
+                <mat-error *ngIf="lastName.errors && lastName.errors.required">
+                  Last name is <strong>required.</strong>
+                </mat-error>
+                <mat-error *ngIf="lastName.errors && lastName.errors.minlength">
+                  Last name too <strong>short.</strong>
+                </mat-error>
+                <mat-error *ngIf="lastName.errors && lastName.errors.maxlength">
+                  Last name too <strong>long.</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="fill" color="primary">
+              <mat-label>Email</mat-label>
+              <label>
+                <input matInput type="email" placeholder="Email" formControlName="emailS">
+              </label>
+              <mat-error *ngIf="emailS.errors && emailS.errors.required">
+                Email is <strong>required.</strong>
+              </mat-error>
+              <mat-error *ngIf="emailS.errors && !emailS.errors.required && emailS.invalid">
+                Enter a valid <strong>email</strong>
+              </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill" color="primary">
+              <mat-label>Password</mat-label>
+              <label>
+                <input matInput type="password" placeholder="Password" formControlName="passwordS">
+              </label>
+              <mat-error *ngIf="passwordS.errors && passwordS.errors.required">
+                Password is <strong>required.</strong>
+              </mat-error>
+              <mat-error *ngIf="passwordS.errors && passwordS.errors.minlength">
+                The password is too <strong>short.</strong>
+              </mat-error>
+              <mat-error *ngIf="passwordS.errors && passwordS.errors.maxlength">
+                The password is too <strong>long.</strong>
+              </mat-error>
+            </mat-form-field>
+            <br>
+            <button [disabled]="!signUpForm.valid" mat-flat-button color="primary"
+                    (click)="signUpWithEmailAndPassword()">
+              SIGN UP
+            </button>
+          </form>
+          <br>
+          <hr>
+          <p>or use your social account:</p>
+          <button mat-button class="social-button" (click)="googleAuth()">
+            <img src="/assets/images/googleIcon.png" alt="google icon">
+          </button>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+
+<!--todo hide/show password also on sign up component-->
+<!-- LOADER WHILE GETTING AUTH STATUS-->
+

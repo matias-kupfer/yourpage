@@ -1,0 +1,127 @@
+@import "../../style/variables";
+@import "../../style/global";
+
+
+div.container {
+  width: 1000px;
+  height: 700px;
+  margin: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  background-color: #1d1d1d;
+  border-radius: 8px;
+  display: flex;
+
+  div.left {
+    background-color: #302B70;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 8px 0 0 8px;
+
+    h1 {
+      margin: 10px auto;
+      font-weight: normal;
+      text-align: center;
+
+      span {
+        font-weight: 200;
+      }
+    }
+
+    img {
+      width: 400px;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    p {
+      font-weight: 200;
+      font-size: 12px;
+      margin: 5px 50px;
+    }
+  }
+
+  div.right {
+    width: 500px;
+
+    div.top {
+      text-align: center;
+      margin-top: 50px;
+
+      h3 {
+        font-size: 2em;
+        margin: 0;
+        font-weight: 200;
+      }
+    }
+
+    div.form {
+      text-align: center;
+      margin: auto;
+
+      mat-form-field {
+        width: 350px;
+        margin: 10px 0;
+      }
+
+      div.name {
+        width: 350px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+
+        mat-form-field {
+          width: 160px;
+        }
+
+        mat-form-field:nth-child(even) {
+          float: right;
+        }
+      }
+
+      button {
+        padding: 0 60px;
+      }
+    }
+
+    hr {
+      margin: 8px 70px;
+    }
+
+    p {
+      color: $lightGray;
+      font-weight: 200;
+      font-size: 14px;
+
+      span {
+        color: white;
+      }
+    }
+  }
+}
+
+
+// Responsive
+@media only screen and (max-width: 1000px) {
+
+  div.container {
+    width: 100%;
+
+    div.left {
+      display: none;
+    }
+  }
+
+}
+
+
+/*!* Styles for tab labels *!
+.mat-tab-label {
+  min-width: 50% !important;
+}
+
+!* Styles for the active tab label *!
+.mat-tab-label.mat-tab-label-active {
+  min-width: 50% !important;
+}*/
