@@ -63,9 +63,7 @@ export class PostCardComponent implements OnInit {
     this.commentLoader = true;
     this.post.comments.push(JSON.parse(JSON.stringify(new Comment(this.authUser.accountInfo.userName, this.newComment))));
     this.firestoreService.updatePost(this.post, this.postUser.personalInfo.userId).then(() => {
-      if (!this.profilePictures.length) {
-        this.getUserImage(this.authUser.accountInfo.userName);
-      }
+      this.getUserImage(this.authUser.accountInfo.userName);
       this.newComment = undefined;
       this.commentLoader = false;
       this.snackBar.open('Comment posted', 'dismiss', {
