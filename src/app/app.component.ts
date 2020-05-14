@@ -13,6 +13,8 @@ import {EditProfileComponent} from './components/profile/edit-profile/edit-profi
 import {NewImagePostComponent} from './components/posts/new-image-post/new-image-post.component';
 import {UsersListComponent} from './components/profile/users-list/users-list.component';
 import {MediaMatcher} from '@angular/cdk/layout';
+import {DefaultRoutes} from './enums/default.routes';
+import {NotifierService} from 'angular-notifier';
 
 
 @Component({
@@ -30,9 +32,10 @@ export class AppComponent implements OnInit {
   navigationLinksNotLoggedIn: SideNavLinks[];
   actions: SideNavActions[];
   public sideNavStatus = true;
+  private notifier: NotifierService;
 
   mobileQuery: MediaQueryList;
-  private readonly mobileQueryListener: () => void;
+  public readonly mobileQueryListener: () => void;
 
   constructor(
     private authService: AuthService,
@@ -40,12 +43,13 @@ export class AppComponent implements OnInit {
     private notificationService: SnackbarService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private bottomSheet: MatBottomSheet,
+    notifier: NotifierService,
     private ngZone: NgZone,
     public dialog: MatDialog,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher
   ) {
+    this.notifier = notifier;
     // Sidenav responsive
     this.mobileQuery = media.matchMedia('(max-width: 1400px)');
     this.mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -89,7 +93,10 @@ export class AppComponent implements OnInit {
   }
 
   public onLogout() {
-    this.authService.onLogout();
+    this.authService.onLogout().then(() => {
+      this.router.navigate([DefaultRoutes.OnLogOut]);
+      this.notifier.notify('default', 'Successfully logged out');
+    }).catch(e => console.log(e));
   }
 
   public editProfile() {
@@ -119,7 +126,7 @@ export class AppComponent implements OnInit {
   // Statistics
   public seeFollowers(userData: User) {
     const dialogRef = this.dialog.open(UsersListComponent, {
-      data: userData
+      data: userData,
     });
   }
 

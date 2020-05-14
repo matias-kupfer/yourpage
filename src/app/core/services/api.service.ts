@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../environments/environment';
+import {environmentProd} from '../../../environments/environment.prod';
 import {AuthService} from './auth.service';
 import {Observable} from 'rxjs';
 
@@ -14,7 +14,7 @@ export class ApiService {
 
   public toggleFollow(otherUser: string, action: string): Observable<any> {
     const userId = this.authService.user$.getValue().personalInfo.userId;
-    return this.http.post(`${environment.url}/api/toggleFollow/${userId}/${otherUser}/${action}`, {});
+    return this.http.post(`${environmentProd.url}/api/toggleFollow/${userId}/${otherUser}/${action}`, {});
   }
 
 }

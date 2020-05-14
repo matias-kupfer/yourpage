@@ -4,7 +4,7 @@ import * as firebase from 'firebase';
 import {DefaultRoutes} from '../../enums/default.routes';
 import {Router} from '@angular/router';
 import {User} from '../../class/user';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {NotifierService} from 'angular-notifier';
 import {map} from 'rxjs/operators';
 import {FirestoreService} from './firestore.service';
@@ -18,6 +18,7 @@ export class AuthService {
   public isSetUp: boolean = null;
   public isLoggedIn: boolean = null;
   private notifier: NotifierService;
+  public subscription: Subscription;
 
   constructor(
     public fireAuth: AngularFireAuth,
@@ -71,8 +72,7 @@ export class AuthService {
   async signUpWithUserAndPassword(username: string, lastName: string, email: string, password: string) {
     return await this.fireAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log(result.user.photoURL);
-        const newEmailUser = new User(result.user.uid, username, lastName, email, 'https://firebasestorage.googleapis.com/v0/b/yourpage-4e4b4.appspot.com/o/defaultProfilePicture.png?alt=media&token=9524c6ac-41c0-43b3-b7a1-5549dd472eff');
+        const newEmailUser = new User(result.user.uid, username, lastName, email, 'https://firebasestorage.googleapis.com/v0/b/yourpage-4e4b4.appspot.com/o/defaultImage.png?alt=media&token=76b67111-459b-4d1c-9d82-4ab2ffe09d8e');
         this.firestoreService.updateUserData(JSON.parse(JSON.stringify(newEmailUser)));
         this.notifier.notify('default', 'Successfully registered as ' + result.user.email);
         this.router.navigate([DefaultRoutes.OnLogin]);
@@ -82,7 +82,7 @@ export class AuthService {
   }
 
   public userDataSubscription(): void {
-    this.fireAuth.user.subscribe(firebaseUser => {
+    this.subscription = this.fireAuth.user.subscribe(firebaseUser => {
       if (firebaseUser) {
         this.firestoreService.getUserById(firebaseUser.uid)
           .onSnapshot(res => {
@@ -110,11 +110,12 @@ export class AuthService {
   }
 
   public async onLogout() {
-    await this.fireAuth.auth.signOut();
+    this.subscription.unsubscribe();
     this.user$.next(null);
     this.isSetUp = null;
-    this.notifier.notify('default', 'Successfully logged out');
-    await this.router.navigate([DefaultRoutes.OnLogOut]);
+    this.isLoggedIn = null;
+    this.firestoreService.userId = null;
+    await this.fireAuth.auth.signOut();
   }
 }
 

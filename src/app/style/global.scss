@@ -127,7 +127,8 @@ button.social-button {
 }
 
 .post-img {
-  height: 500px;
+  max-height: 500px;
+  max-width: 100%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
@@ -183,7 +184,8 @@ div.user { // show action button
 @media only screen and (max-width: 1000px) {
 
   .post-img {
-    height: 240px;
+    max-height: 240px;
+    max-width: 100%;
     box-shadow: none;
   }
 

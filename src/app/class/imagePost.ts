@@ -1,22 +1,12 @@
 import {Comment} from './comment';
+import * as firebase from 'firebase';
+import Timestamp = firebase.firestore.Timestamp;
 
 export class ImagePost {
-  public userId: string;
-  public postId: string;
-  public date: Date;
-  public country: string;
-  public city: string;
-  public imagesUrls: string[];
-  public title: string;
-  public caption: string;
-  public likes: string[];
-  public comments: Comment[];
-  // description will be an array in two languages
-  // location array with city and country
   constructor(userId: string, title: string, caption: string, country: string, city: string) {
     this.userId = userId;
     this.postId = null;
-    this.date = new Date();
+    this.date = null;
     this.country = country;
     this.city = city;
     this.imagesUrls = [];
@@ -25,4 +15,15 @@ export class ImagePost {
     this.likes = [];
     this.comments = [];
   }
+
+  public userId: string;
+  public postId: string;
+  public date: Timestamp;
+  public country: string;
+  public city: string;
+  public imagesUrls: string[];
+  public title: string;
+  public caption: string;
+  public likes: string[];
+  public comments: Comment[];
 }

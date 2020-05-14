@@ -65,9 +65,7 @@ export class FirestoreService {
 
   public updatePost(imagePost: ImagePost, postUserId: string): Promise<void> {
     return this.db.collection('users').doc(postUserId)
-      .collection('posts').doc(imagePost.postId).set(imagePost, {
-        merge: true
-      });
+      .collection('posts').doc(imagePost.postId).update(imagePost);
   }
 
   async newImagePost(newImagePost: ImagePost, images: UploadFile[], user: User): Promise<void> {
@@ -133,6 +131,7 @@ export class FirestoreService {
             }
             if (newImagePost) {
               newImagePost.imagesUrls.push(image.url);
+              newImagePost.date = firebase.firestore.Timestamp.now();
               this.updatePost(newImagePost, user.personalInfo.userId);
             }
           }

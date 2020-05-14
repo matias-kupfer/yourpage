@@ -83,14 +83,6 @@ export class NewImagePostComponent implements OnInit {
     // todo image description on each
   }
 
-  public totalUploadProgress() {
-    let totalProgress = 0;
-    for (const file of this.files) {
-      totalProgress = (totalProgress + file.progress);
-    }
-    return totalProgress / this.files.length;
-  }
-
   public removeImage(filename) {
     this.files.forEach((file, index) => {
       if (file.fileName === filename) {

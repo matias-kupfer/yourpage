@@ -27,17 +27,22 @@ div.container {
 
       button {
         line-height: 0;
+
+        mat-icon.animate {
+          color: $primary;
+          animation-name: shake;
+          animation-duration: .8s;
+          animation-iteration-count: infinite;
+        }
       }
     }
   }
 
   div.post-undefined {
     margin: 10px;
+    display: flex;
+    justify-content: center;
     width: 60%;
-
-    h3 {
-      text-align: center;
-    }
   }
 
 
@@ -96,5 +101,10 @@ mat-progress-bar {
       margin: 0 0 50px 0;
     }
   }
+}
 
+@keyframes shake {
+  0%, 20%, 40%, 60%, 100% { transform: rotate(0deg) }
+  10%, 50% { transform: rotate(20deg) scale(1.1)}
+  30% { transform: rotate(-20deg) scale(1.1)}
 }

@@ -25,7 +25,11 @@ div.container {
 
   div.preview-container {
     display: flex;
-    justify-content: space-around;
+    overflow: scroll;
+
+    app-file-upload-card {
+      margin: 10px 10px;
+    }
   }
 
   div.inputs-container {

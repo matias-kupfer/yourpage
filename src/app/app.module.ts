@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-import {environment} from '../environments/environment';
+import {environmentProd} from '../environments/environment.prod';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -99,7 +99,7 @@ import { FileUploadCardComponent } from './core/utilities/file-upload-card/file-
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(environmentProd.firebase),
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireAuthModule,

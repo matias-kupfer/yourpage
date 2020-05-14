@@ -32,6 +32,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public postsQuery;
   public lastDoc = null;
   public postLoader = false;
+  public newPostNotification = false;
 
   // todo map theme based on users theme preferences
 
@@ -108,6 +109,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.lastDoc = null;
           }
           this.postLoader = false;
+          // the post is newer than the rest and it should be on top. Let user know about it.
+          if (res.docs.length && this.userImagePosts.length &&
+            res.docs[0].data().date > this.userImagePosts[0].date && this.postsOrder === 'desc') {
+            this.newPostNotification = true;
+            return;
+          }
           res.docs.forEach(post => {
             const postPosition = this.findPost(post.data());
             if (postPosition === -1) { // the post does not exist
@@ -177,6 +184,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   public refreshPosts() {
+    this.newPostNotification = false;
     this.postLoader = true;
     this.lastDoc = null;
     this.userImagePosts = [];

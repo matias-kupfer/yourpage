@@ -48,6 +48,7 @@
     <div class="image-container" (swiperight)="sliderIndex !== 0 ? sliderIndex = sliderIndex - 1 : null"
          (swipeleft)="sliderIndex !== post.imagesUrls.length - 1  ? sliderIndex = sliderIndex + 1 : null">
       <app-image [image]="post.imagesUrls[sliderIndex]" [class]="'post-img'"></app-image>
+      <div class="mobile-posts-counter">{{sliderIndex + 1}}/{{post.imagesUrls.length}}</div>
     </div>
     <div class="slider-action" [ngStyle]="{'background-image': 'url(' + post.imagesUrls[sliderIndex + 1] + ')'}"
          style="background-position: left">
@@ -55,9 +56,6 @@
               (click)="sliderIndex = sliderIndex + 1">
         <mat-icon>chevron_right</mat-icon>
       </button>
-      <!--<mat-icon *ngIf="sliderIndex !== post.imagesUrls.length - 1" (click)="sliderIndex = sliderIndex + 1">
-        chevron_right
-      </mat-icon>-->
     </div>
   </div>
 
@@ -121,7 +119,7 @@
       <span class="spacer"> · </span>
       <div class="icon">
         <mat-icon style="color: dodgerblue">today</mat-icon>
-        <span>{{post.date | date:'dd/MM/yyyy'}}</span>
+        <span>{{post.date.toMillis() | date:'dd/MM/yyyy'}}</span>
       </div>
     </div>
   </div>

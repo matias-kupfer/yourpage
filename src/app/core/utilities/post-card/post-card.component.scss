@@ -30,6 +30,19 @@ div.container {
       width: 80%;
       height: 500px;
       display: flex;
+
+      div.mobile-posts-counter {
+        font-weight: 200;
+        display: none;
+        position: absolute;
+        margin: 5px 5px 0 0;
+        right: 0;
+        font-size: 14px;
+        color: $darkGray;
+        border-radius: 10px;
+        padding: 1px 8px;
+        background-color: $lightGray;
+      }
     }
   }
 
@@ -43,7 +56,7 @@ div.container {
 
       h1 {
         font-weight: normal;
-        margin: 10px 0;
+        margin: 0;
       }
     }
 
@@ -157,14 +170,24 @@ div.container {
     }
 
     div.slider-action {
-      mat-icon {
-        padding: 0 !important;
-        margin: 0 !important;
-      }
+      display: none !important;
     }
 
     div.image-container {
       height: 240px !important;
+      width: 100% !important;
+
+      div.mobile-posts-counter {
+        display: block !important;
+      }
+    }
+
+    div.info {
+      display: block !important;
+
+      span.spacer {
+        display: none;
+      }
     }
   }
 
