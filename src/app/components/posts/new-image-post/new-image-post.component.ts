@@ -26,7 +26,7 @@ export class NewImagePostComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<NewImagePostComponent>,
     private formBuilder: FormBuilder,
-    private authService: AuthService,
+    public authService: AuthService,
     private snackBar: MatSnackBar,
     private firestoreService: FirestoreService) {
   }

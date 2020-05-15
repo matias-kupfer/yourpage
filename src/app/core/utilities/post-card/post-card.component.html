@@ -38,7 +38,7 @@
 
   <div class="slider">
     <div class="slider-action" [ngStyle]="{'background-image': 'url(' + post.imagesUrls[sliderIndex - 1] + ')'}"
-         style="background-position: right">
+         style="background-position: right;">
       <button class="icon-button" mat-mini-fab color="primary" *ngIf="sliderIndex !== 0"
               (click)="sliderIndex = sliderIndex - 1">
         <mat-icon>chevron_left</mat-icon>
@@ -51,7 +51,7 @@
       <div class="mobile-posts-counter">{{sliderIndex + 1}}/{{post.imagesUrls.length}}</div>
     </div>
     <div class="slider-action" [ngStyle]="{'background-image': 'url(' + post.imagesUrls[sliderIndex + 1] + ')'}"
-         style="background-position: left">
+         style="background-position: left;">
       <button class="icon-button" mat-mini-fab color="primary" *ngIf="sliderIndex !== post.imagesUrls.length - 1"
               (click)="sliderIndex = sliderIndex + 1">
         <mat-icon>chevron_right</mat-icon>
@@ -96,7 +96,7 @@
           </div>
         </div>
       </div>
-      <mat-form-field color="primary" style="width: 100%">
+      <mat-form-field color="primary" style="width: 100%;">
         <mat-label>{{this.authService.isLoggedIn ? 'Add a comment to the post...' : 'Login to comment'}}</mat-label>
         <label>
           <input matInput [disabled]="!this.authService.isLoggedIn" autocomplete="off"
@@ -113,12 +113,12 @@
 
     <div class="info">
       <div class="icon">
-        <mat-icon style="color: orange">location_on</mat-icon>
+        <mat-icon style="color: orange;">location_on</mat-icon>
         <span>{{post.country}}, {{post.city}}</span>
       </div>
       <span class="spacer"> · </span>
       <div class="icon">
-        <mat-icon style="color: dodgerblue">today</mat-icon>
+        <mat-icon style="color: dodgerblue;">today</mat-icon>
         <span>{{post.date.toMillis() | date:'dd/MM/yyyy'}}</span>
       </div>
     </div>

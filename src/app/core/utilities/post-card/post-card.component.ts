@@ -30,7 +30,7 @@ export class PostCardComponent implements OnInit {
   @Output() deletePost: EventEmitter<ImagePost> = new EventEmitter();
 
 
-  constructor(private authService: AuthService,
+  constructor(public authService: AuthService,
               private firestoreService: FirestoreService,
               private snackBar: MatSnackBar,
               private router: Router,

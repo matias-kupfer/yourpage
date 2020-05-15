@@ -6,8 +6,7 @@ import {DefaultRoutes} from '../../../enums/default.routes';
 import {Router} from '@angular/router';
 import {ApiService} from '../../services/api.service';
 import {ApiResponse} from '../../../interfaces/api-response';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {UsersListComponent} from '../../../components/profile/users-list/users-list.component';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-user-card',
@@ -21,8 +20,8 @@ export class UserCardComponent implements OnInit {
   @Input() userData: User;
   @Input() isUserProfile: boolean;
 
-  constructor(private appComponent: AppComponent,
-              private authService: AuthService,
+  constructor(public appComponent: AppComponent,
+              public authService: AuthService,
               private router: Router,
               private apiService: ApiService,
               private snackBar: MatSnackBar) {
@@ -48,7 +47,7 @@ export class UserCardComponent implements OnInit {
       this.loading = false;
       if (!r.success) {
         this.snackBar.open(r.message, 'dismiss', {
-          duration: 4000, /*not working*/
+          duration: 4000,
         });
       }
     });

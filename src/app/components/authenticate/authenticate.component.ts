@@ -13,7 +13,7 @@ export class AuthenticateComponent implements OnInit {
   loginForm: FormGroup;
   signUpForm: FormGroup;
 
-  constructor(private authService: AuthService) {
+  constructor(public authService: AuthService) {
   }
 
   ngOnInit() {

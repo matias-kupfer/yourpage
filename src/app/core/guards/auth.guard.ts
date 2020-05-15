@@ -14,7 +14,7 @@ export class AuthenticationGuard implements CanActivate {
 
   constructor(
     private router: Router,
-    private authService: AuthService,
+    public authService: AuthService,
     private fireAuth: AngularFireAuth,
     public firestoreService: FirestoreService,
   ) {

@@ -10,7 +10,7 @@ import {AppComponent} from '../../../app.component';
 export class NavbarComponent implements OnInit {
   public userData = this.authService.user$.getValue();
 
-  constructor(private authService: AuthService, private ngZone: NgZone, private appComponent: AppComponent) {
+  constructor(public authService: AuthService, private ngZone: NgZone, public appComponent: AppComponent) {
   }
 
   ngOnInit() {

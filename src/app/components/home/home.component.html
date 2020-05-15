@@ -6,7 +6,7 @@
       <app-post-card [showFollowButton]="true" [post]="post"
                      [postUser]="null"></app-post-card>
     </div>
-    <mat-spinner *ngIf="postLoader" style="margin: auto" color="primary" [diameter]="40"></mat-spinner>
+    <mat-spinner *ngIf="postLoader" style="margin: auto;" color="primary" [diameter]="40"></mat-spinner>
     <div *ngIf="!postLoader && latestPosts.length === 0">
       <h1>EMPTY</h1>
     </div>

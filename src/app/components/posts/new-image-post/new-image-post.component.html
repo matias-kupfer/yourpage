@@ -26,7 +26,7 @@
 
   <form [formGroup]="newPostForm">
 
-    <mat-form-field style="width: 100%" color="primary">
+    <mat-form-field style="width: 100%;" color="primary">
       <mat-label>Post title</mat-label>
       <label>
         <input matInput formControlName="title" autocomplete="off" placeholder="My trip to mars"
@@ -43,12 +43,12 @@
     <br>
     <br>
 
-    <mat-form-field style="width: 100%" color="primary">
+    <mat-form-field style="width: 100%;" color="primary">
       <mat-label>Caption</mat-label>
       <label>
     <textarea matInput formControlName="caption" autocomplete="off" placeholder="I forgot the oxygen..."
               cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2"
-              style="width: 100%; font-size: 20px"></textarea>
+              style="width: 100%; font-size: 20px;"></textarea>
       </label>
       <mat-hint align="end">
           <span
@@ -78,7 +78,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field style="width: 60%" color="primary">
+      <mat-form-field style="width: 60%;" color="primary">
         <mat-label>City</mat-label>
         <label>
           <input matInput formControlName="city" autocomplete="off" placeholder="Write a city name"

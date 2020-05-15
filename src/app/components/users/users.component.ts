@@ -11,7 +11,7 @@ import {AuthService} from '../../core/services/auth.service';
 export class UsersComponent implements OnInit {
   allUsers: User[] = null;
 
-  constructor(private firestoreService: FirestoreService, private authService: AuthService) {
+  constructor(private firestoreService: FirestoreService, public authService: AuthService) {
   }
 
   ngOnInit() {

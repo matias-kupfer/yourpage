@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
   public readonly mobileQueryListener: () => void;
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private firestoreService: FirestoreService,
     private notificationService: SnackbarService,
     private snackBar: MatSnackBar,

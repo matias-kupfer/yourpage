@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   // todo map theme based on users theme preferences
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private firestoreService: FirestoreService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,

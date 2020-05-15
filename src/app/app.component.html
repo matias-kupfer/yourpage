@@ -6,7 +6,7 @@
     <mat-sidenav [opened]="sideNavStatus" *ngIf="this.authService.isLoggedIn && this.authService.isSetUp"
                  [mode]="mobileQuery.matches ? 'over' : 'side'" (closed)="sideNavStatus = false">
       <!-- LOGGED IN AND SET UP-->
-      <img src="/assets/images/yourpageLogo.png" class="logo"/>
+      <img src="./assets/images/yourpageLogo.png" class="logo"/>
       <hr>
       <h3 class="category">NAVIGATION</h3>
       <div class="nav-button" *ngFor="let link of navigationLinks" [routerLink]="link.componentName"
@@ -32,7 +32,7 @@
       <app-image [image]="userData.accountInfo.imageUrl" [smallSpinner]="true" [class]="'side-bar-profile-picture'"></app-image>
       <h3 class="username">@{{userData.accountInfo.userName}}</h3>
       <table>
-        <tr style="cursor: pointer" (click)="seeFollowers(userData)">
+        <tr style="cursor: pointer;" (click)="seeFollowers(userData)">
           <th>{{userData.followers.length}}</th>
           <th>{{userData.following.length}}</th>
           <th>{{userData.posts}}</th>
@@ -47,7 +47,7 @@
     <!-- NOT LOGGED IN -->
     <mat-sidenav mode="side" opened *ngIf="!this.authService.isLoggedIn" [opened]="sideNavStatus"
                  [mode]="mobileQuery.matches ? 'over' : 'side'" (closed)="sideNavStatus = false">
-      <img src="/assets/images/yourpageLogo.png" class="logo"/>
+      <img src="./assets/images/yourpageLogo.png" class="logo"/>
       <hr>
       <h3 class="category">NAVIGATION</h3>
       <div class="nav-button" *ngFor="let link of navigationLinksNotLoggedIn" [routerLink]="link.componentName"

@@ -45,7 +45,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import {MatDividerModule, MatInputModule, MatListModule, MatNativeDateModule} from '@angular/material';
+import {MatChipsModule, MatDividerModule, MatInputModule, MatListModule, MatNativeDateModule} from '@angular/material';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -96,45 +96,46 @@ import { FileUploadCardComponent } from './core/utilities/file-upload-card/file-
     PostCardComponent,
     FileUploadCardComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    AngularFireModule.initializeApp(environmentProd.firebase),
-    AngularFirestoreModule,
-    AngularFireStorageModule,
-    AngularFireAuthModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    NotifierModule,
-    AgmCoreModule.forRoot({
-      apiKey: DefaultKeys.maps
-    }),
-    // angular material
-    MatIconModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDividerModule,
-    MatStepperModule,
-    MatFormFieldModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatSnackBarModule,
-    MatMenuModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-    MatBadgeModule,
-    FormsModule,
-    MatSidenavModule,
-    MatBottomSheetModule,
-    MatListModule,
-    MatProgressBarModule,
-    MatTabsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        AngularFireModule.initializeApp(environmentProd.firebase),
+        AngularFirestoreModule,
+        AngularFireStorageModule,
+        AngularFireAuthModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        NotifierModule,
+        AgmCoreModule.forRoot({
+            apiKey: DefaultKeys.maps
+        }),
+        // angular material
+        MatIconModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatCardModule,
+        MatDividerModule,
+        MatStepperModule,
+        MatFormFieldModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSnackBarModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+        MatBadgeModule,
+        FormsModule,
+        MatSidenavModule,
+        MatBottomSheetModule,
+        MatListModule,
+        MatProgressBarModule,
+        MatTabsModule,
+        MatChipsModule
+    ],
   providers: [
     AuthenticationGuard,
     MatDatepickerModule,

@@ -29,7 +29,7 @@ export class NewUserDataComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private afs: AngularFirestore,
-              private authService: AuthService,
+              public authService: AuthService,
               public firestoreService: FirestoreService,
               public router: Router,
               private ngZone: NgZone,
@@ -132,7 +132,9 @@ export class NewUserDataComponent implements OnInit {
   }
 
   public onLogout() {
-    this.authService.onLogout();
+    this.authService.onLogout().then(() => {
+      this.router.navigate([DefaultRoutes.OnLogOut]);
+    }).catch(e => console.log(e));
   }
 
   async updateProfileImage() {

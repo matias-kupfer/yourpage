@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 })
 export class ApiService {
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, public authService: AuthService) {
   }
 
   public toggleFollow(otherUser: string, action: string): Observable<any> {
