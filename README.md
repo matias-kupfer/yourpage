@@ -1,4 +1,4 @@
-# Uno-game
+# Yourpage
 
 Programmed in angular.  Social network to share pictures, thoughts and more.
 
