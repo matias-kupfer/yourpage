@@ -78,7 +78,6 @@ export class NewImagePostComponent implements OnInit {
           duration: 5000
         });
         this.dialogRef.close();
-        // this.dialogRef.close();
       });
     // todo image description on each
   }

@@ -30,6 +30,24 @@ export class FirestoreService {
 
   }
 
+  /*updateComments() {
+    this.db.collection('users').get().then(users => {
+      users.forEach((user) => {
+        this.db.collection('users').doc(user.data().personalInfo.userId).collection('posts').get().then((posts) => {
+          if (posts.docs.length) {
+            posts.docs.forEach((post) => {
+              const newPost: ImagePost = post.data() as ImagePost;
+              newPost.comments.forEach((led, index) => {
+                newPost.comments[index].date = firebase.firestore.Timestamp.now();
+              });
+              this.updatePost(newPost, newPost.userId);
+            });
+          }
+        });
+      });
+    });
+  }*/
+
   // USERS
   public getUserById(userId: string): DocumentData {
     return this.db.collection('users').doc(userId);
@@ -56,7 +74,7 @@ export class FirestoreService {
   }
 
   public getLatestPostsInfo(): DocumentData {
-    return this.db.collection('posts').orderBy('date', 'desc');
+    return this.db.collection('posts');
   }
 
   public getPost(postInfo: LatestPostsInfo): DocumentReference {
@@ -69,6 +87,7 @@ export class FirestoreService {
   }
 
   async newImagePost(newImagePost: ImagePost, images: UploadFile[], user: User): Promise<void> {
+    // newImagePost.comments = firebase.firestore.Timestamp.now();
     return await this.db.collection(`users/${user.personalInfo.userId}/posts`).add(newImagePost)
       .then(response => {
         newImagePost.postId = response.id;
@@ -104,7 +123,6 @@ export class FirestoreService {
 
   // FIRE STORAGE
   async uploadImagesFireStorage(images: UploadFile[], user: User, newImagePost: ImagePost = null) {
-    // let uploadTask: firebase.storage.UploadTask;
     let uploadTask: Reference;
     let index = 0;
     for (const image of images) {

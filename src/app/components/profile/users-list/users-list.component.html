@@ -10,7 +10,7 @@
             <p>@{{user.accountInfo.userName}}</p>
           </span>
         </div>
-        <button mat-raised-button color="primary" [routerLink]="'/u/' + user.accountInfo.userName"
+        <button mat-flat-button color="primary" [routerLink]="'/u/' + user.accountInfo.userName"
                 (click)="dialogRef.close();">Profile
         </button>
       </div>
@@ -29,7 +29,7 @@
             <p>@{{user.accountInfo.userName}}</p>
           </span>
         </div>
-        <button mat-raised-button color="primary" (click)="onProfileBtnClick(user.accountInfo.userName)">Profile
+        <button mat-flat-button color="primary" (click)="onProfileBtnClick(user.accountInfo.userName)">Profile
         </button>
       </div>
     </ng-container>

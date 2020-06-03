@@ -17,8 +17,7 @@ export class HomeComponent implements OnInit {
   public lastDoc = null;
   public postLoader = false;
 
-  constructor(
-    private firestoreService: FirestoreService) {
+  constructor(private firestoreService: FirestoreService) {
   }
 
   @HostListener('window:scroll', ['$event']) // for window scroll events
@@ -31,7 +30,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     window.scrollTo(0, 0);
-    this.query = this.firestoreService.getLatestPostsInfo().limit(1);
+    this.query = this.firestoreService.getLatestPostsInfo().orderBy('date', 'desc').limit(2);
     this.getLatestPostsInfo();
   }
 
@@ -39,7 +38,7 @@ export class HomeComponent implements OnInit {
     if (!this.lastDoc) { // no more posts
       return;
     }
-    this.query = this.firestoreService.getLatestPostsInfo().startAfter(this.lastDoc).limit(1);
+    this.query = this.firestoreService.getLatestPostsInfo().orderBy('date', 'desc').startAfter(this.lastDoc).limit(1);
     this.getLatestPostsInfo();
   }
 

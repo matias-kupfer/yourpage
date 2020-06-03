@@ -92,7 +92,7 @@
                     (click)="isPostOwner && toggleLikeComment(i)">
               <mat-icon>favorite</mat-icon>
             </button>
-            <p>{{comment.date| date:'dd/MM/yyyy'}}</p>
+            <p>{{comment.date.toMillis() | date:'dd/MM/yyyy'}}</p>
           </div>
         </div>
       </div>

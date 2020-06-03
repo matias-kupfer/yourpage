@@ -10,6 +10,7 @@ import {ApiResponse} from '../../../interfaces/api-response';
 import {Router} from '@angular/router';
 import {ApiService} from '../../services/api.service';
 import {Observable} from 'rxjs';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-post-card',
@@ -61,7 +62,9 @@ export class PostCardComponent implements OnInit {
 
   public postComment() {
     this.commentLoader = true;
-    this.post.comments.push(JSON.parse(JSON.stringify(new Comment(this.authUser.accountInfo.userName, this.newComment))));
+    const newComment = JSON.parse(JSON.stringify(new Comment(this.authUser.accountInfo.userName, this.newComment)));
+    newComment.date = firebase.firestore.Timestamp.now();
+    this.post.comments.push(newComment);
     this.firestoreService.updatePost(this.post, this.postUser.personalInfo.userId).then(() => {
       this.getUserImage(this.authUser.accountInfo.userName);
       this.newComment = undefined;
