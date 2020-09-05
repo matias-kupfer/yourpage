@@ -20,9 +20,7 @@
                           (remove)="removeImage($event)"></app-file-upload-card>
   </div>
 
-  <br>
   <hr>
-  <br>
 
   <form [formGroup]="newPostForm">
 
@@ -40,7 +38,6 @@
       </mat-error>
     </mat-form-field>
 
-    <br>
     <br>
 
     <mat-form-field style="width: 100%;" color="primary">
@@ -63,49 +60,29 @@
         Caption is too <strong>long.</strong>
       </mat-error>
     </mat-form-field>
-
-    <div class="inputs-container">
-      <mat-form-field color="primary">
-        <mat-label>Select your country</mat-label>
-        <mat-select formControlName="country">
-          <mat-option>No country selected</mat-option>
-          <mat-option *ngFor="let country of countryList" [value]="country">
-            {{country}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="country.errors && country.errors.required">
-          Country is <strong>required.</strong>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field style="width: 60%;" color="primary">
-        <mat-label>City</mat-label>
-        <label>
-          <input matInput formControlName="city" autocomplete="off" placeholder="Write a city name"
-                 style="width: 60%; font-size: 20px;">
-        </label>
-        <mat-error *ngIf="city.errors && city.errors.required">
-          City is <strong>required.</strong>
-        </mat-error>
-        <mat-error *ngIf="city.errors && city.errors.maxlength">
-          City is too <strong>long.</strong>
-        </mat-error>
-        <mat-error *ngIf="city.errors && city.errors.pattern">
-          City is not <strong>valid.</strong>
-        </mat-error>
-      </mat-form-field>
-    </div>
   </form>
 
-  <br>
-
+  <div class="container">
+    <span>{{address}}</span>
+    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+      <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+    </agm-map>
+    <div class="form-group">
+      <mat-form-field style="width: 40%; float: right" color="primary">
+        <label>
+          <input matInput type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
+                 placeholder="Search a location" autocorrect="off" autocapitalize="off" spellcheck="off"
+                 type="text" #search>
+        </label>
+      </mat-form-field>
+    </div>
+  </div>
   <!--  <mat-progress-bar mode="indeterminate" *ngIf="isUploading"
                       [value]="totalUploadProgress()" color="primary"></mat-progress-bar>-->
-
   <div mat-dialog-actions>
     <button mat-button color="warn" [disabled]="isUploading" (click)="dialogRef.close()">Cancel</button>
     <button mat-flat-button color="primary" (click)="post()" cdkFocusInitial
-            [disabled]="!newPostForm.valid || !files.length || isUploading">
+            [disabled]="!newPostForm.valid || !files.length || isUploading || !placeId">
       Post
     </button>
   </div>

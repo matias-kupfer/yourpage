@@ -60,18 +60,20 @@ mat-sidenav-container {
           color: #c9c9c9;
 
           &:hover {
-            color: #e5e5e5;
+            color: $white !important;
           }
         }
       }
     }
 
     .active {
-      border-left: 3px solid $primary !important;
+      //border-left: 3px solid $primary !important;
+      background: #401c4194;
+      border-radius: 0 25px 25px 0;
 
       span {
         color: $white !important;
-        font-weight: 600;
+        //font-weight: 600;
       }
     }
 

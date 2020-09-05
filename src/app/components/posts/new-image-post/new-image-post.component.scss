@@ -36,4 +36,9 @@ div.container {
     display: flex;
     justify-content: space-between;
   }
+
+  agm-map {
+    height: 100px;
+    width: 100%;
+  }
 }

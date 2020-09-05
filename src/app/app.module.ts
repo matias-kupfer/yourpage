@@ -14,11 +14,12 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {DefaultKeys} from './enums/keys.enum';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
+import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
+
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = {
-    pinch: { enable: false },
-    rotate: { enable: false }
+    pinch: {enable: false},
+    rotate: {enable: false}
   } as any;
 }
 
@@ -45,7 +46,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import {MatChipsModule, MatDividerModule, MatInputModule, MatListModule, MatNativeDateModule} from '@angular/material';
+import {MatChipsModule, MatDividerModule, MatExpansionModule, MatInputModule, MatListModule, MatNativeDateModule} from '@angular/material';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -63,9 +64,9 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatTabsModule} from '@angular/material/tabs';
-import { UserTableComponent } from './core/utilities/user-table/user-table.component';
-import { PostCardComponent } from './core/utilities/post-card/post-card.component';
-import { FileUploadCardComponent } from './core/utilities/file-upload-card/file-upload-card.component';
+import {UserTableComponent} from './core/utilities/user-table/user-table.component';
+import {PostCardComponent} from './core/utilities/post-card/post-card.component';
+import {FileUploadCardComponent} from './core/utilities/file-upload-card/file-upload-card.component';
 
 
 @NgModule({
@@ -96,46 +97,48 @@ import { FileUploadCardComponent } from './core/utilities/file-upload-card/file-
     PostCardComponent,
     FileUploadCardComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        AngularFireModule.initializeApp(environmentProd.firebase),
-        AngularFirestoreModule,
-        AngularFireStorageModule,
-        AngularFireAuthModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        NotifierModule,
-        AgmCoreModule.forRoot({
-            apiKey: DefaultKeys.maps
-        }),
-        // angular material
-        MatIconModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatCardModule,
-        MatDividerModule,
-        MatStepperModule,
-        MatFormFieldModule,
-        MatDialogModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatSnackBarModule,
-        MatMenuModule,
-        MatProgressSpinnerModule,
-        MatTooltipModule,
-        MatBadgeModule,
-        FormsModule,
-        MatSidenavModule,
-        MatBottomSheetModule,
-        MatListModule,
-        MatProgressBarModule,
-        MatTabsModule,
-        MatChipsModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environmentProd.firebase),
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireAuthModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    NotifierModule,
+    AgmCoreModule.forRoot({
+      apiKey: DefaultKeys.maps,
+      libraries: ['places']
+    }),
+    // angular material
+    MatIconModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDividerModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSnackBarModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+    MatBadgeModule,
+    FormsModule,
+    MatSidenavModule,
+    MatBottomSheetModule,
+    MatListModule,
+    MatProgressBarModule,
+    MatTabsModule,
+    MatChipsModule,
+    MatExpansionModule
+  ],
   providers: [
     AuthenticationGuard,
     MatDatepickerModule,

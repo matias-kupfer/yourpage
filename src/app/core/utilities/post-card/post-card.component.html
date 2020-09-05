@@ -111,17 +111,32 @@
       </mat-form-field>
     </div>
 
-    <div class="info">
+    <!--<div class="info">
       <div class="icon">
         <mat-icon style="color: orange;">location_on</mat-icon>
-        <span>{{post.country}}, {{post.city}}</span>
+        <span>{{location}}</span>
       </div>
       <span class="spacer"> · </span>
       <div class="icon">
         <mat-icon style="color: dodgerblue;">today</mat-icon>
         <span>{{post.date.toMillis() | date:'dd/MM/yyyy'}}</span>
       </div>
-    </div>
+    </div>-->
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{post.date.toMillis() | date:'dd/MM/yyyy'}} · <span style="font-style: italic">&nbsp;{{location}}</span>
+          </mat-panel-title>
+          <mat-panel-description>
+            Click to see more info
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+          <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+        </agm-map>
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
 </div>
 

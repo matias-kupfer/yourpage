@@ -9,8 +9,8 @@ import {DefaultRoutes} from '../../../enums/default.routes';
 import {ApiResponse} from '../../../interfaces/api-response';
 import {Router} from '@angular/router';
 import {ApiService} from '../../services/api.service';
-import {Observable} from 'rxjs';
 import * as firebase from 'firebase';
+import {MapsAPILoader} from '@agm/core';
 
 @Component({
   selector: 'app-post-card',
@@ -18,6 +18,12 @@ import * as firebase from 'firebase';
   styleUrls: ['./post-card.component.scss']
 })
 export class PostCardComponent implements OnInit {
+  private geoCoder;
+  location: string;
+  zoom = 6;
+  lat: number;
+  lng: number;
+
   public sliderIndex = 0;
   public authUser = this.authService.user$.getValue();
   public isPostOwner: boolean;
@@ -35,18 +41,26 @@ export class PostCardComponent implements OnInit {
               private firestoreService: FirestoreService,
               private snackBar: MatSnackBar,
               private router: Router,
-              private apiService: ApiService) {
+              private apiService: ApiService,
+              private mapsAPILoader: MapsAPILoader) {
   }
 
   ngOnInit() {
-    if (this.postUser === null) {
-      this.firestoreService.getUserById(this.post.userId).get().then(user => {
-        this.postUser = user.data();
-        this.setConfig();
-      }).catch(e => console.log(e));
-    } else {
-      this.setConfig();
-    }
+    this.mapsAPILoader.load().then(() => {
+      this.geoCoder = new google.maps.Geocoder();
+      if (this.geoCoder !== undefined) {
+        this.findLocation().then(() => {
+          if (this.postUser === null) {
+            this.firestoreService.getUserById(this.post.userId).get().then(user => {
+              this.postUser = user.data();
+              this.setConfig();
+            }).catch(e => console.log(e));
+          } else {
+            this.setConfig();
+          }
+        });
+      }
+    });
   }
 
   public setConfig() {
@@ -155,4 +169,13 @@ export class PostCardComponent implements OnInit {
     return false;
   }
 
+  async findLocation() {
+    await this.geoCoder.geocode({placeId: this.post.placeId}, (results, status) => {
+      if (results.length) {
+        this.location = results[0].formatted_address;
+        this.lat = results[0].geometry.location.lat();
+        this.lng = results[0].geometry.location.lng();
+      }
+    });
+  }
 }

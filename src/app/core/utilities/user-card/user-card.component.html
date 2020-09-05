@@ -13,14 +13,13 @@
         <td>posts</td>
       </tr>
     </table>
-    <h3>{{userData.personalInfo.name}} {{userData.personalInfo.lastName}}, <span>{{age}}</span></h3>
+    <h3>{{userData.personalInfo.name}} {{userData.personalInfo.lastName}}</h3>
     <div class="basicInfo">
     <span><mat-icon>location_on</mat-icon>
       {{userData.accountInfo.country}}</span>
       <span><mat-icon>date_range</mat-icon>
         {{userData.accountInfo.registrationDate | date:'dd/MM/yyyy'}}</span>
     </div>
-    <br>
     <div class="social-div">
       <a [href]="userData.accountInfo.socialLinks.facebook" target="_blank" rel="noopener">
         <img matTooltip="Facebook"
@@ -48,21 +47,23 @@
       </a>
       <br>
     </div>
-    <hr class="hr">
     <p class="bio">{{userData.accountInfo.bio}}</p>
   </div>
-  <button *ngIf="!authService.isLoggedIn || !loading && !isUserProfile && !isFollowing()"
-          (click)="toggleFollow('0')">
-    FOLLOW
-  </button>
-  <button *ngIf="authService.isLoggedIn && !loading && !isUserProfile && isFollowing()"
-          (click)="toggleFollow('1')">
-    UNFOLLOW
-  </button>
-  <button *ngIf="authService.isLoggedIn &&!loading && isUserProfile" (click)="appComponent.editProfile()">
-    EDIT PROFILE
-  </button>
-  <button *ngIf="loading">
-    <mat-spinner color="accent" diameter="20"></mat-spinner>
-  </button>
+
+    <button mat-flat-button color="primary"
+            *ngIf="!authService.isLoggedIn || !isUserProfile && !isFollowing()" [disabled]="loading"
+            (click)="toggleFollow('0')">
+      FOLLOW
+    </button>
+    <button mat-flat-button color="primary" *ngIf="authService.isLoggedIn && !isUserProfile && isFollowing()"
+            (click)="toggleFollow('1')" [disabled]="loading">
+      UNFOLLOW
+    </button>
+    <button mat-flat-button color="primary"
+            *ngIf="authService.isLoggedIn &&!loading && isUserProfile" (click)="appComponent.editProfile()">
+      EDIT PROFILE
+    </button>
+    <!--<button mat-flat-button color="primary" *ngIf="loading">
+      <mat-spinner color="accent" diameter="30"></mat-spinner>
+    </button>-->
 </div>

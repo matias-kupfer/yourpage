@@ -151,6 +151,14 @@ div.container {
         mat-icon {
           margin-right: 5px;
         }
+
+        span {
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
       }
 
       span.spacer {
@@ -191,4 +199,8 @@ div.container {
     }*/
   }
 
+}
+agm-map {
+  height: 200px;
+  width: 100%;
 }

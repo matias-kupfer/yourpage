@@ -12,19 +12,10 @@ div.user-card-container {
     width: 180px;
     height: 180px;
     display: block;
-    margin: auto;
-    transform: translateY(-50%);
-    border: 8px solid $darkGray;
-    transition: 0.2s;
-
-    &:hover {
-      transform: translateY(-55%);
-    }
+    margin: 20px auto;
   }
 
   div.content {
-    margin-top: -70px;
-
 
     table {
       margin: auto;
@@ -86,13 +77,9 @@ div.user-card-container {
       }
     }
 
-    hr.hr {
-      margin: 0 20px;
-      border: 1px solid $lightGray;
-    }
-
     p.bio {
       text-align: center;
+      font-weight: 200;
       padding: 5px 20px 0;
       line-height: 1.8;
       font-size: 1.1em;
@@ -101,21 +88,8 @@ div.user-card-container {
   }
 
   button {
-    border-radius: 40px;
+    margin: 10px auto;
     display: block;
-    margin: auto;
-    padding: 10px 40px;
-    transform: translateY(50%);
-    border: 8px solid $darkGray;
-    transition: 0.2s;
-    font-size: 1em;
-    letter-spacing: 3px;
-    background-color: $primary;
-    color: white;
-    cursor: pointer;
-
-    &:hover {
-      transform: translateY(50%) scale(0.98);
-    }
+    //padding: 0 60px;
   }
 }

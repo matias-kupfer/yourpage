@@ -1,3 +1,6 @@
+import * as firebase from 'firebase';
+import Timestamp = firebase.firestore.Timestamp;
+
 export class User {
   constructor(uid: string, username: string, userLastName: string, userEmail: string, photoURL?: string) {
     this.personalInfo = {
@@ -10,7 +13,7 @@ export class User {
     };
     this.accountInfo = {
       userName: null,
-      registrationDate: new Date(),
+      registrationDate: firebase.firestore.Timestamp.now(),
       imageUrl: photoURL,
       country: null,
       bio: null,
@@ -39,7 +42,7 @@ export class User {
   };
   public accountInfo: {
     userName: string;
-    registrationDate: Date;
+    registrationDate: Timestamp;
     imageUrl: string;
     country: string;
     bio: string;

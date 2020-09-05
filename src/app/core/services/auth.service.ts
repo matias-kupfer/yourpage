@@ -72,8 +72,9 @@ export class AuthService {
   async signUpWithUserAndPassword(username: string, lastName: string, email: string, password: string) {
     return await this.fireAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        const newEmailUser = new User(result.user.uid, username, lastName, email, 'https://firebasestorage.googleapis.com/v0/b/yourpage-4e4b4.appspot.com/o/defaultImage.png?alt=media&token=76b67111-459b-4d1c-9d82-4ab2ffe09d8e');
-        this.firestoreService.updateUserData(JSON.parse(JSON.stringify(newEmailUser)));
+        const newEmailUser: User = JSON.parse(JSON.stringify(new User(result.user.uid, username, lastName, email, 'https://firebasestorage.googleapis.com/v0/b/yourpage-4e4b4.appspot.com/o/defaultImage.png?alt=media&token=76b67111-459b-4d1c-9d82-4ab2ffe09d8e')));
+        newEmailUser.accountInfo.registrationDate = firebase.firestore.Timestamp.now();
+        this.firestoreService.updateUserData(newEmailUser);
         this.notifier.notify('default', 'Successfully registered as ' + result.user.email);
         this.router.navigate([DefaultRoutes.OnLogin]);
       }).catch(e => {
