@@ -7,6 +7,7 @@ import {NotFoundComponent} from './components/not-found/not-found.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {UsersComponent} from './components/users/users.component';
 import {NewUserDataComponent} from './components/profile/new-user-data/new-user-data.component';
+import {SearchComponent} from './components/search/search.component';
 
 
 const routes: Routes = [
@@ -19,6 +20,8 @@ const routes: Routes = [
   {path: 'configure-profile', component: NewUserDataComponent, canActivate: [AuthenticationGuard]},
 
   {path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard]},
+
+  {path: 'search', component: SearchComponent, canActivate: [AuthenticationGuard]},
 
   {path: '**', redirectTo: '/not-found', pathMatch: 'full', canActivate: [AuthenticationGuard]},
   {path: 'not-found', component: NotFoundComponent, canActivate: [AuthenticationGuard]},

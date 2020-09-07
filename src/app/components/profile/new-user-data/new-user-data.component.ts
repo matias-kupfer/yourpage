@@ -1,16 +1,16 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {User} from '../../../class/user';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AuthService} from '../../../core/services/auth.service';
 import {DefaultRegex} from '../../../enums/regex.enum';
 import {debounceTime, map, take} from 'rxjs/operators';
-import {countryList} from '../../../enums/countries.enum';
 import {FirestoreService} from '../../../core/services/firestore.service';
 import {Router} from '@angular/router';
 import {DefaultRoutes} from '../../../enums/default.routes';
 import {UploadFile} from '../../../class/uploadFile';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MapsAPILoader} from '@agm/core';
 
 @Component({
   selector: 'app-new-user-data',
@@ -18,7 +18,10 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   styleUrls: ['./new-user-data.component.scss']
 })
 export class NewUserDataComponent implements OnInit {
-  countryList: any[] = countryList;
+  private geoCoder;
+  placeId: string;
+  address = 'none';
+
   userData: User;
   hover = false;
   files: UploadFile[] = [];
@@ -27,16 +30,45 @@ export class NewUserDataComponent implements OnInit {
   personalForm: FormGroup;
   accountForm: FormGroup;
 
+  @ViewChild('search', null)
+  public searchElementRef: ElementRef;
+
   constructor(private formBuilder: FormBuilder,
               private afs: AngularFirestore,
               public authService: AuthService,
               public firestoreService: FirestoreService,
               public router: Router,
               private ngZone: NgZone,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private mapsAPILoader: MapsAPILoader) {
   }
 
   ngOnInit() {
+    // load Places Autocomplete
+    this.mapsAPILoader.load().then(() => {
+      this.geoCoder = new google.maps.Geocoder();
+
+      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
+      autocomplete.addListener('place_changed', () => {
+        this.ngZone.run(() => {
+          // get the place result
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          this.placeId = place.place_id;
+          place.address_components.forEach(component => {
+            component.types.forEach((type) => {
+              if (type === 'country') {
+                this.address = component.long_name;
+              }
+            });
+          });
+          // verify result
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+        });
+      });
+    });
+
     window.scrollTo(0, 0);
     this.authService.user$
       .subscribe((doc) => {
@@ -70,7 +102,7 @@ export class NewUserDataComponent implements OnInit {
           Validators.pattern(DefaultRegex.userName)],
         UsernameValidator.userName(this.afs),
       ),
-      country: new FormControl('', Validators.required),
+      // country: new FormControl('', Validators.required),
       bio: new FormControl('', [
         Validators.required,
         Validators.maxLength(200)
@@ -98,9 +130,9 @@ export class NewUserDataComponent implements OnInit {
     return this.accountForm.get('userName');
   }
 
-  get country() {
+  /*get country() {
     return this.accountForm.get('country');
-  }
+  }*/
 
   get bio() {
     return this.accountForm.get('bio');
@@ -113,7 +145,7 @@ export class NewUserDataComponent implements OnInit {
     updatedUser.personalInfo.gender = this.gender.value;
     updatedUser.personalInfo.birthday = this.birthday.value;
     updatedUser.accountInfo.bio = this.bio.value;
-    updatedUser.accountInfo.country = this.country.value;
+    updatedUser.accountInfo.placeId = this.placeId;
     updatedUser.accountInfo.userName = this.userName.value;
     this.updateProfileImage().then(() => {
       this.firestoreService.updateUserData(updatedUser).then(() => {

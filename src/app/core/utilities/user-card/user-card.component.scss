@@ -49,20 +49,23 @@ div.user-card-container {
 
     div.basicInfo {
       margin: auto;
-      width: 70%;
+      width: 90%;
       display: flex;
       justify-content: space-evenly;
 
-      mat-icon {
-        vertical-align: sub;
+      span {
+        display: flex;
+
+        mat-icon {
+          margin-right: 5px;
+        }
       }
     }
 
     div.social-div {
       width: 90%;
-      margin: 10px auto;
+      margin: 10px auto 0;
       display: flex;
-      justify-content: space-evenly;
 
       img {
         width: 35px;
@@ -80,16 +83,17 @@ div.user-card-container {
     p.bio {
       text-align: center;
       font-weight: 200;
-      padding: 5px 20px 0;
+      padding: 0 20px;
       line-height: 1.8;
-      font-size: 1.1em;
-      margin-bottom: 0;
+      font-size: 1em;
+      margin: 10px 0 0;
     }
   }
 
   button {
     margin: 10px auto;
     display: block;
+    padding: 0 60px;
     //padding: 0 60px;
   }
 }

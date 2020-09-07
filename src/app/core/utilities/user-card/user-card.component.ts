@@ -3,10 +3,12 @@ import {User} from '../../../class/user';
 import {AppComponent} from '../../../app.component';
 import {AuthService} from '../../services/auth.service';
 import {DefaultRoutes} from '../../../enums/default.routes';
+import {Location} from '../../../class/location';
 import {Router} from '@angular/router';
 import {ApiService} from '../../services/api.service';
 import {ApiResponse} from '../../../interfaces/api-response';
 import {MatSnackBar} from '@angular/material';
+import {MapsService} from '../../services/maps.service';
 
 @Component({
   selector: 'app-user-card',
@@ -15,6 +17,7 @@ import {MatSnackBar} from '@angular/material';
 })
 export class UserCardComponent implements OnInit {
   public age: number = null;
+  public country: string;
   public loading = false;
 
   @Input() userData: User;
@@ -24,10 +27,12 @@ export class UserCardComponent implements OnInit {
               public authService: AuthService,
               private router: Router,
               private apiService: ApiService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private mapsService: MapsService) {
   }
 
   ngOnInit() {
+    this.getCountry();
     this.getAge();
   }
 
@@ -35,6 +40,14 @@ export class UserCardComponent implements OnInit {
     // @ts-ignore
     const timeDiff = Math.abs(Date.now() - new Date(this.userData.personalInfo.birthday.toDate()).getTime());
     this.age = Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
+  }
+
+  public getCountry() {
+    this.mapsService.findLocation(this.userData.accountInfo.placeId).then((res: Location) => {
+      this.country = res.country;
+    }).catch((e) => {
+      console.error(e);
+    });
   }
 
   public toggleFollow(action: string) {

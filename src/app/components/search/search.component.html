@@ -1,0 +1,37 @@
+<div class="container">
+  <mat-form-field style="width: 100%; font-size: 2em" color="primary">
+    <label>
+      <input matInput type="text" class="form-control" placeholder="What are you looking for?" type="text"
+             [(ngModel)]="query" (keydown)="search()">
+    </label>
+  </mat-form-field>
+  <br>
+  <mat-tab-group>
+    <mat-tab label="Users">Users</mat-tab>
+    <mat-tab label="Posts">Posts</mat-tab>
+  </mat-tab-group>
+  <!--<br><br>
+  <div>
+    <div matRipple class="primary"
+         [matRippleCentered]="false"
+         [matRippleDisabled]="false"
+         [matRippleUnbounded]="false"
+         [matRippleRadius]="350">
+      <mat-icon>person</mat-icon>
+    </div>
+    <div matRipple class="accent"
+         [matRippleCentered]="false"
+         [matRippleDisabled]="false"
+         [matRippleUnbounded]="false"
+         [matRippleRadius]="350">
+      <mat-icon>date_range</mat-icon>
+    </div>
+    <div matRipple style="background-color: #de3232"
+         [matRippleCentered]="false"
+         [matRippleDisabled]="false"
+         [matRippleUnbounded]="false"
+         [matRippleRadius]="350">
+      <mat-icon>location_on</mat-icon>
+    </div>
+  </div>-->
+</div>

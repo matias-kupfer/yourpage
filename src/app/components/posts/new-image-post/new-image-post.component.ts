@@ -1,7 +1,6 @@
 import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {UploadFile} from '../../../class/uploadFile';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {countryList} from '../../../enums/countries.enum';
 import {ImagePost} from '../../../class/imagePost';
 import {AuthService} from '../../../core/services/auth.service';
 import {FirestoreService} from '../../../core/services/firestore.service';
@@ -32,7 +31,6 @@ export class NewImagePostComponent implements OnInit {
   files: UploadFile[] = [];
   filesLimit = 5;
   newPostForm: FormGroup;
-  countryList: any[] = countryList;
   isUploading = false;
 
   constructor(

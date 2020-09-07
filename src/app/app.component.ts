@@ -15,6 +15,7 @@ import {UsersListComponent} from './components/profile/users-list/users-list.com
 import {MediaMatcher} from '@angular/cdk/layout';
 import {DefaultRoutes} from './enums/default.routes';
 import {NotifierService} from 'angular-notifier';
+import {MapsService} from './core/services/maps.service';
 
 
 @Component({
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit {
     private ngZone: NgZone,
     public dialog: MatDialog,
     changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher
+    media: MediaMatcher,
   ) {
     this.notifier = notifier;
     // Sidenav responsive

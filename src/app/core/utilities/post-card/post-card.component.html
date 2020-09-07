@@ -1,4 +1,4 @@
-<div class="container" *ngIf="(post.comments.length || !post.comments.length) && postUser !== null; else loader">
+<div class="container" *ngIf="postUser !== null; else loader">
 
   <div class="header">
     <div class="user">
@@ -110,38 +110,30 @@
         <mat-spinner *ngIf="commentLoader" matSuffix color="primary" diameter="20"></mat-spinner>
       </mat-form-field>
     </div>
-
-    <!--<div class="info">
-      <div class="icon">
-        <mat-icon style="color: orange;">location_on</mat-icon>
-        <span>{{location}}</span>
-      </div>
-      <span class="spacer"> · </span>
-      <div class="icon">
-        <mat-icon style="color: dodgerblue;">today</mat-icon>
-        <span>{{post.date.toMillis() | date:'dd/MM/yyyy'}}</span>
-      </div>
-    </div>-->
-    <mat-accordion>
+    <mat-accordion *ngIf="location; else locationLoader;">
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{post.date.toMillis() | date:'dd/MM/yyyy'}} · <span style="font-style: italic">&nbsp;{{location}}</span>
+            {{post.date.toMillis() | date:'dd/MM/yyyy'}} · <span
+            style="font-style: italic">&nbsp;{{location.formattedAddress}}</span>
           </mat-panel-title>
-          <mat-panel-description>
+          <mat-panel-description *ngIf="!appComponent.mobileQuery.matches">
             Click to see more info
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
-          <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+        <agm-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="zoom">
+          <agm-marker [latitude]="location.lat" [longitude]="location.lng"></agm-marker>
         </agm-map>
       </mat-expansion-panel>
     </mat-accordion>
+    <ng-template #locationLoader>loading...</ng-template>
   </div>
 </div>
 
 <!-- LOADER -->
 <ng-template #loader>
-  <mat-spinner color="primary"></mat-spinner>
+  <div class="loader">
+    <mat-spinner color="primary"></mat-spinner>
+  </div>
 </ng-template>
 

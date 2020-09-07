@@ -9,7 +9,7 @@ import {ImagePost} from '../../class/imagePost';
 import {Reference} from '@angular/fire/storage/interfaces';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {LatestPostsInfo} from '../../interfaces/latestPostsInfo';
-
+import Timestamp = firebase.firestore.Timestamp;
 @Injectable({
   providedIn: 'root'
 })
@@ -67,6 +67,19 @@ export class FirestoreService {
   public getAllUsers() {
     return this.db.collection('users').where('accountInfo.userName', '<', '\uf8ff');
   }
+
+  /*public updateUsers() {
+    this.db.collection('users').get().then(
+      querySnapshot => {
+        querySnapshot.forEach(user => {
+          console.log(user.data());
+          const updatedUser = user.data();
+          updatedUser.accountInfo.registrationDate = firebase.firestore.Timestamp.now();
+          this.db.collection('users').doc(user.data().personalInfo.userId).update(updatedUser);
+        });
+      }
+    );
+  }*/
 
   // POSTS
   public getPostsByUserId(userId: string): DocumentData {

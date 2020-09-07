@@ -10,7 +10,7 @@
       <hr>
       <h3 class="category">NAVIGATION</h3>
       <div class="nav-button" *ngFor="let link of navigationLinks" [routerLink]="link.componentName"
-           routerLinkActive="active">
+           routerLinkActive="active" matRipple>
         <div (click)="mobileQuery.matches ? sideNavStatus = false : null">
           <mat-icon [ngStyle]="{color: link.iconColor}">{{link.matIcon}}</mat-icon>
           <span>{{link.text}}</span>
@@ -20,7 +20,7 @@
       <h3 class="category">ACTIONS</h3>
       <ng-container *ngFor="let action of actions">
         <div class="nav-button" *ngIf="mobileQuery.matches && !action.hideResponsive || !mobileQuery.matches"
-             (click)="this[action.action]()">
+             (click)="this[action.action]()" matRipple>
           <div (click)="mobileQuery.matches ? sideNavStatus = false : null">
             <mat-icon [ngStyle]="{color: action.iconColor}">{{action.matIcon}}</mat-icon>
             <span>{{action.text}}</span>
@@ -29,10 +29,11 @@
       </ng-container>
       <hr>
       <h3 class="category">ACCOUNT</h3>
-      <app-image [image]="userData.accountInfo.imageUrl" [smallSpinner]="true" [class]="'side-bar-profile-picture'"></app-image>
+      <app-image [image]="userData.accountInfo.imageUrl" [smallSpinner]="true"
+                 [class]="'side-bar-profile-picture'"></app-image>
       <h3 class="username">@{{userData.accountInfo.userName}}</h3>
-      <table>
-        <tr style="cursor: pointer;" (click)="seeFollowers(userData)">
+      <table matRipple style="cursor: pointer;" (click)="seeFollowers(userData)">
+        <tr>
           <th>{{userData.followers.length}}</th>
           <th>{{userData.following.length}}</th>
           <th>{{userData.posts}}</th>

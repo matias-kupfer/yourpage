@@ -46,7 +46,15 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import {MatChipsModule, MatDividerModule, MatExpansionModule, MatInputModule, MatListModule, MatNativeDateModule} from '@angular/material';
+import {
+  MatChipsModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatInputModule,
+  MatListModule,
+  MatNativeDateModule, MatRadioModule,
+  MatRippleModule
+} from '@angular/material';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -67,6 +75,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {UserTableComponent} from './core/utilities/user-table/user-table.component';
 import {PostCardComponent} from './core/utilities/post-card/post-card.component';
 import {FileUploadCardComponent} from './core/utilities/file-upload-card/file-upload-card.component';
+import { SearchComponent } from './components/search/search.component';
 
 
 @NgModule({
@@ -96,6 +105,7 @@ import {FileUploadCardComponent} from './core/utilities/file-upload-card/file-up
     UserTableComponent,
     PostCardComponent,
     FileUploadCardComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -137,7 +147,9 @@ import {FileUploadCardComponent} from './core/utilities/file-upload-card/file-up
     MatProgressBarModule,
     MatTabsModule,
     MatChipsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatRippleModule,
+    MatRadioModule
   ],
   providers: [
     AuthenticationGuard,

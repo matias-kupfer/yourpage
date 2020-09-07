@@ -15,7 +15,7 @@ export class User {
       userName: null,
       registrationDate: firebase.firestore.Timestamp.now(),
       imageUrl: photoURL,
-      country: null,
+      placeId: null,
       bio: null,
       socialLinks: {
         youtube: null,
@@ -44,7 +44,7 @@ export class User {
     userName: string;
     registrationDate: Timestamp;
     imageUrl: string;
-    country: string;
+    placeId: string;
     bio: string;
     socialLinks: {
       youtube: string;

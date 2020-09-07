@@ -1,7 +1,7 @@
 <mat-toolbar>
-  <mat-icon class="rotate" (click)="appComponent.sideNavStatus = !appComponent.sideNavStatus">
-    {{appComponent.sideNavStatus ? 'close' : 'menu'}}
-  </mat-icon>
+  <button mat-icon-button (click)="appComponent.sideNavStatus = !appComponent.sideNavStatus">
+    <mat-icon>{{appComponent.sideNavStatus ? 'close' : 'menu'}}</mat-icon>
+  </button>
   <div *ngIf="this.authService.isLoggedIn" class="card" [routerLink]="'/profile'">
     <app-image [image]="userData.accountInfo.imageUrl"
                [class]="'small-profile-picture'" [smallSpinner]="true"></app-image>

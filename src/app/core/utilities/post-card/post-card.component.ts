@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ImagePost} from '../../../class/imagePost';
 import {Comment} from '../../../class/comment';
 import {User} from '../../../class/user';
+import {Location} from '../../../class/location';
 import {AuthService} from '../../services/auth.service';
 import {FirestoreService} from '../../services/firestore.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -11,6 +12,8 @@ import {Router} from '@angular/router';
 import {ApiService} from '../../services/api.service';
 import * as firebase from 'firebase';
 import {MapsAPILoader} from '@agm/core';
+import {MapsService} from '../../services/maps.service';
+import {AppComponent} from '../../../app.component';
 
 @Component({
   selector: 'app-post-card',
@@ -18,11 +21,8 @@ import {MapsAPILoader} from '@agm/core';
   styleUrls: ['./post-card.component.scss']
 })
 export class PostCardComponent implements OnInit {
-  private geoCoder;
-  location: string;
+  public location: Location;
   zoom = 6;
-  lat: number;
-  lng: number;
 
   public sliderIndex = 0;
   public authUser = this.authService.user$.getValue();
@@ -37,30 +37,26 @@ export class PostCardComponent implements OnInit {
   @Output() deletePost: EventEmitter<ImagePost> = new EventEmitter();
 
 
-  constructor(public authService: AuthService,
+  constructor(private authService: AuthService,
               private firestoreService: FirestoreService,
               private snackBar: MatSnackBar,
               private router: Router,
               private apiService: ApiService,
-              private mapsAPILoader: MapsAPILoader) {
+              private mapsAPILoader: MapsAPILoader,
+              private mapsService: MapsService,
+              public appComponent: AppComponent) {
   }
 
   ngOnInit() {
-    this.mapsAPILoader.load().then(() => {
-      this.geoCoder = new google.maps.Geocoder();
-      if (this.geoCoder !== undefined) {
-        this.findLocation().then(() => {
-          if (this.postUser === null) {
-            this.firestoreService.getUserById(this.post.userId).get().then(user => {
-              this.postUser = user.data();
-              this.setConfig();
-            }).catch(e => console.log(e));
-          } else {
-            this.setConfig();
-          }
-        });
-      }
-    });
+    this.findLocation();
+    if (this.postUser === null) {
+      this.firestoreService.getUserById(this.post.userId).get().then(user => {
+        this.postUser = user.data();
+        this.setConfig();
+      }).catch(e => console.log(e));
+    } else {
+      this.setConfig();
+    }
   }
 
   public setConfig() {
@@ -169,13 +165,11 @@ export class PostCardComponent implements OnInit {
     return false;
   }
 
-  async findLocation() {
-    await this.geoCoder.geocode({placeId: this.post.placeId}, (results, status) => {
-      if (results.length) {
-        this.location = results[0].formatted_address;
-        this.lat = results[0].geometry.location.lat();
-        this.lng = results[0].geometry.location.lng();
-      }
+  public findLocation() {
+    this.mapsService.findLocation(this.post.placeId).then((res: Location) => {
+      this.location = res;
+    }).catch((e) => {
+      console.log(e);
     });
   }
 }

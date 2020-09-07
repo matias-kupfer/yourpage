@@ -12,7 +12,7 @@
       <th>POSTS</th>
       <th>MORE</th>
     </tr>
-    <tr *ngFor=" let user of users">
+    <tr *ngFor=" let user of users; let i = index">
       <ng-template [ngIf]="searchUsers(user)">
         <td>
           <div class="user-simple-card">
@@ -23,7 +23,7 @@
           </span>
           </div>
         </td>
-        <td>{{user.accountInfo.country}}</td>
+        <td>{{country[i]}}</td>
         <td>{{user.followers.length}}</td>
         <td>{{user.following.length}}</td>
         <td>{{user.posts}}</td>

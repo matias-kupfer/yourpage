@@ -119,21 +119,18 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Select your country</mat-label>
-          <mat-select formControlName="country">
-            <mat-option>No country selected</mat-option>
-            <mat-option *ngFor="let country of countryList" [value]="country">
-              {{country}}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="country.errors && country.errors.required">
-            Country is <strong>required.</strong>
-          </mat-error>
+          <label>
+            <input matInput placeholder="Country*" [disabled]="placeId !== undefined" #search>
+          </label>
+          <button mat-icon-button matSuffix>
+            <mat-icon (click)="placeId = undefined; address = 'none';">close</mat-icon>
+          </button>
+          <mat-hint [ngStyle]="{'color': placeId === undefined ? '#f44336' : 'green'}">Country: {{address}}</mat-hint>
         </mat-form-field>
         <br>
         <br>
 
-        <mat-form-field class="width">
+        <mat-form-field style="width: 450px">
           <label>
             <textarea matInput placeholder="Write something about yourself..." formControlName="bio"></textarea>
           </label>
@@ -153,7 +150,7 @@
 
         <div>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-button matStepperNext [disabled]="placeId === undefined">Next</button>
         </div>
       </form>
     </mat-step>
