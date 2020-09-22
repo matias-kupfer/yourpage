@@ -44,7 +44,7 @@ export class AuthService {
       .then((result) => {
         if (result) {
           if (result.additionalUserInfo.isNewUser) { // sign up
-            this.firestoreService.updateUserData(JSON.parse(JSON.stringify(this.createNewUserObject(result))));
+            this.firestoreService.createNewUser(JSON.parse(JSON.stringify(this.createNewUserObject(result))));
             this.notifier.notify('default', 'Successfully registered as ' + result.user.email);
           } else { // authenticate
             this.userDataSubscription();

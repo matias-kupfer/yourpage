@@ -29,11 +29,11 @@
       Where are you from, what do you like...
     </mat-hint>
     <mat-hint align="end"
-              [ngStyle]="{'color': bio.value.length >= 200 ? 'red' : bio.value.length > 180 ? 'orange' : 'green' }">
-      {{bio.value.length}}/ 200
+              [ngStyle]="{'color': bio.value.length >= 280 ? 'red' : bio.value.length > 250 ? 'orange' : 'green' }">
+      {{bio.value.length}}/ 280
     </mat-hint>
     <mat-error *ngIf="bio.errors && bio.errors.maxlength">
-      The biography can't be longer than <strong>200 characters.</strong>
+      The biography can't be longer than <strong>280 characters.</strong>
     </mat-error>
   </mat-form-field>
   <br>

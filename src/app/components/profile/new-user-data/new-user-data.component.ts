@@ -105,7 +105,7 @@ export class NewUserDataComponent implements OnInit {
       // country: new FormControl('', Validators.required),
       bio: new FormControl('', [
         Validators.required,
-        Validators.maxLength(200)
+        Validators.maxLength(280)
       ]),
     });
   }

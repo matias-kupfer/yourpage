@@ -9,7 +9,7 @@ import {ImagePost} from '../../class/imagePost';
 import {Reference} from '@angular/fire/storage/interfaces';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {LatestPostsInfo} from '../../interfaces/latestPostsInfo';
-import Timestamp = firebase.firestore.Timestamp;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -59,6 +59,13 @@ export class FirestoreService {
   }
 
   public updateUserData(user: User): Promise<void> {
+    return this.db.collection('users').doc(user.personalInfo.userId).set(user, {
+      merge: true
+    });
+  }
+
+  public createNewUser(user: User): Promise<void> {
+    user.accountInfo.registrationDate = firebase.firestore.Timestamp.now();
     return this.db.collection('users').doc(user.personalInfo.userId).set(user, {
       merge: true
     });

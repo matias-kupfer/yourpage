@@ -37,7 +37,7 @@ export class EditProfileComponent implements OnInit {
   ngOnInit() {
     this.newData = new FormGroup({
       bio: new FormControl(this.userData.accountInfo.bio, [
-        Validators.maxLength(200),
+        Validators.maxLength(280),
       ]),
       facebook: new FormControl(this.userData.accountInfo.socialLinks.facebook, [
         Validators.pattern(DefaultRegex.secureUrl),

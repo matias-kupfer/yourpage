@@ -13,7 +13,7 @@ export class User {
     };
     this.accountInfo = {
       userName: null,
-      registrationDate: firebase.firestore.Timestamp.now(),
+      registrationDate: null,
       imageUrl: photoURL,
       placeId: null,
       bio: null,
