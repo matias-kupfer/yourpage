@@ -41,27 +41,27 @@ export class EditProfileComponent implements OnInit {
       ]),
       facebook: new FormControl(this.userData.accountInfo.socialLinks.facebook, [
         Validators.pattern(DefaultRegex.secureUrl),
-        Validators.maxLength(50)
+        Validators.maxLength(100)
       ]),
       github: new FormControl(this.userData.accountInfo.socialLinks.github, [
         Validators.pattern(DefaultRegex.secureUrl),
-        Validators.maxLength(50)
+        Validators.maxLength(100)
       ]),
       twitter: new FormControl(this.userData.accountInfo.socialLinks.twitter, [
         Validators.pattern(DefaultRegex.secureUrl),
-        Validators.maxLength(50)
+        Validators.maxLength(100)
       ]),
       youtube: new FormControl(this.userData.accountInfo.socialLinks.youtube, [
         Validators.pattern(DefaultRegex.secureUrl),
-        Validators.maxLength(50)
+        Validators.maxLength(100)
       ]),
       linkedin: new FormControl(this.userData.accountInfo.socialLinks.linkedin, [
         Validators.pattern(DefaultRegex.secureUrl),
-        Validators.maxLength(50)
+        Validators.maxLength(100)
       ]),
       instagram: new FormControl(this.userData.accountInfo.socialLinks.instagram, [
         Validators.pattern(DefaultRegex.secureUrl),
-        Validators.maxLength(50)
+        Validators.maxLength(100)
       ]),
     });
   }

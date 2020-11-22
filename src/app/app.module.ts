@@ -75,7 +75,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {UserTableComponent} from './core/utilities/user-table/user-table.component';
 import {PostCardComponent} from './core/utilities/post-card/post-card.component';
 import {FileUploadCardComponent} from './core/utilities/file-upload-card/file-upload-card.component';
-import { SearchComponent } from './components/search/search.component';
+import {SearchComponent} from './components/search/search.component';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 
 @NgModule({
@@ -157,7 +158,8 @@ import { SearchComponent } from './components/search/search.component';
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig
-    }
+    },
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })

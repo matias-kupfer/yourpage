@@ -3,10 +3,8 @@ import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '
 import {Observable, of} from 'rxjs';
 import {AuthService} from '../services/auth.service';
 import {DefaultRoutes} from '../../enums/default.routes';
-import {User} from '../../class/user';
-import {first, map, switchMap, take, tap} from 'rxjs/operators';
+import {switchMap, take} from 'rxjs/operators';
 import {AngularFireAuth} from '@angular/fire/auth';
-import * as firebase from 'firebase';
 import {FirestoreService} from '../services/firestore.service';
 
 @Injectable()
